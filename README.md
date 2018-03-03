@@ -18,4 +18,5 @@
 ### Data Authentication
 - Allow clinican to authenticate patient physiological data (?)
 
-See Wiki for information about building / running application
+### Building and running application
+https://github.com/gsugambit/openpcm/wiki/Building-and-Running-Project
