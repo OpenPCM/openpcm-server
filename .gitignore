@@ -30,3 +30,6 @@ hs_err_pid*
 
 #build files
 target/
+
+#front end
+openpcm-vuejs/node_modules/
