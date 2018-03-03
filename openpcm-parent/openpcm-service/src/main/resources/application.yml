@@ -3,6 +3,9 @@ spring:
     name: openpcm-service
   main:
     banner-mode: log
+  devtools:
+    restart:
+      exclude: static/**,public/**
 logging:
   level:
     org.fasterxml: "DEBUG"
