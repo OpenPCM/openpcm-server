@@ -1,0 +1,49 @@
+<configuration scan="true" scanPeriod="30 seconds">
+	<include resource="org/springframework/boot/logging/logback/defaults.xml" /> <!-- to customize the file appender -->
+	<include
+		resource="org/springframework/boot/logging/logback/console-appender.xml" />
+		<property name="LOG_FILE" value="${LOG_FILE:-${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}}/openpcm-service.log}" />
+	<jmxConfigurator />
+	<shutdownHook class="ch.qos.logback.core.hook.DelayingShutdownHook" />
+	<springProperty name="maxIndex" source="openpcm.log.maxindex" defaultValue="1"/>
+
+	<!-- =========================== File Appender ======================================================= -->
+	<appender name="FILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_FILE}</file>
+
+		<!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"> 
+			&lt;!&ndash; daily rollover &ndash;&gt; <fileNamePattern>${LOG_FILE}.%d{yyyy-MM-dd}.log</fileNamePattern> 
+			​ &lt;!&ndash; keep 30 days' worth of history capped at 3GB total size &ndash;&gt; 
+			<maxHistory>30</maxHistory> &lt;!&ndash;<maxFileSize>1GB</maxFileSize>&ndash;&gt; 
+			</rollingPolicy> -->
+
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<fileNamePattern>${LOG_PATH}/${LOG_FILE}.%i.log.zip</fileNamePattern>
+			<minIndex>1</minIndex>
+			<maxIndex>${maxIndex}</maxIndex>
+		</rollingPolicy>
+		
+		<triggeringPolicy
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>20MB</maxFileSize>
+		</triggeringPolicy>
+		​
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-50mdc{operationId:-no operationId} %5p [${PID:- }] [%thread] %-5level %logger{50} - %msg%n</pattern>
+			<!--<pattern>${FILE_LOG_PATTERN}</pattern>-->
+		</encoder>
+	</appender>
+	<appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+		<queueSize>500</queueSize>
+		<discardingThreshold>0</discardingThreshold>
+		<appender-ref ref="FILE" />
+	</appender>
+	​
+	<!-- ==================================== Root Logger =================================================== -->
+	<root level="INFO">
+		<appender-ref ref="ASYNC" />
+		<appender-ref ref="CONSOLE" />
+	</root>
+
+</configuration>

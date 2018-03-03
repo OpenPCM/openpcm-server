@@ -1,0 +1,11 @@
+Application Loading...
+
+
+/ __ \___  ___ ___  / _ \/ ___/  |/  /
+/ /_/ / _ \/ -_) _ \/ ___/ /__/ /|_/ / 
+\____/ .__/\__/_//_/_/   \___/_/  /_/  
+    /_/                                
+Name: ${spring.application.name}
+Version: ${project.version}
+Spring Boot Version: ${spring.boot.version}
+Camel Version: ${camel.version}

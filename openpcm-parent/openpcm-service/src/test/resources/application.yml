@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: openpcm-service
+logging:
+  level:
+    org.fasterxml: "DEBUG"
+    org.springframework: "INFO"
+    org.hibernate: "INFO"
+    org.springframework.ws: "TRACE"
+    org.apache.camel.component.rabbitmq: "INFO"
+    org.openpcm: "TRACE"
+    org.springframework.web.servlet.DispatcherServlet: "DEBUG"
+  path: /target/logs/
+server:
+  port: 14606
