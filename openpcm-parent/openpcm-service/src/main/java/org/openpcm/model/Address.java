@@ -1,15 +1,24 @@
 package org.openpcm.model;
 
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
+import org.openpcm.model.Patient.PatientBuilder;
 import org.openpcm.utils.ObjectUtil;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -20,10 +29,10 @@ import lombok.Setter;
 /**
  * The Class Address.
  */
-@Getter 
-@Setter 
-@EqualsAndHashCode
 @Builder
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity(name = "address")
 public class Address {
 	
@@ -45,6 +54,9 @@ public class Address {
 
     /** The zip code. */
     private String zipCode;
+    
+    @OneToOne(mappedBy = "address")
+    private Patient patient;
 
     @Override
     public String toString() {

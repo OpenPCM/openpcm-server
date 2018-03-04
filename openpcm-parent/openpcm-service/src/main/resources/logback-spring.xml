@@ -5,7 +5,6 @@
 		<property name="LOG_FILE" value="${LOG_FILE:-${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}}/openpcm-service.log}" />
 	<jmxConfigurator />
 	<shutdownHook class="ch.qos.logback.core.hook.DelayingShutdownHook" />
-	<springProperty name="maxIndex" source="openpcm.log.maxindex" defaultValue="1"/>
 
 	<!-- =========================== File Appender ======================================================= -->
 	<appender name="FILE"
@@ -21,7 +20,7 @@
 		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
 			<fileNamePattern>${LOG_PATH}/${LOG_FILE}.%i.log.zip</fileNamePattern>
 			<minIndex>1</minIndex>
-			<maxIndex>${maxIndex}</maxIndex>
+			<maxIndex>10</maxIndex>
 		</rollingPolicy>
 		
 		<triggeringPolicy
