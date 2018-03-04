@@ -152,35 +152,37 @@ label {
 <div id="app">
     <div class="container">
         <h1 class="left"> List of patients</h1>
-            <button type="button" class="right addNewPatient" @click="showingAddModal=true">Add New Patient</button>
-            <div class="clear">
-            </div>
-            <hr>
-            <p class="errorMessage" v-if="errorMessage">{{errorMessage}}</p>
-            <p class="successMessage" v-if="successMessage">{{successMessage}}</p>
-            <table class="list">
-                <tr>
-                    <th>ID</th>
-                    <th>FirstName</th>
-                    <th>LastName</th>
-                    <th>SSN</th>
-                </tr>
-                <tr v-for="patient in patients">
-                    <td>{{patient.id}}</td>
-                    <td>{{patient.firstName}}</td>h
-                    <td>{{patient.lastName}}</td>
-                    <td>{{patient.ssn}}</td>
-                    <td>
-                        <button @click="showingEditModal=true; selectPatient(patient);">Edit</button>
-                    </td>
-                    <td>
-                        <button @click="showingDeleteModal=true;  selectPatient(patient);">Delete</button>
-                    </td>
-                </tr>
-            </table>
+        <button type="button" class="right addNewPatient" @click="showingAddModal=true">Add New Patient</button>
+        <div class="clear">
+        </div>
+        <hr>
+        <p class="errorMessage" v-if="errorMessage">{{errorMessage}}</p>
+        <p class="successMessage" v-if="successMessage">{{successMessage}}</p>
+        <table class="list">
+            <tr>
+                <th>ID</th>
+                <th>FirstName</th>
+                <th>LastName</th>
+                <th>SSN</th>
+                <th>MRN</th>
+            </tr>
+            <tr v-for="patient in patients">
+                <td>{{patient.id}}</td>
+                <td>{{patient.firstName}}</td>
+                <td>{{patient.lastName}}</td>
+                <td>{{patient.ssn}}</td>
+                <td>{{patient.altIds[0].value}}</td>
+                <td>
+                    <button @click="showingEditModal=true; selectPatient(patient);">Edit</button>
+                </td>
+                <td>
+                    <button @click="showingDeleteModal=true;  selectPatient(patient);">Delete</button>
+                </td>
+            </tr>
+        </table>
     </div>
     <!-- modal box-->
-    <div class="modal" id="addModal" v-show="showingAddModal">
+    <div id="addModal" v-if="showingAddModal">
         <div class="modalContainer">
             <div class="modalHeading">
                 <h1 class="left">Add New Patient</h1>
@@ -203,6 +205,10 @@ label {
                         <input type="text" class="form-control" name="" v-model="newPatient.ssn">
                     </div>
                     <div class="form-group">
+                        <label class="left" for="">MRN:</label>
+                        <input type="text" class="form-control" name="" v-model="newPatient.altIds[0].value">
+                    </div>
+                    <div class="form-group">
                         <button type="button" class="btn right" @click="showingAddModal=false; savePatient();">Save</button>
                     </div>
                 </div>
@@ -211,7 +217,7 @@ label {
     </div>
     <!--edit patient modal -->
     <!-- modal box-->
-    <div class="modal" id="editModal" v-if="showingEditModal">
+    <div id="editModal" v-if="showingEditModal">
         <div class="modalContainer">
             <div class="modalHeading">
                 <h1 class="left">Edit this patient</h1>
@@ -226,12 +232,16 @@ label {
                         <input type="text" class="form-control" name="" v-model="clickedPatient.firstName">
                     </div>
                     <div class="form-group">
-                        <label class="left" for="">Email:</label>
+                        <label class="left" for="">LastName:</label>
                         <input type="text" class="form-control" name="" v-model="clickedPatient.lastName">
                     </div>
                     <div class="form-group">
                         <label class="left" for="">SSN:</label>
                         <input type="text" class="form-control" name="" v-model="clickedPatient.ssn">
+                    </div>
+                    <div class="form-group">
+                        <label class="left" for="">MRN:</label>
+                        <input type="text" class="form-control" name="" v-model="clickedPatient.altIds[0].value">
                     </div>
                     <div class="form-group">
                         <button class="btn right" @click="showingEditModal=false; updatePatient()">Update</button>
@@ -241,7 +251,7 @@ label {
         </div>
     </div>
     <!-- modal box-->
-    <div class="modal" id="deleteModal" v-if="showingDeleteModal">
+    <div id="deleteModal" v-if="showingDeleteModal">
         <div class="modalContainer">
             <div class="modalHeading">
                 <h1 class="left">Delete this patient</h1>
@@ -271,96 +281,112 @@ import axios from 'axios';
 export default {
     name: 'app',
     data() {
-            return {
-                showingAddModal: false,
-                showingEditModal: false,
-                showingDeleteModal: false,
-                errorMessage: "",
-                successMessage: "",
-                patients: [],
-                newPatient: {
-                    firstName: "",
-                    lastName: "",
-                    ssn: ""
-                },
-                onePatient: {
-                    firstName: "raymond",
-                    lastName: "King",
-                    ssn: "256710803"
-                },
-                clickedPatient: {}
-            }
-        },
-        mounted: function() {
-            this.getAllPatients();
-        },
-        methods: {
-            getAllPatients() {
-                    var self = this;
-                    axios.get("http://localhost:14606/api/v1/patient")
-                        .then(function(response) {
-                            if (response.data.error) {
-                                self.errorMessage = response.data.message;
-                            } else {
-                                console.log("successfully received " + response.data);
-                                self.patients = response.data;
-                            }
-                        });
-                },
-                savePatient() {
-                    var self = this;
-                    axios.post("http://localhost:14606/api/v1/patient", this.newPatient)
-                        .then(function(response) {
-                            console.log(response);
-                            self.newPatient = {
-                                firstName: "",
-                                lastName: "",
-                                ssn: ""
-                            };
-                            if (response.data.error) {
-                                self.errorMessage = response.data.message;
-                            } else {
-                                self.successMessage = "successfully saved " + response.data;
-                                self.getAllPatients();
-                            }
-                        });
-                },
-                updatePatient() {
-                    var self = this;
-                    axios.post("http://localhost:14606/api/v1/patient", this.clickedPatient)
-                        .then(function(response) {
-                            console.log(response);
-                            self.clickedPatient = {};
-                            if (response.data.error) {
-                                self.errorMessage = response.data.message;
-                            } else {
-                                self.successMessage = "successfully updated " + response.data;
-                                self.getAllPatients();
-                            }
-                        });
-                },
-                deletePatient() {
-                    var self = this;
-                    var formData = this.toFormData(this.clickedPatient);
-                    axios.post("http://localhost:14606/api/v1/patient" + this.clickedPatient.id)
-                        .then(function(response) {
-                            self.clickedPatient = {};
-                            if (response.data.error) {
-                                self.errorMessage = response.data.message;
-                            } else {
-                                self.successMessage = "successfully delete patient";
-                                self.getAllPatients();
-                            }
-                        });
-                },
-                selectPatient(patient) {
-                    this.clickedPatient = patient;
-                },
-                clearMessage: function() {
-                    this.errorMessage = "";
-                    this.successMessage = "";
-                }
+        return {
+            showingAddModal: false,
+            showingEditModal: false,
+            showingDeleteModal: false,
+            errorMessage: "",
+            successMessage: "",
+            patients: [],
+            newPatient: {
+                firstName: "",
+                lastName: "",
+                ssn: "",
+                altIds: [{name:"mrn", value:""}]
+            },
+            clickedPatient: {},
         }
+    },
+    mounted: function() {
+        this.getAllPatients();
+    },
+    methods: {
+        getAllPatients() {
+                var self = this;
+                axios.get("http://localhost:14606/api/v1/patient")
+                    .then(function(response) {
+                        if (response.data.error) {
+                            self.errorMessage = response.data.message;
+                        } else {
+                            console.log("successfully received " + JSON.stringify(response.data));
+                            self.patients = response.data;
+                        }
+                    });
+            },
+            savePatient() {
+                var self = this;
+                console.log("saving:" + JSON.stringify(this.newPatient));
+                axios.post("http://localhost:14606/api/v1/patient", this.newPatient)
+                    .then(function(response) {
+                        console.log(response);
+                        self.newPatient = {
+                            firstName: "",
+                            lastName: "",
+                            ssn: "",
+                            altIds: [{name:"mrn", value:""}]
+                        };
+                        self.newPatientMrn = "";
+                        if (response.data.error) {
+                            self.errorMessage = response.data.message;
+                        } else {
+                            self.displaySuccess("Successfully Saved " + response.data.firstName);
+                            self.getAllPatients();
+                        }
+                    }).catch(error => {
+                      console.log(error.response);
+                      self.errorMessage = error.response.data.message;
+                    });
+            },
+            updatePatient() {
+                var self = this;
+
+                console.log("updating:" + JSON.stringify(this.clickedPatient));
+                axios.put("http://localhost:14606/api/v1/patient/" + this.clickedPatient.id, this.clickedPatient)
+                    .then(function(response) {
+                        console.log(response);
+                        self.clickedPatient = {};
+                        if (response.data.error) {
+                            self.errorMessage = response.data.message;
+                        } else {
+                            self.displaySuccess("Successfully Updated " + response.data.firstName);
+                            self.getAllPatients();
+                        }
+                    }).catch(error => {
+                      console.log(error.response);
+                      self.errorMessage = error.response.data.message;
+                    });
+            },
+            deletePatient() {
+                var self = this;
+
+                console.log("deleting:" + JSON.stringify(this.clickedPatient));
+                axios.delete("http://localhost:14606/api/v1/patient/" + this.clickedPatient.id)
+                    .then(function(response) {
+                        var context = self.clickedPatient.firstName;
+                        self.clickedPatient = {};
+                        if (response.data.error) {
+                            self.errorMessage = response.data.message;
+                        } else {
+                          self.displaySuccess("Successfully Deleted " + context);
+                          self.getAllPatients();
+                        }
+                    }).catch(error => {
+                      console.log(error.response);
+                      self.errorMessage = error.response.data.message;
+                    });
+            },
+            selectPatient(patient) {
+                this.clickedPatient = patient;
+            },
+            clearMessage() {
+                this.errorMessage = "";
+                this.successMessage = "";
+            },
+            displaySuccess(message) {
+              this.successMessage = message;
+              setTimeout(() => {this.successMessage="";},1000);
+            }
+    }
 }
 
 </script>

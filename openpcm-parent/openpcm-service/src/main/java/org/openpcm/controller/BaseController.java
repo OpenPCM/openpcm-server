@@ -8,8 +8,11 @@ import javax.validation.ConstraintViolationException;
 import org.openpcm.exceptions.DataViolationException;
 import org.openpcm.exceptions.NotFoundException;
 import org.openpcm.exceptions.OpenPCMServiceException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestController;
 
 public class BaseController {
 
@@ -31,8 +34,8 @@ public class BaseController {
 		response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
 	}
 	
-	@ExceptionHandler(ConstraintViolationException.class)
-	public void constraintViolationException(ConstraintViolationException e, HttpServletResponse response) throws IOException {
+	@ExceptionHandler(DataIntegrityViolationException.class)
+	public void constraintViolationException(DataIntegrityViolationException e, HttpServletResponse response) throws IOException {
 		fillResponse(response, e);
 		response.sendError(HttpStatus.CONFLICT.value(), e.getMessage());
 	}

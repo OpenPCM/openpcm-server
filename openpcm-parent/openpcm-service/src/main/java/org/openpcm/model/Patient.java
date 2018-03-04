@@ -65,8 +65,7 @@ public class Patient {
     private String ssn;
 
     /** The address. */
-    @OneToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
-    @JoinColumn(name="address_id")
+    @OneToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER, mappedBy="patient")
     private Address address = new Address();
 
     /** The alt ids. */

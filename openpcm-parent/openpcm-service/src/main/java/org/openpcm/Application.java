@@ -2,6 +2,8 @@ package org.openpcm;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -11,6 +13,12 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class Application {
 
 	public static void main(String[] args) throws Exception {
-        SpringApplication.run(Application.class, args);
+        ConfigurableApplicationContext context = SpringApplication.run(Application.class, args);
+        
+        context.publishEvent( new ApplicationEvent(Application.class) {
+        	private String name = "ApplicationStarted";
+        	private Long timestamp = System.currentTimeMillis();
+		});
+        
     }
 }

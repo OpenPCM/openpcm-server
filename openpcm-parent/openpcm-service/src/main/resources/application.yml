@@ -14,5 +14,6 @@ logging:
     org.apache.camel.component.rabbitmq: "INFO"
     org.openpcm: "TRACE"
     org.springframework.web.servlet.DispatcherServlet: "DEBUG"
+    org.springframework.web.filter.CommonsRequestLoggingFilter: "DEBUG"
 server:
   port: 14606

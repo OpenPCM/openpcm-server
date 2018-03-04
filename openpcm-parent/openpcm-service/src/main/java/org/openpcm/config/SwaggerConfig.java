@@ -21,7 +21,7 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)  
           .select()                                  
           .apis(RequestHandlerSelectors.basePackage("org.openpcm.controller"))              
-          .paths(PathSelectors.ant("/api/v1/*"))                          
+          .paths(PathSelectors.ant("/api/v1/**"))                          
           .build().apiInfo(apiInfo());                                           
     }
 	

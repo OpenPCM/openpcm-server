@@ -55,7 +55,8 @@ public class Address {
     /** The zip code. */
     private String zipCode;
     
-    @OneToOne(mappedBy = "address")
+    @OneToOne
+    @JoinColumn(name = "address_patient_id")
     private Patient patient;
 
     @Override
