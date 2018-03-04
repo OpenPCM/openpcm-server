@@ -26,7 +26,8 @@
 		<swagger-maven-plugin-version>3.1.4</swagger-maven-plugin-version>
 		<swagger-version>2.6.1</swagger-version>
 
-		<!-- Make sure this matches the spring mockito.version in the spring boot test -->
+		<!-- Make sure this matches the spring mockito.version in the spring boot 
+			test -->
 		<mockito.version>1.10.19</mockito.version>
 		<powermock.version>1.6.4</powermock.version>
 	</properties>
