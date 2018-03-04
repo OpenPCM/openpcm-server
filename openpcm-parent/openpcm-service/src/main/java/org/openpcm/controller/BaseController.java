@@ -3,6 +3,7 @@ package org.openpcm.controller;
 import java.io.IOException;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolationException;
 
 import org.openpcm.exceptions.DataViolationException;
 import org.openpcm.exceptions.NotFoundException;
@@ -28,6 +29,12 @@ public class BaseController {
 	public void dataViolationException(OpenPCMServiceException e, HttpServletResponse response) throws IOException {
 		fillResponse(response, e);
 		response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
+	}
+	
+	@ExceptionHandler(ConstraintViolationException.class)
+	public void constraintViolationException(ConstraintViolationException e, HttpServletResponse response) throws IOException {
+		fillResponse(response, e);
+		response.sendError(HttpStatus.CONFLICT.value(), e.getMessage());
 	}
 
 	protected void fillResponse(HttpServletResponse response, Exception e) {
