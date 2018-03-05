@@ -2,7 +2,7 @@
 ## Patient and doctor centric electronic medical record
 ## GNU License included
 
-The goal of OpenPCM is to provided a highly reactive electronic medical record to hospitals, small practice offices, clinical trials, and more. OpenPCM takes advantage of the latest software technologies as well as deployment strategies. In OpenPCM, clinicans and  other administrative staff with be able to chart and review patient data.  
+The goal of OpenPCM is to provide a highly reactive electronic medical record to hospitals, small practice offices, clinical trials, and more. OpenPCM takes advantage of the latest software technologies as well as deployment strategies. In OpenPCM, clinicans and other administrative staff with be able to manage patients better.  
 
 ### Patient Physiological Data
 - Chart physiological data 
