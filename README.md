@@ -24,4 +24,4 @@ The goal of OpenPCM is to provided a highly reactive electronic medical record t
 ### Building and running application
 https://github.com/gsugambit/openpcm/wiki/Building-and-Running-Project
 
-[![Build Status](http://98.192.146.97:9091/OpenPCM_MASTER/lastBuild/buildStatus)](http://98.192.146.97:9091/OpenPCM_MASTER/lastBuild/)
+[![Build Status](http://98.192.146.97:9091/job/OpenPCM_MASTER/lastBuild/buildStatus)](http://98.192.146.97:9091/job/OpenPCM_MASTER/lastBuild/)
