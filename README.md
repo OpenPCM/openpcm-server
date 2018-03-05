@@ -10,9 +10,9 @@ The goal of OpenPCM is to provided a highly reactive electronic medical record t
 - Display physiological data
 
 ### Patient Waveforms Data
-- Upload waveform Data
+- Upload waveform data
 - Store waveform data
-- Display Waveform data
+- Display waveform data
 
 ### Appointments
 - Allow management of patient appointments
