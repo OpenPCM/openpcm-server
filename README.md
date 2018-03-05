@@ -10,16 +10,12 @@ The goal of OpenPCM is to provided a highly reactive electronic medical record t
 - Display physiological data
 
 ### Patient Waveforms Data
-- Receive waveform Data via HL7 or FHIR
+- Upload waveform Data
 - Store waveform data
 - Display Waveform data
 
 ### Appointments
-- Allow creation of appointments
-- Display appointment
-
-### Data Authentication
-- Allow clinican to authenticate patient physiological data (?)
+- Allow management of patient appointments
 
 ### MDI (Medical Device Integration) Support
 - Receive physiological data via HL7 and FHIR
