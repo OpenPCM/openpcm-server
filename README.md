@@ -17,6 +17,9 @@ The goal of OpenPCM is to provide a highly reactive electronic medical record to
 ### Appointments
 - Allow management of patient appointments
 
+### Make the UI plugable
+- Allow others to create plugins that will get data from the server/services
+
 ### MDI (Medical Device Integration) Support
 - Receive physiological data via HL7 and FHIR
 - Receive waveform data via FHIR and OpenPCM REST API
