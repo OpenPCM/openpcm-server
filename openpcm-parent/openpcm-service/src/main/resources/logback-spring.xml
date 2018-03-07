@@ -9,7 +9,7 @@
 	<!-- =========================== File Appender ======================================================= -->
 	<appender name="FILE"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${LOG_FILE}</file>
+		<file>${LOG_PATH}/${LOG_FILE}</file>
 
 		<!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"> 
 			&lt;!&ndash; daily rollover &ndash;&gt; <fileNamePattern>${LOG_FILE}.%d{yyyy-MM-dd}.log</fileNamePattern> 

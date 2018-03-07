@@ -1,6 +1,6 @@
 spring:
   application:
-    name: openpcm-service
+    name: ${project.artifactId}
   main:
     banner-mode: log
   devtools:
@@ -13,7 +13,12 @@ logging:
     org.hibernate: "INFO"
     org.apache.camel.component.rabbitmq: "INFO"
     org.openpcm: "TRACE"
+    org.springframework.security: "DEBUG"
     org.springframework.web.servlet.DispatcherServlet: "DEBUG"
     org.springframework.web.filter.CommonsRequestLoggingFilter: "DEBUG"
+  file: ${project.artifactId}.log
 server:
   port: 14606
+securityDefinitions:
+  basicAuth:
+    type: basic

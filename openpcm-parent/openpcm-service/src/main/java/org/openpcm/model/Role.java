@@ -1,53 +1,52 @@
 package org.openpcm.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToMany;
 
 import org.openpcm.utils.ObjectUtil;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-/**
- * The Class Address.
- */
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "address")
-public class Address {
+@EqualsAndHashCode(exclude = "users")
+@Entity(name = "role")
+public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "address_id")
+    @Column(name = "role_id")
     private Long id;
 
-    /** The address line one. */
-    private String addressLineOne;
+    @Column(nullable = false)
+    private String name;
 
-    /** The address line two. */
-    private String addressLineTwo;
+    @ManyToMany(mappedBy = "roles")
+    private Set<User> users;
 
-    /** The city. */
-    private String city;
+    @JsonIgnore
+    public Set<User> getUsers() {
+        if (users == null) {
+            users = new HashSet<User>();
+        }
+        return users;
 
-    /** The state. */
-    private String state;
-
-    /** The zip code. */
-    private String zipCode;
-
-    @OneToOne
-    @JoinColumn(name = "address_user_id")
-    private User user;
+    }
 
     @Override
     public String toString() {
