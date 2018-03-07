@@ -146,7 +146,7 @@
 						<apiSource>
 							<springmvc>true</springmvc>
 							<host>HOST:PORT</host>
-							<basePath>/api/v1/openpcm</basePath>
+							<basePath>/api/v1/</basePath>
 							<locations>
 								<location>org.openpcm</location>
 							</locations>
@@ -165,7 +165,7 @@
 									<url>https://github.com/gsugambit/openpcm/issues</url>
 								</contact>
 								<termsOfService>
-									https://google.com
+									https://github.com/gsugambit/openpcm/blob/master/LICENSE
 								</termsOfService>
 							</info>
 							<templatePath>${basedir}/src/main/resources/templates/strapdown.html.hbs</templatePath>

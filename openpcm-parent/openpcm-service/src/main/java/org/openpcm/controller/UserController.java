@@ -22,49 +22,49 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
-@Api(value = "/api/v1/patient")
-@RequestMapping("/api/v1/patient")
+@Api(value = "/api/v1/user")
+@RequestMapping("/api/v1/user")
 public class UserController extends BaseController {
 
-    private final UserService patientService;
+    private final UserService userService;
 
     @Autowired
-    public UserController(UserService patientService) {
-        this.patientService = patientService;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @ApiOperation(value = "createPatient", response = User.class)
+    @ApiOperation(value = "createUser", response = User.class)
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public @ResponseBody User createPatient(@RequestBody User patient) throws DataViolationException {
-        return patientService.create(patient);
+    public @ResponseBody User createUser(@RequestBody User user) throws DataViolationException {
+        return userService.create(user);
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "readPatients", response = User.class, responseContainer = "List")
+    @ApiOperation(value = "readUsers", response = User.class, responseContainer = "List")
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public @ResponseBody List<User> readPatients() {
-        return patientService.readAll();
+    public @ResponseBody List<User> readUsers() {
+        return userService.readAll();
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "updatePatient", response = User.class)
+    @ApiOperation(value = "updateUser", response = User.class)
     @PutMapping(value = "/{id}")
-    public @ResponseBody User readPatient(@PathVariable Long id, @RequestBody User patient) throws NotFoundException {
-        return patientService.update(id, patient);
+    public @ResponseBody User readUser(@PathVariable Long id, @RequestBody User user) throws NotFoundException {
+        return userService.update(id, user);
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "readPatient", response = User.class)
+    @ApiOperation(value = "readUser", response = User.class)
     @GetMapping(value = "/{id}")
-    public @ResponseBody User readPatient(@PathVariable Long id) throws NotFoundException {
-        return patientService.read(id);
+    public @ResponseBody User readUser(@PathVariable Long id) throws NotFoundException {
+        return userService.read(id);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "deletePatient")
-    public void deletePatient(@PathVariable Long id) {
-        patientService.delete(id);
+    @ApiOperation(value = "deleteUser")
+    public void deleteUser(@PathVariable Long id) {
+        userService.delete(id);
     }
 }

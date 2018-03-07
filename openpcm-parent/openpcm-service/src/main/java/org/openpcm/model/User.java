@@ -22,6 +22,9 @@ import javax.persistence.OneToOne;
 import org.openpcm.utils.ObjectUtil;
 import org.springframework.beans.BeanUtils;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -42,6 +45,7 @@ public class User {
     @Column(nullable = false, unique = true)
     private String username;
 
+    @JsonProperty(access = Access.READ_ONLY)
     @Column(nullable = false)
     private String password;
 

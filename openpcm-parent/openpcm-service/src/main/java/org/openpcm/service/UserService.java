@@ -7,6 +7,8 @@ import org.openpcm.dao.UserRepository;
 import org.openpcm.exceptions.DataViolationException;
 import org.openpcm.exceptions.NotFoundException;
 import org.openpcm.model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,72 +23,84 @@ import com.google.common.collect.Lists;
 @Service
 public class UserService {
 
-    private final UserRepository patientRepository;
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
+
+    private final UserRepository userRepository;
 
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository patientRepository, PasswordEncoder passwordEncoder) {
-        this.patientRepository = patientRepository;
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
-    public User create(User patient) throws DataViolationException {
-        if (patient.getId() != null && patient.getId() != 0) {
-            throw new DataViolationException("patient id should be null on create");
+    public User create(User user) throws DataViolationException {
+        if (user.getId() != null && user.getId() != 0) {
+            throw new DataViolationException("user id should be null on create");
         }
 
-        if (patient.getAddress() == null && (patient.getAddress().getId() != null && patient.getAddress().getId() != 0)) {
+        if (user.getAddress() == null && (user.getAddress().getId() != null && user.getAddress().getId() != 0)) {
             throw new DataViolationException("address id should be null on create");
         }
 
-        if (!StringUtils.isEmpty(patient.getPassword())) {
-            patient.setPassword(passwordEncoder.encode(patient.getPassword()));
+        if (!StringUtils.isEmpty(user.getPassword())) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
 
-        return patientRepository.save(patient);
+        LOGGER.trace("Attempting to save user: {}", user);
+
+        return userRepository.save(user);
     }
 
     public User read(Long id) throws NotFoundException {
-        Optional<User> patient = patientRepository.findById(id);
+        Optional<User> user = userRepository.findById(id);
 
-        if (patient.isPresent()) {
-            return patient.get();
+        LOGGER.trace("Returning user: {}.", id);
+
+        if (user.isPresent()) {
+            return user.get();
         } else {
             throw new NotFoundException(id + " not found");
         }
     }
 
     public List<User> readAll() {
-        Iterable<User> patientIter = patientRepository.findAll();
-
-        return Lists.newArrayList(patientIter);
+        LOGGER.trace("Returning all users.");
+        return Lists.newArrayList(userRepository.findAll());
     }
 
     public Page<User> pageReadAll(Pageable pageable) {
-        return patientRepository.findAll(pageable);
+        LOGGER.trace("Returning {} users for page: {}.", pageable.getPageSize(), pageable.getPageNumber());
+
+        return userRepository.findAll(pageable);
     }
 
-    public User update(Long id, User patient) throws NotFoundException {
-        Optional<User> dbPatient = patientRepository.findById(id);
+    public User update(Long id, User user) throws NotFoundException {
+        Optional<User> dbUser = userRepository.findById(id);
 
-        if (!dbPatient.isPresent()) {
+        if (!dbUser.isPresent()) {
             throw new NotFoundException(id + " not found");
         }
 
         // detecting if password changed, if it did we encrypt it because it's raw password
-        if (!StringUtils.isEmpty(patient.getPassword())) {
-            if (!patient.getPassword().equals(dbPatient.get().getPassword())) {
-                patient.setPassword(passwordEncoder.encode(patient.getPassword()));
+        if (!StringUtils.isEmpty(user.getPassword())) {
+            if (!user.getPassword().equals(dbUser.get().getPassword())) {
+                user.setPassword(passwordEncoder.encode(user.getPassword()));
             }
         }
 
-        patient.setId(dbPatient.get().getId());
+        user.setId(dbUser.get().getId());
 
-        return patientRepository.save(patient);
+        LOGGER.trace("Attempting to save user: {}", user);
+
+        return userRepository.save(user);
     }
 
     public void delete(Long id) {
-        patientRepository.deleteById(id);
+
+        LOGGER.trace("Deleting user: {}", id);
+
+        userRepository.deleteById(id);
     }
 }
