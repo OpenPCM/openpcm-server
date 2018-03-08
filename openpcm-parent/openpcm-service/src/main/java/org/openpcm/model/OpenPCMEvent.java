@@ -9,19 +9,15 @@ public class OpenPCMEvent extends ApplicationEvent {
      */
     private static final long serialVersionUID = -5855747004443931472L;
 
+    private final EventType eventType;
+
     public OpenPCMEvent(Object source, EventType eventType) {
         super(source);
         this.eventType = eventType;
     }
 
-    public EventType eventType;
-
     public EventType getEventType() {
         return eventType;
-    }
-
-    public void setEventType(EventType eventType) {
-        this.eventType = eventType;
     }
 
     public static enum EventType {
