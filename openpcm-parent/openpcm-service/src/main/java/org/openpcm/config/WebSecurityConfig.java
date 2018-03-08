@@ -37,7 +37,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public WebSecurityConfig(OpenPCMAuthenticationEntryPoint authenticationEntryPoint, TokenHelper tokenHelper, PasswordEncoder passwordEncoder,
-                    @Value("${openpcm.web.debug:true}") boolean webDebug) {
+                    @Value("${openpcm.web.debug:false}") boolean webDebug) {
         this.authenticationEntryPoint = authenticationEntryPoint;
         this.tokenHelper = tokenHelper;
         this.passwordEncoder = passwordEncoder;
@@ -70,8 +70,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-
-        web.debug(false);
         web.debug(webDebug);
         web.ignoring().antMatchers(HttpMethod.POST, "/authenticate/*").and().ignoring().antMatchers(AUTH_WHITELIST);
     }
