@@ -48,4 +48,4 @@ Thanks, Raymond King
 [Wiki]: https://github.com/gsugambit/openpcm/wiki
 [JUnit]: https://junit.org/junit4/
 [pull request]: https://help.github.com/articles/about-pull-requests/
-[style guide]: https://need.to.add.this.url
+[style guide]: https://drive.google.com/open?id=1qdNh3mmwRtuUPEz6WeFs4S69ryRxCHmJ
