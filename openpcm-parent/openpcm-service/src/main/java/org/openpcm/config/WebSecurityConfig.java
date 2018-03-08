@@ -4,6 +4,7 @@ import org.openpcm.security.JWTFilter;
 import org.openpcm.security.OpenPCMAuthenticationEntryPoint;
 import org.openpcm.security.TokenHelper;
 import org.openpcm.service.PCMUserDetailsService;
+import org.openpcm.utils.OperationIdInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

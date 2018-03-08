@@ -1,4 +1,4 @@
-package org.openpcm.config;
+package org.openpcm.utils;
 
 import java.io.IOException;
 import java.util.UUID;
