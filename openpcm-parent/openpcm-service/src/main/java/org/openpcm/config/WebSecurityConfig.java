@@ -1,69 +1,78 @@
 package org.openpcm.config;
 
-import java.util.Arrays;
-
+import org.openpcm.security.JWTFilter;
+import org.openpcm.security.OpenPCMAuthenticationEntryPoint;
+import org.openpcm.security.TokenHelper;
 import org.openpcm.service.PCMUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableWebSecurity
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final PCMUserDetailsService userDetailsService;
-
+    private final OpenPCMAuthenticationEntryPoint authenticationEntryPoint;
+    private final TokenHelper tokenHelper;
+    private final PasswordEncoder passwordEncoder;
     private final boolean webDebug;
 
+    // Cant autowire avoiding circular dependency loop
     @Autowired
-    public WebSecurityConfig(PCMUserDetailsService userDetailsService, @Value("${openpcm.web.debug:true}") boolean webDebug) {
-        this.userDetailsService = userDetailsService;
+    private PCMUserDetailsService userDetailsService;
+
+    @Autowired
+    public WebSecurityConfig(OpenPCMAuthenticationEntryPoint authenticationEntryPoint, TokenHelper tokenHelper, PasswordEncoder passwordEncoder,
+                    @Value("${openpcm.web.debug:true}") boolean webDebug) {
+        this.authenticationEntryPoint = authenticationEntryPoint;
+        this.tokenHelper = tokenHelper;
+        this.passwordEncoder = passwordEncoder;
         this.webDebug = webDebug;
     }
 
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
     }
 
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable();
-        http.authorizeRequests().antMatchers(AUTH_WHITELIST).permitAll().antMatchers("/api/v1/**", "/api/v1/*").authenticated().anyRequest().permitAll().and()
-                        .formLogin().permitAll();
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().exceptionHandling()
+                        .authenticationEntryPoint(authenticationEntryPoint).and().authorizeRequests().antMatchers("/api/v1/**", "/api/v1/*").permitAll()
+                        .anyRequest().authenticated().and().addFilterBefore(new JWTFilter(tokenHelper, userDetailsService), BasicAuthenticationFilter.class);
 
-        http.logout();
+        http.csrf().disable();
+    }
+
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
+    }
+
+    @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.debug(webDebug);
-    }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "DELETE", "PUT"));
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
+        web.debug(false);
+        // web.debug(webDebug);
+        web.ignoring().antMatchers(HttpMethod.POST, "/authenticate/login").and().ignoring().antMatchers(AUTH_WHITELIST);
     }
 
     private static final String[] AUTH_WHITELIST = { "/v2/**", "/swagger-resources", "/swagger-resources/**", "/swagger-ui.html", "/webjars/**",

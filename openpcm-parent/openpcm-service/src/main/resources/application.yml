@@ -6,6 +6,10 @@ spring:
   devtools:
     restart:
       exclude: static/**,public/**
+jwt:
+  header: Authorization
+  expires_in: 300 # 5 minutes
+  secret: openpcm
 logging:
   level:
     org.fasterxml: "DEBUG"
@@ -13,13 +17,9 @@ logging:
     org.hibernate: "INFO"
     org.apache.camel.component.rabbitmq: "INFO"
     org.openpcm: "TRACE"
-    org.springframework.security: "DEBUG"
     org.springframework.web.servlet.DispatcherServlet: "DEBUG"
     org.springframework.web.filter.CommonsRequestLoggingFilter: "DEBUG"
   file: ${project.artifactId}.log
 server:
   port: 14606
-securityDefinitions:
-  basicAuth:
-    type: basic
       

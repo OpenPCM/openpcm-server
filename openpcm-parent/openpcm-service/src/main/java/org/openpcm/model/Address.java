@@ -5,8 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 
 import org.openpcm.utils.ObjectUtil;
 
@@ -44,10 +42,6 @@ public class Address {
 
     /** The zip code. */
     private String zipCode;
-
-    @OneToOne
-    @JoinColumn(name = "address_user_id")
-    private User user;
 
     @Override
     public String toString() {
