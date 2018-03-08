@@ -31,4 +31,6 @@ The goal of OpenPCM is to provide a highly reactive, secure electronic medical r
 ### Building and running application
 https://github.com/gsugambit/openpcm/wiki/Building-and-Running-Project
 
-[![Build Status](http://98.192.146.97:9091/job/OpenPCM_MASTER/lastBuild/buildStatus)](http://98.192.146.97:9091/job/OpenPCM_MASTER/lastBuild/)
+See Project page for current progress on feature set
+
+[![Jenkins Build Status](http://98.192.146.97:9091/job/OpenPCM_MASTER/lastBuild/buildStatus)](http://98.192.146.97:9091/job/OpenPCM_MASTER/lastBuild/)
