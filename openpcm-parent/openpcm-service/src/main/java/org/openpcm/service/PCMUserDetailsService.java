@@ -18,8 +18,12 @@ public class PCMUserDetailsService implements UserDetailsService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PCMUserDetailsService.class);
 
+    private final UserRepository usersRepository;
+
     @Autowired
-    private UserRepository usersRepository;
+    public PCMUserDetailsService(UserRepository usersRepository) {
+        this.usersRepository = usersRepository;
+    }
 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> optionalUsers = usersRepository.findByUsername(username);
@@ -27,6 +31,11 @@ public class PCMUserDetailsService implements UserDetailsService {
         LOGGER.trace("Checking login attempt for: {}", username);
 
         optionalUsers.orElseThrow(() -> new UsernameNotFoundException("Username not found"));
-        return optionalUsers.map(PCMUserDetails::new).get();
+
+        UserDetails details = optionalUsers.map(PCMUserDetails::new).get();
+
+        LOGGER.trace("Found user: {}", details.getUsername());
+
+        return details;
     }
 }

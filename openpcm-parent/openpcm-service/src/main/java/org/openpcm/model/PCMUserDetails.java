@@ -3,9 +3,12 @@ package org.openpcm.model;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+import org.openpcm.utils.ObjectUtil;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class PCMUserDetails extends User implements UserDetails {
 
@@ -18,6 +21,7 @@ public class PCMUserDetails extends User implements UserDetails {
         super(user);
     }
 
+    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles().stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
@@ -43,4 +47,8 @@ public class PCMUserDetails extends User implements UserDetails {
         return this.isActive();
     }
 
+    @Override
+    public String toString() {
+        return ObjectUtil.print(this);
+    }
 }

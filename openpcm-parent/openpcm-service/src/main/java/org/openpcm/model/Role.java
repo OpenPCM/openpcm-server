@@ -13,6 +13,7 @@ import javax.persistence.ManyToMany;
 import org.openpcm.utils.ObjectUtil;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -46,6 +47,11 @@ public class Role {
         }
         return users;
 
+    }
+
+    @JsonProperty
+    public void setUsers(Set<User> users) {
+        this.users = users;
     }
 
     @Override

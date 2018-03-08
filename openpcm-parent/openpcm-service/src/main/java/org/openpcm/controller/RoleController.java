@@ -24,7 +24,7 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @Api(value = "/api/v1/role")
 @RequestMapping("/api/v1/role")
-public class RoleController {
+public class RoleController extends BaseController {
 
     private final RoleService roleService;
 

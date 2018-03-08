@@ -46,9 +46,11 @@ public class InitLoaderService implements ApplicationListener<ApplicationReadyEv
             return;
 
         Role adminRole = createRoleIfNotFound("ROLE_ADMIN");
-        Role userRole = createRoleIfNotFound("ROLE_USER");
+        createRoleIfNotFound("ROLE_USER");
 
         User adminUser = createAdminUser(adminRole);
+
+        LOGGER.trace("adminUser: {}", adminUser);
 
     }
 
@@ -79,7 +81,7 @@ public class InitLoaderService implements ApplicationListener<ApplicationReadyEv
         } else {
             Set<Role> roles = new HashSet<Role>();
             roles.add(adminRole);
-            User adminUser = User.builder().active(true).email("admin@openpcm.com").firstName("Admin").lastName("User")
+            User adminUser = User.builder().active(true).email(adminUsername + "@openpcm.com").firstName("Admin").lastName("User")
                             .password(passwordEncoder.encode(adminPassword)).username(adminUsername).roles(roles).build();
 
             result = userRepository.save(adminUser);

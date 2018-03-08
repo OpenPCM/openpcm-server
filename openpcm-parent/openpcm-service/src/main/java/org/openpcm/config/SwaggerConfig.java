@@ -11,7 +11,6 @@ import com.google.common.collect.Lists;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.ApiKey;
 import springfox.documentation.service.AuthorizationScope;
 import springfox.documentation.service.BasicAuth;
 import springfox.documentation.service.Contact;
@@ -44,14 +43,6 @@ public class SwaggerConfig {
 
     private SecurityContext actuatorSecurityContext() {
         return SecurityContext.builder().securityReferences(defaultAuth()).forPaths(PathSelectors.regex("api/v1/*")).build();
-    }
-
-    private SecurityContext securityContext() {
-        return SecurityContext.builder().securityReferences(defaultAuth()).forPaths(PathSelectors.regex("/api/v1/*")).build();
-    }
-
-    private ApiKey apiKey() {
-        return new ApiKey("AUTHORIZATION", "api_key", "header");
     }
 
     List<SecurityReference> defaultAuth() {

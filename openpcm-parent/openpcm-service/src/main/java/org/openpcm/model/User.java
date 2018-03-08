@@ -22,18 +22,20 @@ import javax.persistence.OneToOne;
 import org.openpcm.utils.ObjectUtil;
 import org.springframework.beans.BeanUtils;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(exclude = "roles")
 @Entity(name = "user")
 public class User {
 
@@ -45,7 +47,6 @@ public class User {
     @Column(nullable = false, unique = true)
     private String username;
 
-    @JsonProperty(access = Access.READ_ONLY)
     @Column(nullable = false)
     private String password;
 
@@ -95,6 +96,16 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<Role>();
+
+    @JsonIgnore
+    public String getPassword() {
+        return password;
+    }
+
+    @JsonProperty
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     @Override
     public String toString() {
