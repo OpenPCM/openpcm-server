@@ -29,8 +29,11 @@ The goal of OpenPCM is to provide a highly reactive, secure electronic medical r
 - Backend services access secured by JWT
 
 ### Building and running application
-https://github.com/gsugambit/openpcm/wiki/Building-and-Running-Project
+Read here on [how to deploy and run] the app
 
 See Project page for current progress on feature set
 
-[![Jenkins Build Status](http://98.192.146.97:9091/job/OpenPCM_MASTER/lastBuild/buildStatus)](http://98.192.146.97:9091/job/OpenPCM_MASTER/lastBuild/)
+[Jenkins Build]
+
+[how to deploy and run]: https://github.com/gsugambit/openpcm/wiki/Building-and-Running-Project
+[Jenkins Build]: http://98.192.146.97:9091/job/OpenPCM_MASTER/lastBuild/buildStatus
