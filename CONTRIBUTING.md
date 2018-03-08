@@ -37,6 +37,11 @@ $ git commit -m "A brief summary of the commit
 ## FrontEnd Coding
 This section is currently blank but will be updated in the future.
 
+# Thank You
+We deeply appreciate your help with this project. Hopefully this guide covers everything you need to know. You can always ask questions via [OpenPCMSlack] if unsure!
+
+Thanks, Raymond King
+
 [OpenPCMSlack]: https://openpcm.slack.com
 [Our project plan]: https://github.com/gsugambit/openpcm/projects
 [issues]: https://github.com/gsugambit/openpcm/issues
