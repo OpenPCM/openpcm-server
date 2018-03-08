@@ -51,7 +51,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().exceptionHandling()
                         .authenticationEntryPoint(authenticationEntryPoint).and().authorizeRequests().antMatchers("/api/v1/**", "/api/v1/*").permitAll()
-                        .anyRequest().authenticated().and().addFilterBefore(new JWTFilter(tokenHelper, userDetailsService), BasicAuthenticationFilter.class);
+                        .anyRequest().authenticated().and().addFilterBefore(new JWTFilter(tokenHelper, userDetailsService), BasicAuthenticationFilter.class)
+                        .addFilterBefore(new OperationIdInterceptor(), JWTFilter.class);
 
         http.csrf().disable();
     }
