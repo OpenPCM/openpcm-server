@@ -11,6 +11,8 @@ import org.openpcm.model.UserJWTTokenState;
 import org.openpcm.security.JWTRequest;
 import org.openpcm.security.TokenHelper;
 import org.openpcm.service.PCMUserDetailsService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +34,8 @@ import io.swagger.annotations.Api;
 @RequestMapping(value = "/authenticate")
 @Api(value = "/authenticate")
 public class AuthenticationController extends BaseController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationController.class);
 
     @Autowired
     TokenHelper tokenHelper;
@@ -66,7 +70,9 @@ public class AuthenticationController extends BaseController {
 
         String jwsToken = tokenHelper.getToken(request);
 
-        if (jwsToken != null && principal != null) {
+        LOGGER.trace("jwtToken == null --> {}, principal == null --> {}", jwsToken == null, principal == null);
+
+        if (jwsToken != null) {
             String refreshedToken = tokenHelper.refreshToken(jwsToken);
             int expiresIn = tokenHelper.getExpiredIn();
 

@@ -17,6 +17,7 @@ logging:
     org.hibernate: "INFO"
     org.apache.camel.component.rabbitmq: "INFO"
     org.openpcm: "TRACE"
+    org.springframework.web: "TRACE"
     org.springframework.web.servlet.DispatcherServlet: "DEBUG"
     org.springframework.web.filter.CommonsRequestLoggingFilter: "DEBUG"
   file: ${project.artifactId}.log
