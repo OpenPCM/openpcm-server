@@ -102,7 +102,7 @@ public class TokenHelper {
             claims.setAccessible(true);
 
             try {
-                LOGGER.debug("generated jwt: \r\n{}\r\n{}", header != null ? header.get(builder) : null, claims != null ? claims.get(builder) : null);
+                LOGGER.debug("generated jwt: \r\n{}\r\n{}", header.get(builder), claims.get(builder));
             } catch (IllegalArgumentException e) {
                 LOGGER.warn(e.getMessage(), e);
             } catch (IllegalAccessException e) {
