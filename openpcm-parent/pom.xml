@@ -3,14 +3,13 @@
 	
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.openpcm</groupId>
-	<artifactId>openpcm-parent</artifactId>
+	<artifactId>openpcm-server-parent</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>OpenPCM Parent</name>
+	<name>OpenPCM Server Parent</name>
 
 	<modules>
-		<module>openpcm-service</module>
-		<module>openpcm-vuejs</module>
+		<module>openpcm-server</module>
 	</modules>
 
 	<properties>
