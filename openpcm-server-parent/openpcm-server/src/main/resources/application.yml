@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: ${project.artifactId}
+  main:
+    banner-mode: log
+  devtools:
+    restart:
+      exclude: static/**,public/**
+jwt:
+  header: Authorization
+  expires_in: 300 # 5 minutes
+  secret: openpcm
+logging:
+  level:
+    #org.fasterxml: "DEBUG"
+    org.springframework: "INFO"
+    org.hibernate: "INFO"
+    org.apache.camel.component.rabbitmq: "INFO"
+    org.openpcm: "TRACE"
+    #org.springframework.web: "TRACE"
+    org.springframework.web.servlet.DispatcherServlet: "DEBUG"
+    org.springframework.web.filter.CommonsRequestLoggingFilter: "DEBUG"
+  file: ${project.artifactId}.log
+server:
+  port: 14606
+      

@@ -1,6 +1,0 @@
-logging:
-  path: "/target/logs"
-security:
-  basic:
-    enable: false
-  ignored: /**

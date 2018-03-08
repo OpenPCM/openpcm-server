@@ -2,7 +2,7 @@
 ## Patient and doctor centric electronic medical record
 ## GNU License included
 
-The goal of OpenPCM is to provide a highly reactive electronic medical record to hospitals, small practice offices, clinical trials, and more. OpenPCM takes advantage of the latest software technologies as well as deployment strategies. In OpenPCM, clinicans and other administrative staff with be able to manage patients better.  
+The goal of OpenPCM is to provide a highly reactive, secure electronic medical record to hospitals, small practice offices, clinical trials, and more. OpenPCM takes advantage of the latest software technologies as well as deployment strategies. In OpenPCM, clinicans and other administrative staff with be able to manage patients better.  
 
 ### Patient Physiological Data
 - Chart physiological data 
@@ -25,7 +25,15 @@ The goal of OpenPCM is to provide a highly reactive electronic medical record to
 - Receive physiological data via HL7 and FHIR
 - Receive waveform data via FHIR and OpenPCM REST API
 
-### Building and running application
-https://github.com/gsugambit/openpcm/wiki/Building-and-Running-Project
+### Security
+- Backend services access secured by JWT
 
-[![Build Status](http://98.192.146.97:9091/job/OpenPCM_MASTER/lastBuild/buildStatus)](http://98.192.146.97:9091/job/OpenPCM_MASTER/lastBuild/)
+### Building and running application
+Read here on [how to deploy and run] the app
+
+See Project page for current progress on feature set
+
+[Jenkins Build]
+
+[how to deploy and run]: https://github.com/gsugambit/openpcm/wiki/Building-and-Running-Project
+[Jenkins Build]: http://98.192.146.97:9091/job/OpenPCM_MASTER/lastBuild/buildStatus
