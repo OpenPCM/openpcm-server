@@ -176,14 +176,14 @@
 								<contact>
 									<email>gsugambit@gmail.com</email>
 									<name>Raymond King</name>
-									<url>https://github.com/gsugambit/openpcm/issues</url>
+									<url>https://github.com/OpenPCM/openpcm-server</url>
 								</contact>
 								<termsOfService>
 									https://github.com/gsugambit/openpcm/blob/master/LICENSE
 								</termsOfService>
 							</info>
 							<templatePath>${basedir}/src/main/resources/templates/strapdown.html.hbs</templatePath>
-							<outputPath>${basedir}/target/restapi/OpenPCM_REST_API.html</outputPath>
+							<outputPath>${basedir}/target/restapi/OpenPCM_SERVER_REST_API.html</outputPath>
 							<swaggerDirectory>${basedir}/target/swagger/generated/swagger-ui</swaggerDirectory>
 						</apiSource>
 					</apiSources>
@@ -251,7 +251,7 @@
 											<include>*LICENSE</include>
 										</includes>
 										<excludes>
-											<exclude>openpcm-parent/*</exclude>
+											<exclude>openpcm-server-parent/*</exclude>
 										</excludes>
 										<filtering>false</filtering>
 									</resource>

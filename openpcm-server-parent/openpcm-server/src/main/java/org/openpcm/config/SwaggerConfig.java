@@ -32,9 +32,9 @@ public class SwaggerConfig {
     }
 
     private ApiInfo apiInfo() {
-        return new ApiInfo("OpenPCM REST API", "REST API for Open Patient Care Management ", "0.0.1-SNAPSHOT", "Terms of service",
-                        new Contact("Raymond King", "https://github.com/gsugambit/openpcm", "gsugambit@gmail.com"), "GNU",
-                        "https://raw.githubusercontent.com/gsugambit/openpcm/master/LICENSE", Collections.EMPTY_LIST);
+        return new ApiInfo("OpenPCM SERVER REST API", "REST API for OpenPM Server", "0.0.1-SNAPSHOT", "Terms of service",
+                        new Contact("Raymond King", "https://github.com/OpenPCM/openpcm-server", "gsugambit@gmail.com"), "GNU",
+                        "https://raw.githubusercontent.com/OpenPCM/openpcm-server/master/LICENSE", Collections.EMPTY_LIST);
     }
 
     private BasicAuth actuatorBasicAuth() {
