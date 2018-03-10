@@ -1,4 +1,4 @@
-# OpenPCM (Open Patient Care Management)
+# OpenPCM (Open Patient Care Management) Server
 ## Patient and doctor centric electronic medical record
 ## [GNU License included]
 
@@ -7,6 +7,9 @@ The goal of OpenPCM is to provide a highly reactive, secure electronic medical r
 ## [Code of Conduct]
 
 ## [Contributing Information]
+
+## Integration Projects
+[OpenPCM Web] - Web client for OpenPCM Server
 
 ## Features
 
@@ -37,7 +40,6 @@ The goal of OpenPCM is to provide a highly reactive, secure electronic medical r
 ## More Information
 
 View the [OpenPCM Project Page] to learn about progress on features.
-
 View the [OpenPCM Wiki] to lean more technical information about the application
 
 Master Build:
@@ -49,5 +51,6 @@ Dev Build:
 [GNU License included]: https://github.com/OpenPCM/openpcm-server/blob/master/LICENSE
 [Code of Conduct]: https://github.com/OpenPCM/openpcm-server/blob/master/CODE_OF_CONDUCT.md
 [Contributing Information]: https://github.com/OpenPCM/openpcm-server/blob/master/CONTRIBUTING.md
+[OpenPCM Web]: https://github.com/OpenPCM/openpcm-web
 [OpenPCM Project Page]: https://github.com/OpenPCM/openpcm-server/projects
 [OpenPCM Wiki]: https://github.com/OpenPCM/openpcm-server/wiki
