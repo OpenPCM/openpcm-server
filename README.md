@@ -1,8 +1,11 @@
-# OpenPCM (Open Patient Care Management)
+# OpenPCM (Open Patient Care Management) Server
 ## Patient and doctor centric electronic medical record
 ## GNU License included
 
 The goal of OpenPCM is to provide a highly reactive, secure electronic medical record to hospitals, small practice offices, clinical trials, and more. OpenPCM takes advantage of the latest software technologies as well as deployment strategies. In OpenPCM, clinicans and other administrative staff with be able to manage patients better.  
+
+## Integration Projects
+[OpenPCM Web] - Web client for OpenPCM Server
 
 ## Features
 
@@ -42,5 +45,6 @@ Master Build:
 Dev Build:
 [![Dev Build Status](http://openpcm.org:9091/buildStatus/icon?job=OpenPCM_Server_Dev)](http://openpcm.org:9091/job/OpenPCM_Server_Dev)
 
+[OpenPCM Web]: https://github.com/OpenPCM/openpcm-web
 [OpenPCM Project Page]: https://github.com/OpenPCM/openpcm-server/projects
 [OpenPCM Wiki]: https://github.com/OpenPCM/openpcm-server/wiki
