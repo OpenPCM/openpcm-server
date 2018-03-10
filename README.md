@@ -4,6 +4,8 @@
 
 The goal of OpenPCM is to provide a highly reactive, secure electronic medical record to hospitals, small practice offices, clinical trials, and more. OpenPCM takes advantage of the latest software technologies as well as deployment strategies. In OpenPCM, clinicans and other administrative staff with be able to manage patients better.  
 
+## Features
+
 ### Patient Physiological Data
 - Chart physiological data 
 - Store physiological data
@@ -28,11 +30,17 @@ The goal of OpenPCM is to provide a highly reactive, secure electronic medical r
 ### Security
 - Backend services access secured by JWT
 
-### Building and running application
-Read here on [how to deploy and run] the app
+## More Information
 
-See Project page for current progress on feature set
+View the [OpenPCM Project Page] to learn about progress on features.
 
-[![Build Status](http://openpcm.org:9091/buildStatus/icon?job=OpenPCM_Server_Master)](http://openpcm.org:9091/job/OpenPCM_Server_Master)
+View the [OpenPCM Wiki] to lean more technical information about the application
 
-[how to deploy and run]: https://github.com/gsugambit/openpcm/wiki/Building-and-Running-Project
+Master Build:
+[![Master Build Status](http://openpcm.org:9091/buildStatus/icon?job=OpenPCM_Server_Master)](http://openpcm.org:9091/job/OpenPCM_Server_Master)
+
+Dev Build:
+[![Dev Build Status](http://openpcm.org:9091/buildStatus/icon?job=OpenPCM_Server_Dev)](http://openpcm.org:9091/job/OpenPCM_Server_Dev)
+
+[OpenPCM Project Page]: https://github.com/OpenPCM/openpcm-server/projects
+[OpenPCM Wiki]: https://github.com/OpenPCM/openpcm-server/wiki
