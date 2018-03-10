@@ -33,7 +33,6 @@ Read here on [how to deploy and run] the app
 
 See Project page for current progress on feature set
 
-[Jenkins Build]
+[![Build Status](http://openpcm.org:9091/buildStatus/icon?job=OpenPCM_Server_Master)](http://openpcm.org:9091/job/OpenPCM_Server_Master)
 
 [how to deploy and run]: https://github.com/gsugambit/openpcm/wiki/Building-and-Running-Project
-[Jenkins Build]: http://98.192.146.97:9091/job/OpenPCM_MASTER/lastBuild/buildStatus

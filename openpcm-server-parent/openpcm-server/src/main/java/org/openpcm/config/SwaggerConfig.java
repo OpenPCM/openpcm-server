@@ -11,13 +11,15 @@ import com.google.common.collect.Lists;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.ApiKey;
 import springfox.documentation.service.AuthorizationScope;
-import springfox.documentation.service.BasicAuth;
 import springfox.documentation.service.Contact;
 import springfox.documentation.service.SecurityReference;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger.web.ApiKeyVehicle;
+import springfox.documentation.swagger.web.SecurityConfiguration;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
@@ -26,9 +28,8 @@ public class SwaggerConfig {
 
     @Bean
     public Docket api() {
-        return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.basePackage("org.openpcm.controller"))
-                        .paths(PathSelectors.ant("/api/v1/**")).build().apiInfo(apiInfo()).securityContexts(Lists.newArrayList(actuatorSecurityContext()))
-                        .securitySchemes(Lists.newArrayList(actuatorBasicAuth()));
+        return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.any()).paths(PathSelectors.any()).build().apiInfo(apiInfo())
+                        .securityContexts(Lists.newArrayList(securityContext())).securitySchemes(Lists.newArrayList(apiKey()));
     }
 
     private ApiInfo apiInfo() {
@@ -37,12 +38,21 @@ public class SwaggerConfig {
                         "https://raw.githubusercontent.com/OpenPCM/openpcm-server/master/LICENSE", Collections.EMPTY_LIST);
     }
 
-    private BasicAuth actuatorBasicAuth() {
-        return new BasicAuth("basic");
+    private ApiKey apiKey() {
+        return new ApiKey("AUTHORIZATION", "api_key", "header");
     }
 
-    private SecurityContext actuatorSecurityContext() {
-        return SecurityContext.builder().securityReferences(defaultAuth()).forPaths(PathSelectors.regex("api/v1/*")).build();
+    @Bean
+    SecurityConfiguration security() {
+        return new SecurityConfiguration(null, null, "test-openpcm-server", // realm Needed for authenticate button to work
+                        "openpcm-server", // appName Needed for authenticate button to work
+                        "BEARER ", // apiKeyValue
+                        ApiKeyVehicle.HEADER, "AUTHORIZATION", // apiKeyName
+                        null);
+    }
+
+    private SecurityContext securityContext() {
+        return SecurityContext.builder().securityReferences(defaultAuth()).forPaths(PathSelectors.regex("/anyPath.*")).build();
     }
 
     List<SecurityReference> defaultAuth() {
