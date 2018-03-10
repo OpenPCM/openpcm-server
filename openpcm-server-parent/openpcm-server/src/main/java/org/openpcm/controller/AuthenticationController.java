@@ -21,14 +21,18 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping(value = "/authenticate")
@@ -46,9 +50,13 @@ public class AuthenticationController extends BaseController {
     @Autowired
     private PCMUserDetailsService userDetailsService;
 
+    @ApiOperation(value = "login", response = UserJWTTokenState.class)
     @ResponseStatus(code = HttpStatus.OK)
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public @ResponseBody UserJWTTokenState login(@RequestBody JWTRequest jwtRequest, HttpServletResponse response) throws AuthenticationException, IOException {
+    @PostMapping(value = "/login")
+    @ApiResponses({ @ApiResponse(code = 200, response = UserJWTTokenState.class, message = "logged in") })
+    public @ResponseBody UserJWTTokenState login(
+                    @ApiParam(value = "login credentials", name = "jwtRequest", required = true) @RequestBody JWTRequest jwtRequest,
+                    HttpServletResponse response) throws AuthenticationException, IOException {
 
         // Perform the security
         final Authentication authentication = authenticationManager
@@ -65,7 +73,9 @@ public class AuthenticationController extends BaseController {
         return new UserJWTTokenState(jwsToken, expiresIn);
     }
 
-    @RequestMapping(value = "/refresh", method = RequestMethod.POST)
+    @ApiOperation(value = "refreshToken", response = UserJWTTokenState.class)
+    @PostMapping(value = "/refresh")
+    @ApiResponses({ @ApiResponse(code = 200, response = UserJWTTokenState.class, message = "refreshed token") })
     public ResponseEntity<?> refreshAuthenticationToken(HttpServletRequest request, HttpServletResponse response, Principal principal) {
 
         String jwsToken = tokenHelper.getToken(request);
