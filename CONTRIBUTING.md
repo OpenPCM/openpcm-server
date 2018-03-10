@@ -10,7 +10,7 @@ Here are the current tools we use to manage this project. Some of these tools ma
 
 # Testing
 
-## BackEnd Testing
+## Testing
 We currently using [JUnit] tests for our backend services. Please do include unit tests in your new code. We use Sonar as our code analyzer and the link will be publicly available shortly. You feature branch must pass the quality gate before a pull request will be merged.
 
 # Commiting Your Code
