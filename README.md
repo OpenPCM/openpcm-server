@@ -41,10 +41,10 @@ Read here on [how to deploy and run] the app
 
 See Project page for current progress on feature set
 
-Master Build
+Master Build:
 [![Master Build Status](http://openpcm.org:9091/buildStatus/icon?job=OpenPCM_Server_Master)](http://openpcm.org:9091/job/OpenPCM_Server_Master)
 
-Dev Build
+Dev Build:
 [![Dev Build Status](http://openpcm.org:9091/buildStatus/icon?job=OpenPCM_Server_Dev)](http://openpcm.org:9091/job/OpenPCM_Server_Dev)
 
 [OpenPCM Project Page]: https://github.com/OpenPCM/openpcm-server/projects
