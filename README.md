@@ -43,7 +43,7 @@ See Project page for current progress on feature set
 
 [![Master Build Status](http://openpcm.org:9091/buildStatus/icon?job=OpenPCM_Server_Master)](http://openpcm.org:9091/job/OpenPCM_Server_Master)
 
-[![Dev Build Status](http://openpcm.org::9091/buildStatus/icon?job=OpenPCM_Server_Dev)](http://openpcm.org::9091/job/OpenPCM_Server_Dev)
+[![Dev Build Status](http://openpcm.org:9091/buildStatus/icon?job=OpenPCM_Server_Dev)](http://openpcm.org:9091/job/OpenPCM_Server_Dev)
 
 [OpenPCM Project Page]: https://github.com/OpenPCM/openpcm-server/projects
 [OpenPCM Wiki]: https://github.com/OpenPCM/openpcm-server/wiki
