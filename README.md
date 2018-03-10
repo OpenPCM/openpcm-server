@@ -36,4 +36,4 @@ See Project page for current progress on feature set
 [Jenkins Build]
 
 [how to deploy and run]: https://github.com/gsugambit/openpcm/wiki/Building-and-Running-Project
-[Jenkins Build]: http://openpcm.org:9091/job/OpenPCM_MASTER/lastBuild/buildStatus
+[Jenkins Build]: http://openpcm.org:9091/job/OpenPCM_Server_Master/lastBuild/buildStatus
