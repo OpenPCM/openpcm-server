@@ -124,32 +124,6 @@
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 			</plugin>
-			<!-- copies VueJS code for distribution -->
-			<!-- <plugin>
-				<artifactId>maven-resources-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>copy Vue.js frontend content</id>
-						<phase>generate-resources</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>src/main/resources/public</outputDirectory>
-							<overwrite>true</overwrite>
-							<resources>
-								<resource>
-									<directory>${project.parent.basedir}/openpcm-vuejs/target/dist</directory>
-									<includes>
-										<include>static/</include>
-										<include>index.html</include>
-									</includes>
-								</resource>
-							</resources>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin> -->
 			<plugin>
 				<groupId>com.github.kongchen</groupId>
 				<artifactId>swagger-maven-plugin</artifactId>
@@ -168,7 +142,7 @@
 								<scheme>http</scheme>
 							</schemes>
 							<info>
-								<title>OpenPM REST API</title>
+								<title>OpenPCM Server REST API</title>
 								<version>${project.version}</version>
 								<description>
 									Rest API for OpenPCM
@@ -179,7 +153,7 @@
 									<url>https://github.com/OpenPCM/openpcm-server</url>
 								</contact>
 								<termsOfService>
-									https://github.com/gsugambit/openpcm/blob/master/LICENSE
+									hhttps://github.com/OpenPCM/openpcm-server/blob/master/LICENSE
 								</termsOfService>
 							</info>
 							<templatePath>${basedir}/src/main/resources/templates/strapdown.html.hbs</templatePath>
