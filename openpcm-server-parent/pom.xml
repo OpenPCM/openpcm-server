@@ -17,8 +17,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jacoco-maven-plugin.version>0.7.4.201502262128</jacoco-maven-plugin.version>
 		<spring.boot.version>2.0.0.RELEASE</spring.boot.version>
-		<source.version>1.9</source.version>
-		<target.version>1.9</target.version>
+		<source.version>9</source.version>
+		<target.version>9</target.version>
 		<maven.compiler.version>3.3</maven.compiler.version>
 		<maven.build.timestamp.format>yyyy-MM-dd_HH-mm</maven.build.timestamp.format>
 
