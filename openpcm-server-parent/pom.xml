@@ -15,7 +15,7 @@
 	<properties>
 		<!-- build props -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<jacoco-maven-plugin.version>0.7.4.201502262128</jacoco-maven-plugin.version>
+		<jacoco-maven-plugin.version>0.8.0</jacoco-maven-plugin.version>
 		<spring.boot.version>2.0.0.RELEASE</spring.boot.version>
 		<source.version>9</source.version>
 		<maven.compiler.source>9</maven.compiler.source>
