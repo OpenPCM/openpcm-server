@@ -33,7 +33,7 @@ public class UserService {
     }
 
     public User create(User user) throws DataViolationException {
-        if (user.getId() != null || user.getId() != 0) {
+        if (!(user.getId() == null || user.getId() == 0)) {
             throw new DataViolationException("user id should be null on create");
         }
 
@@ -61,7 +61,7 @@ public class UserService {
         }
     }
 
-    public Page<User> readAll(Pageable pageable) {
+    public Page<User> read(Pageable pageable) {
         LOGGER.trace("Returning page {} of {} user(s).", pageable.getPageNumber(), pageable.getPageSize());
         return userRepository.findAll(pageable);
     }
@@ -88,9 +88,10 @@ public class UserService {
     }
 
     public void delete(Long id) {
-
         LOGGER.trace("Deleting user: {}", id);
 
-        userRepository.deleteById(id);
+        if (userRepository.existsById(id)) {
+            userRepository.deleteById(id);
+        }
     }
 }

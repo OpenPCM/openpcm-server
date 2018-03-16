@@ -51,7 +51,7 @@ public class UserController extends BaseController {
     @GetMapping(value = "user")
     @ApiResponses({ @ApiResponse(code = 200, response = User.class, message = "read users", responseContainer = "List") })
     public @ResponseBody Page<User> readUsers(Pageable pageable) {
-        return userService.readAll(pageable);
+        return userService.read(pageable);
     }
 
     @ResponseStatus(HttpStatus.OK)

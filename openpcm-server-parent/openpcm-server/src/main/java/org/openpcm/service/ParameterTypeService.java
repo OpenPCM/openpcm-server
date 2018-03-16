@@ -28,11 +28,11 @@ public class ParameterTypeService {
     }
 
     public ParameterType create(ParameterType parameterType) throws DataViolationException {
-        if (parameterType.getId() != null || parameterType.getId() != 0) {
+        if (!(parameterType.getId() == null || parameterType.getId() == 0)) {
             throw new DataViolationException("parameterType id should be null on create");
         }
 
-        LOGGER.trace("Attempting to create user: {}", parameterType);
+        LOGGER.trace("Attempting to create parameterType: {}", parameterType);
         return parameterTypeRepository.save(parameterType);
     }
 
@@ -47,7 +47,7 @@ public class ParameterTypeService {
         }
     }
 
-    public Page<ParameterType> readAll(Pageable pageable) {
+    public Page<ParameterType> read(Pageable pageable) {
         LOGGER.trace("Returning page {} of {} parameterType(s).", pageable.getPageNumber(), pageable.getPageSize());
         return parameterTypeRepository.findAll(pageable);
     }
@@ -68,7 +68,10 @@ public class ParameterTypeService {
 
     public void delete(Long id) {
         LOGGER.trace("Deleting parameterType: {}", id);
-        parameterTypeRepository.deleteById(id);
+
+        if (parameterTypeRepository.existsById(id)) {
+            parameterTypeRepository.deleteById(id);
+        }
     }
 
 }

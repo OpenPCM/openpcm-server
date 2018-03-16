@@ -1,6 +1,5 @@
 package org.openpcm.service;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.openpcm.dao.RoleRepository;
@@ -14,8 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.google.common.collect.Lists;
 
 @Transactional
 @Service
@@ -31,7 +28,7 @@ public class RoleService {
     }
 
     public Role create(Role role) throws DataViolationException {
-        if (role.getId() != null && role.getId() != 0) {
+        if (!(role.getId() == null || role.getId() == 0)) {
             throw new DataViolationException("role id should be null on create");
         }
 
@@ -51,13 +48,8 @@ public class RoleService {
         }
     }
 
-    public List<Role> readAll() {
-        LOGGER.trace("Returning all roles.");
-        return Lists.newArrayList(roleRepository.findAll());
-    }
-
-    public Page<Role> pageReadAll(Pageable pageable) {
-        LOGGER.trace("Returning {} roles for page: {}.", pageable.getPageSize(), pageable.getPageNumber());
+    public Page<Role> read(Pageable pageable) {
+        LOGGER.trace("Returning page {} for {} roles.", pageable.getPageNumber(), pageable.getPageSize());
         return roleRepository.findAll(pageable);
     }
 
@@ -75,6 +67,9 @@ public class RoleService {
 
     public void delete(Long id) {
         LOGGER.trace("Deleting role: {}", id);
-        roleRepository.deleteById(id);
+
+        if (roleRepository.existsById(id)) {
+            roleRepository.deleteById(id);
+        }
     }
 }

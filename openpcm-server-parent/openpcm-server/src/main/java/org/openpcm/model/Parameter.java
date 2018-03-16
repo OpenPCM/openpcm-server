@@ -1,7 +1,6 @@
 package org.openpcm.model;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.persistence.CollectionTable;
@@ -55,7 +54,7 @@ public class Parameter {
     @MapKeyColumn(name = "name")
     @Column(name = "value")
     @CollectionTable(name = "parameter_attributes", joinColumns = @JoinColumn(name = "parameter_id"))
-    private Map<String, String> attributes = new HashMap<String, String>();
+    private Map<String, String> attributes;
 
     @Override
     public String toString() {

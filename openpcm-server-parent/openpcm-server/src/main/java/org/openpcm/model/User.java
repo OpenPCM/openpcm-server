@@ -93,7 +93,7 @@ public class User implements UserDetails {
     @Column(unique = true)
     private String ssn;
 
-    private boolean enabled = true;
+    private boolean enabled;
 
     /** The address. */
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

@@ -1,12 +1,12 @@
 package org.openpcm.controller;
 
-import java.util.List;
-
 import org.openpcm.exceptions.DataViolationException;
 import org.openpcm.exceptions.NotFoundException;
 import org.openpcm.model.Role;
 import org.openpcm.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,8 +50,8 @@ public class RoleController extends BaseController {
     @ApiOperation(value = "readRoles", response = Role.class, responseContainer = "List")
     @GetMapping(value = "role")
     @ApiResponses({ @ApiResponse(code = 200, response = Role.class, message = "read roles", responseContainer = "List") })
-    public @ResponseBody List<Role> readRoles() {
-        return roleService.readAll();
+    public @ResponseBody Page<Role> readRoles(Pageable pageable) {
+        return roleService.read(pageable);
     }
 
     @ResponseStatus(HttpStatus.OK)

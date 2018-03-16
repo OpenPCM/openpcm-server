@@ -1,7 +1,6 @@
 package org.openpcm.model;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -60,7 +59,7 @@ public class ObservationSet {
     @MapKeyColumn(name = "name")
     @Column(name = "value")
     @CollectionTable(name = "observation_set_attributes", joinColumns = @JoinColumn(name = "observation_set_id"))
-    private Map<String, String> attributes = new HashMap<String, String>();
+    private Map<String, String> attributes;
 
     @Override
     public String toString() {

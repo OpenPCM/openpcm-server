@@ -35,7 +35,7 @@ public class SwaggerConfig {
     private ApiInfo apiInfo() {
         return new ApiInfo("OpenPCM SERVER REST API", "REST API for OpenPM Server", "0.0.1-SNAPSHOT", "Terms of service",
                         new Contact("Raymond King", "https://github.com/OpenPCM/openpcm-server", "gsugambit@gmail.com"), "GNU",
-                        "https://raw.githubusercontent.com/OpenPCM/openpcm-server/master/LICENSE", Collections.EMPTY_LIST);
+                        "https://raw.githubusercontent.com/OpenPCM/openpcm-server/master/LICENSE", Collections.emptyList());
     }
 
     private ApiKey apiKey() {
