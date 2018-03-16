@@ -5,7 +5,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.jboss.logging.MDC;
-import org.openpcm.config.Constants;
+import org.openpcm.constants.Constants;
 import org.openpcm.dao.RoleRepository;
 import org.openpcm.dao.UserRepository;
 import org.openpcm.model.Role;

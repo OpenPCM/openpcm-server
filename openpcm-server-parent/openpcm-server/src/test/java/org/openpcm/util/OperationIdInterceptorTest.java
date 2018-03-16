@@ -17,7 +17,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.openpcm.config.Constants;
+import org.openpcm.constants.Constants;
 import org.openpcm.utils.OperationIdInterceptor;
 
 public class OperationIdInterceptorTest {
@@ -51,6 +51,7 @@ public class OperationIdInterceptorTest {
             fail(e.getMessage());
         }
 
+        verify(mockResponse, times(1)).addHeader(eq(Constants.OPERATION_ID), eq("opid1"));
         verify(mockResponse, times(1)).addHeader(eq(Constants.OPERATION_ID), eq("opid1"));
 
     }
