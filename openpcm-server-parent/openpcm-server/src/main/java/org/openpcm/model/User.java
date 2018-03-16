@@ -19,6 +19,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import org.openpcm.utils.ObjectUtil;
 import org.springframework.security.core.GrantedAuthority;
@@ -38,7 +39,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(exclude = "roles")
-@Entity(name = "user")
+@Entity
+@Table(name = "user")
 public class User implements UserDetails {
 
     /**

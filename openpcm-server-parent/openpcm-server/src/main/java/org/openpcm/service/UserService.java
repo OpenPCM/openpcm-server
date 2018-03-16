@@ -1,6 +1,5 @@
 package org.openpcm.service;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.openpcm.dao.UserRepository;
@@ -16,8 +15,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-
-import com.google.common.collect.Lists;
 
 @Transactional
 @Service
@@ -36,7 +33,7 @@ public class UserService {
     }
 
     public User create(User user) throws DataViolationException {
-        if (user.getId() != null && user.getId() != 0) {
+        if (user.getId() != null || user.getId() != 0) {
             throw new DataViolationException("user id should be null on create");
         }
 
@@ -48,7 +45,7 @@ public class UserService {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
 
-        LOGGER.trace("Attempting to save user: {}", user);
+        LOGGER.trace("Attempting to create user: {}", user);
 
         return userRepository.save(user);
     }
@@ -56,23 +53,16 @@ public class UserService {
     public User read(Long id) throws NotFoundException {
         Optional<User> user = userRepository.findById(id);
 
-        LOGGER.trace("Returning user: {}.", id);
-
         if (user.isPresent()) {
+            LOGGER.trace("Returning user: {}.", id);
             return user.get();
         } else {
             throw new NotFoundException(id + " not found");
         }
     }
 
-    public List<User> readAll() {
-        LOGGER.trace("Returning all users.");
-        return Lists.newArrayList(userRepository.findAll());
-    }
-
-    public Page<User> pageReadAll(Pageable pageable) {
-        LOGGER.trace("Returning {} users for page: {}.", pageable.getPageSize(), pageable.getPageNumber());
-
+    public Page<User> readAll(Pageable pageable) {
+        LOGGER.trace("Returning page {} of {} user(s).", pageable.getPageNumber(), pageable.getPageSize());
         return userRepository.findAll(pageable);
     }
 
@@ -92,7 +82,7 @@ public class UserService {
 
         user.setId(dbUser.get().getId());
 
-        LOGGER.trace("Attempting to save user: {}", user);
+        LOGGER.trace("Attempting to save updated user: {}", user);
 
         return userRepository.save(user);
     }

@@ -14,28 +14,25 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * The Class AltId.
- */
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "altid")
-public class AltId {
+@Table(name = "parameter_type")
+public class ParameterType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "parameter_type_id")
     private Long id;
 
-    /** The name. */
-    @Column(nullable = false, name = "altid_id")
+    @Column(nullable = false)
     private String name;
 
-    /** The value. */
-    @Column(nullable = false)
-    private String value;
+    private String description;
+
+    private String uom;
 
     @Override
     public String toString() {

@@ -1,5 +1,43 @@
 spring:
   application:
     name: openpcm-service-test
+  main:
+    banner-mode: log
+  h2:
+    console:
+      enabled: true
+      path: /h2
+  datasource:
+    url: jdbc:h2:mem:openpcm-server;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    platform: h2
+    username: sa
+    password:
+    driverClassName: org.h2.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        show_sql: true
+        use_sql_comments: true
+        format_sql: true
+openpcm:
+  initSetup: false  
+jwt:
+  header: Authorization
+  expires_in: 300 # 5 minutes
+  secret: openpcm
 logging:
   path: /target/logs/
+  level:
+    #org.fasterxml: "DEBUG"
+    org.springframework: "INFO"
+    org.hibernate: "INFO"
+    org.apache.camel.component.rabbitmq: "INFO"
+    org.openpcm: "TRACE"
+    #org.springframework.web: "TRACE"
+    org.springframework.web.servlet.DispatcherServlet: "DEBUG"
+    org.springframework.web.filter.CommonsRequestLoggingFilter: "DEBUG"
+  file: openpcm-service-test.log
+      

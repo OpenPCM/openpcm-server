@@ -4,10 +4,13 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+import org.jboss.logging.MDC;
+import org.openpcm.config.Constants;
 import org.openpcm.dao.RoleRepository;
 import org.openpcm.dao.UserRepository;
 import org.openpcm.model.Role;
 import org.openpcm.model.User;
+import org.openpcm.utils.UUIDFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +26,8 @@ public class InitLoaderService implements ApplicationListener<ApplicationReadyEv
 
     private static final Logger LOGGER = LoggerFactory.getLogger(InitLoaderService.class);
 
-    private boolean alreadySetup = false;
+    @Value("${openpcm.initSetup:true}")
+    private boolean initSetup;
 
     @Autowired
     private UserRepository userRepository;
@@ -42,8 +46,11 @@ public class InitLoaderService implements ApplicationListener<ApplicationReadyEv
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
-        if (alreadySetup)
+        if (!initSetup)
             return;
+
+        String operationId = UUIDFactory.opId();
+        MDC.put(Constants.OPERATION_ID, "INIT" + operationId);
 
         Role adminRole = createRoleIfNotFound("ROLE_ADMIN");
         createRoleIfNotFound("ROLE_USER");
