@@ -1,6 +1,7 @@
 package org.openpcm.util;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.openpcm.utils.ObjectUtil;
@@ -42,7 +43,8 @@ public class ObjectUtilTest {
 
         };
 
-        assertEquals("json is incorrect", "{\r\n  \"name\" : \"test\"\r\n}", ObjectUtil.prettyPrint(tester));
+        assertTrue("json is incorrect", ObjectUtil.prettyPrint(tester).contains("name"));
+        assertTrue("json is incorrect", ObjectUtil.prettyPrint(tester).contains("test"));
     }
 
 }
