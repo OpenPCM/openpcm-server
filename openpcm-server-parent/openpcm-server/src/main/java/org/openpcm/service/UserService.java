@@ -37,7 +37,7 @@ public class UserService {
             throw new DataViolationException("user id should be null on create");
         }
 
-        if (user.getAddress() == null && (user.getAddress().getId() != null && user.getAddress().getId() != 0)) {
+        if (user.getAddress() != null && (user.getAddress().getId() != null && user.getAddress().getId() != 0)) {
             throw new DataViolationException("address id should be null on create");
         }
 

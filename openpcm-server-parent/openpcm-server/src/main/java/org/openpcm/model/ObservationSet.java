@@ -41,8 +41,10 @@ public class ObservationSet {
     @Column(name = "observation_set_id")
     private Long id;
 
+    @Column(nullable = false)
     private String origin;
 
+    @Column(nullable = false)
     private String originType;
 
     @Temporal(TemporalType.TIMESTAMP)

@@ -20,11 +20,11 @@ public class ParameterTypeService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ParameterTypeService.class);
 
-    private final ParameterTypeRepository parameterTypeRepository;
+    private final ParameterTypeRepository repository;
 
     @Autowired
-    public ParameterTypeService(ParameterTypeRepository parameterTypeRepository) {
-        this.parameterTypeRepository = parameterTypeRepository;
+    public ParameterTypeService(ParameterTypeRepository repository) {
+        this.repository = repository;
     }
 
     public ParameterType create(ParameterType parameterType) throws DataViolationException {
@@ -33,11 +33,11 @@ public class ParameterTypeService {
         }
 
         LOGGER.trace("Attempting to create parameterType: {}", parameterType);
-        return parameterTypeRepository.save(parameterType);
+        return repository.save(parameterType);
     }
 
     public ParameterType read(Long id) throws NotFoundException {
-        Optional<ParameterType> parameterType = parameterTypeRepository.findById(id);
+        Optional<ParameterType> parameterType = repository.findById(id);
 
         if (parameterType.isPresent()) {
             LOGGER.trace("Returning parameterType: {}.", id);
@@ -49,11 +49,11 @@ public class ParameterTypeService {
 
     public Page<ParameterType> read(Pageable pageable) {
         LOGGER.trace("Returning page {} of {} parameterType(s).", pageable.getPageNumber(), pageable.getPageSize());
-        return parameterTypeRepository.findAll(pageable);
+        return repository.findAll(pageable);
     }
 
     public ParameterType update(Long id, ParameterType parameterType) throws NotFoundException {
-        Optional<ParameterType> dbParameterType = parameterTypeRepository.findById(id);
+        Optional<ParameterType> dbParameterType = repository.findById(id);
 
         if (!dbParameterType.isPresent()) {
             throw new NotFoundException(id + " not found");
@@ -63,14 +63,14 @@ public class ParameterTypeService {
 
         LOGGER.trace("Attempting to save updated parameterType: {}", parameterType);
 
-        return parameterTypeRepository.save(parameterType);
+        return repository.save(parameterType);
     }
 
     public void delete(Long id) {
         LOGGER.trace("Deleting parameterType: {}", id);
 
-        if (parameterTypeRepository.existsById(id)) {
-            parameterTypeRepository.deleteById(id);
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
         }
     }
 

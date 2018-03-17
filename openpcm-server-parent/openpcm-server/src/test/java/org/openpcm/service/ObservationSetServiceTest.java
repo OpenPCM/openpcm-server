@@ -17,22 +17,22 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.openpcm.dao.ParameterTypeRepository;
+import org.openpcm.dao.ObservationSetRepository;
 import org.openpcm.exceptions.DataViolationException;
 import org.openpcm.exceptions.NotFoundException;
-import org.openpcm.model.ParameterType;
+import org.openpcm.model.ObservationSet;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
-public class ParameterTypeServiceTest {
+public class ObservationSetServiceTest {
 
     @InjectMocks
-    private ParameterTypeService service;
+    private ObservationSetService service;
 
     @Mock
-    private ParameterTypeRepository mockRepo;
+    private ObservationSetRepository mockRepo;
 
     @Before
     public void setUp() {
@@ -41,39 +41,37 @@ public class ParameterTypeServiceTest {
 
     @Test
     public void test_create_happy() throws DataViolationException {
-        ParameterType type = ParameterType.builder().description("description").name("name").uom("uom").build();
-        ParameterType result = new ParameterType();
+        ObservationSet type = ObservationSet.builder().origin("Device1").originType("MED-DEVICE").build();
+        ObservationSet result = new ObservationSet();
         BeanUtils.copyProperties(type, result);
         result.setId(1L);
-        when(mockRepo.save(any(ParameterType.class))).thenReturn(result);
+        when(mockRepo.save(any(ObservationSet.class))).thenReturn(result);
 
-        ParameterType resultingType = service.create(type);
+        ObservationSet resultingType = service.create(type);
 
         assertEquals("property is incorrect", (Long) 1L, resultingType.getId());
-        assertEquals("property is incorrect", "name", resultingType.getName());
-        assertEquals("property is incorrect", "description", resultingType.getDescription());
-        assertEquals("property is incorrect", "uom", resultingType.getUom());
+        assertEquals("property is incorrect", "Device1", resultingType.getOrigin());
+        assertEquals("property is incorrect", "MED-DEVICE", resultingType.getOriginType());
     }
 
     @Test
-    public void test_create_happyAcceptsZeroId() throws DataViolationException {
-        ParameterType type = ParameterType.builder().description("description").name("name").uom("uom").id(0L).build();
-        ParameterType result = new ParameterType();
+    public void test_create_happyWithZeroId() throws DataViolationException {
+        ObservationSet type = ObservationSet.builder().origin("Device1").originType("MED-DEVICE").id(0L).build();
+        ObservationSet result = new ObservationSet();
         BeanUtils.copyProperties(type, result);
         result.setId(1L);
-        when(mockRepo.save(any(ParameterType.class))).thenReturn(result);
+        when(mockRepo.save(any(ObservationSet.class))).thenReturn(result);
 
-        ParameterType resultingType = service.create(type);
+        ObservationSet resultingType = service.create(type);
 
         assertEquals("property is incorrect", (Long) 1L, resultingType.getId());
-        assertEquals("property is incorrect", "name", resultingType.getName());
-        assertEquals("property is incorrect", "description", resultingType.getDescription());
-        assertEquals("property is incorrect", "uom", resultingType.getUom());
+        assertEquals("property is incorrect", "Device1", resultingType.getOrigin());
+        assertEquals("property is incorrect", "MED-DEVICE", resultingType.getOriginType());
     }
 
     @Test(expected = DataViolationException.class)
     public void test_create_handlesTransientException() throws DataViolationException {
-        ParameterType type = ParameterType.builder().description("description").name("name").uom("uom").id(3L).build();
+        ObservationSet type = ObservationSet.builder().origin("Device1").originType("MED-DEVICE").id(3L).build();
 
         service.create(type);
     }
@@ -81,21 +79,20 @@ public class ParameterTypeServiceTest {
     @Test
     public void test_read_byId_happy() throws DataViolationException, NotFoundException {
         Long id = 3L;
-        ParameterType type = ParameterType.builder().description("description").name("name").uom("uom").id(id).build();
-        Optional<ParameterType> optional = Optional.of(type);
+        ObservationSet type = ObservationSet.builder().origin("Device1").originType("MED-DEVICE").id(id).build();
+        Optional<ObservationSet> optional = Optional.of(type);
         when(mockRepo.findById(3L)).thenReturn(optional);
 
-        ParameterType resultingType = service.read(id);
+        ObservationSet resultingType = service.read(id);
 
         assertEquals("property is incorrect", id, resultingType.getId());
-        assertEquals("property is incorrect", "name", resultingType.getName());
-        assertEquals("property is incorrect", "description", resultingType.getDescription());
-        assertEquals("property is incorrect", "uom", resultingType.getUom());
+        assertEquals("property is incorrect", "Device1", resultingType.getOrigin());
+        assertEquals("property is incorrect", "MED-DEVICE", resultingType.getOriginType());
     }
 
     @Test(expected = NotFoundException.class)
     public void test_read_byId_handlesNotFound() throws NotFoundException {
-        Optional<ParameterType> optional = Optional.empty();
+        Optional<ObservationSet> optional = Optional.empty();
         when(mockRepo.findById(3L)).thenReturn(optional);
         service.read((Long) 3L);
     }
@@ -103,12 +100,12 @@ public class ParameterTypeServiceTest {
     @Test
     public void test_read_pagination_happy() {
         PageRequest request = PageRequest.of(0, 10);
-        List<ParameterType> typeList = new ArrayList<>();
-        typeList.add(ParameterType.builder().description("description").name("name").uom("uom").id(1L).build());
-        Page<ParameterType> typePage = new PageImpl<>(typeList);
+        List<ObservationSet> typeList = new ArrayList<>();
+        typeList.add(ObservationSet.builder().origin("Device1").originType("MED-DEVICE").id(1L).build());
+        Page<ObservationSet> typePage = new PageImpl<>(typeList);
         when(mockRepo.findAll(request)).thenReturn(typePage);
 
-        Page<ParameterType> resultPage = service.read(request);
+        Page<ObservationSet> resultPage = service.read(request);
 
         assertEquals("property is incorrect", 1, resultPage.getNumberOfElements());
         assertEquals("property is incorrect", (Long) 1L, resultPage.getContent().get(0).getId());
@@ -117,28 +114,27 @@ public class ParameterTypeServiceTest {
     @Test
     public void test_update_happy() throws NotFoundException {
         Long id = 3L;
-        ParameterType type = ParameterType.builder().description("description").name("name").uom("uom").id(id).build();
-        ParameterType dbType = new ParameterType();
+        ObservationSet type = ObservationSet.builder().origin("Device1").originType("MED-DEVICE").id(id).build();
+        ObservationSet dbType = new ObservationSet();
         BeanUtils.copyProperties(type, dbType);
-        Optional<ParameterType> dbOptional = Optional.of(dbType);
+        Optional<ObservationSet> dbOptional = Optional.of(dbType);
 
         when(mockRepo.findById(id)).thenReturn(dbOptional);
         when(mockRepo.save(type)).thenReturn(type);
 
-        ParameterType resultingType = service.update(id, type);
+        ObservationSet resultingType = service.update(id, type);
         assertEquals("property is incorrect", id, resultingType.getId());
-        assertEquals("property is incorrect", "name", resultingType.getName());
-        assertEquals("property is incorrect", "description", resultingType.getDescription());
-        assertEquals("property is incorrect", "uom", resultingType.getUom());
+        assertEquals("property is incorrect", "Device1", resultingType.getOrigin());
+        assertEquals("property is incorrect", "MED-DEVICE", resultingType.getOriginType());
     }
 
     @Test(expected = NotFoundException.class)
     public void test_update_handlesNotFound() throws NotFoundException {
         Long id = 3L;
-        Optional<ParameterType> dbOptional = Optional.empty();
+        Optional<ObservationSet> dbOptional = Optional.empty();
         when(mockRepo.findById(anyLong())).thenReturn(dbOptional);
 
-        service.update(id, new ParameterType());
+        service.update(id, new ObservationSet());
     }
 
     @Test
