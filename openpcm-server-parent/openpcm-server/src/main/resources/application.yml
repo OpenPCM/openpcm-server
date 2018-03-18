@@ -29,8 +29,7 @@ spring:
       hibernate:
         show_sql: true
         use_sql_comments: true
-        format_sql: true
-  
+        format_sql: true  
 jwt:
   header: Authorization
   expires_in: 300 # 5 minutes

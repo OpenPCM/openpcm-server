@@ -33,6 +33,8 @@
 		<mockito.version>2.0.2-beta</mockito.version>
 		<!-- make sure this is compatible with the above mockito.version -->
 		<powermock.version>2.0.0-beta.5</powermock.version>
+		
+		<camel.version>2.20.2</camel.version>
 	</properties>
 
 	<build>

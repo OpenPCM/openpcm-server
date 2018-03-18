@@ -1,16 +1,10 @@
 package org.openpcm.model;
 
-import java.util.Map;
-
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.MapKeyColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -26,22 +20,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "collector")
-public class Collector {
+@Table(name = "encounter_type")
+public class EncounterType {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "collector_id")
+	@Column(name = "encounter_type_id")
 	private Long id;
 
 	@NotNull
 	private String name;
-
-	@ElementCollection
-	@MapKeyColumn(name = "name")
-	@Column(name = "value")
-	@CollectionTable(name = "collector_attributes", joinColumns = @JoinColumn(name = "collector_id"))
-	private Map<String, String> attributes;
 
 	@Override
 	public String toString() {
