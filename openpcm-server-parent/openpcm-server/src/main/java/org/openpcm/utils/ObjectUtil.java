@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Component
 public final class ObjectUtil {
 
-	private static ObjectMapper OBJECT_MAPPER;
+	private static ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 	
 	public static String print(Object object) {
 		try {
