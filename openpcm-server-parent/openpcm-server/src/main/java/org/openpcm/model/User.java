@@ -3,12 +3,17 @@ package org.openpcm.model;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -17,9 +22,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 
 import org.openpcm.utils.ObjectUtil;
 import org.springframework.security.core.GrantedAuthority;
@@ -53,11 +61,15 @@ public class User implements UserDetails {
     @Column(name = "user_id")
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @NotNull
+    @Column(unique = true)
     private String username;
 
-    @Column(nullable = false)
+    @NotNull
     private String password;
+    
+    @Column(unique = true)
+    private String mrn;
 
     /** The first name. */
     @Column(name = "first_name")
@@ -83,6 +95,7 @@ public class User implements UserDetails {
     private Date dateOfBirth;
 
     /** The email. */
+    @Email
     private String email;
 
     /** The phone number. */
@@ -96,13 +109,14 @@ public class User implements UserDetails {
     private boolean enabled;
 
     /** The address. */
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Embedded
     private Address address;
 
-    /** The alt ids. */
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "user_altid", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "altid_id"))
-    private List<AltId> altIds;
+    @ElementCollection()
+    @MapKeyColumn(name = "name")
+    @Column(name = "value")
+    @CollectionTable(name = "user_attributes", joinColumns = @JoinColumn(name = "user_id"))
+    private Map<String, String> attributes = new HashMap<String, String>();
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -123,14 +137,7 @@ public class User implements UserDetails {
         return ObjectUtil.print(this);
     }
 
-    public List<AltId> getAltIds() {
-        if (altIds == null) {
-            altIds = new ArrayList<AltId>();
-        }
-
-        return altIds;
-    }
-
+    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (roles == null) {

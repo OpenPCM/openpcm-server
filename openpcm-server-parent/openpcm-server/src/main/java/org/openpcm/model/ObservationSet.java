@@ -20,6 +20,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 import org.openpcm.utils.ObjectUtil;
 
@@ -41,12 +42,13 @@ public class ObservationSet {
     @Column(name = "observation_set_id")
     private Long id;
 
-    @Column(nullable = false)
+    @NotNull
     private String origin;
 
-    @Column(nullable = false)
+    @NotNull
     private String originType;
 
+    @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
 

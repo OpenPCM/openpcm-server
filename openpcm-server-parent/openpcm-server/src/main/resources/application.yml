@@ -14,10 +14,18 @@ spring:
     password:
     driverClassName: org.h2.Driver
   jpa:
+    show-sql: true
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: create-drop
     properties:
+#      javax:
+#        persistence:
+#          schema-generation:
+#            create-source: metadata
+#            scripts:
+#              action: create
+#              create-target: target/create.sql
       hibernate:
         show_sql: true
         use_sql_comments: true

@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.openpcm.utils.ObjectUtil;
 
@@ -27,7 +28,7 @@ public class ParameterType {
     @Column(name = "parameter_type_id")
     private Long id;
 
-    @Column(nullable = false)
+    @NotNull
     private String name;
 
     private String description;

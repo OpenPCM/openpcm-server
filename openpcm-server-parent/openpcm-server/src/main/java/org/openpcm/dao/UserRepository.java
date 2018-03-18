@@ -10,6 +10,8 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 public interface UserRepository extends PagingAndSortingRepository<User, Long> {
 
+	Optional<User> findByMrn(String mrn);
+	
     Optional<User> findBySsn(String ssn);
 
     Optional<User> findByUsername(String username);

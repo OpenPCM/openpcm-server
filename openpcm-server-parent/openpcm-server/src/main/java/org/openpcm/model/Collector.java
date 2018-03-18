@@ -1,6 +1,5 @@
 package org.openpcm.model;
 
-import java.util.Date;
 import java.util.Map;
 
 import javax.persistence.CollectionTable;
@@ -13,11 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-
-import org.openpcm.utils.ObjectUtil;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,36 +24,20 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "parameter")
-public class Parameter {
+@Table(name = "collector")
+public class Collector {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "parameter_id")
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "collector_id")
+	private Long id;
 
-    @NotNull
-    private String name;
-
-    private String description;
-
-    private String uom;
-
-    private String value;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date timestamp;
-
-    private String utcOffset;
-
-    @ElementCollection
+	@NotNull
+	private String name;
+	
+	@ElementCollection
     @MapKeyColumn(name = "name")
     @Column(name = "value")
-    @CollectionTable(name = "parameter_attributes", joinColumns = @JoinColumn(name = "parameter_id"))
+    @CollectionTable(name = "collector_attributes", joinColumns = @JoinColumn(name = "collector_id"))
     private Map<String, String> attributes;
-
-    @Override
-    public String toString() {
-        return ObjectUtil.print(this);
-    }
 }

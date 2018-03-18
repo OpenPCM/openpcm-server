@@ -21,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+@Deprecated(since="now", forRemoval=true)
 @Component
 public class InitLoaderService implements ApplicationListener<ApplicationReadyEvent> {
 
@@ -46,6 +47,8 @@ public class InitLoaderService implements ApplicationListener<ApplicationReadyEv
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
+    	initSetup = false;
+    	
         if (!initSetup)
             return;
 

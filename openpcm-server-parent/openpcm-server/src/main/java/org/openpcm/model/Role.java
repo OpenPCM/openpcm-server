@@ -6,9 +6,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.openpcm.utils.ObjectUtil;
 import org.springframework.security.core.GrantedAuthority;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,9 +36,10 @@ public class Role implements GrantedAuthority {
     @Column(name = "role_id")
     private Long id;
 
-    @Column(nullable = false)
+    @NotNull
     private String name;
 
+    @JsonIgnore
     @Override
     public String getAuthority() {
         return name;

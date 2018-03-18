@@ -1,11 +1,13 @@
 package org.openpcm.model;
 
-import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.openpcm.utils.ObjectUtil;
 
@@ -21,28 +23,30 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "address")
+@Embeddable
 public class Address {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "address_id")
-    private Long id;
-
     /** The address line one. */
+    @NotNull
+    @Size(max = 100)
     private String addressLineOne;
 
     /** The address line two. */
+    @Size(max = 100)
     private String addressLineTwo;
 
     /** The city. */
+    @NotNull
+    @Size(max = 100)
     private String city;
 
     /** The state. */
+    @NotNull
+    @Size(max = 100)
     private String state;
 
     /** The zip code. */
+    @Size(max = 10)
     private String zipCode;
 
     @Override

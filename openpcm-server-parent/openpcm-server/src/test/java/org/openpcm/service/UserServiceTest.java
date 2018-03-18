@@ -87,7 +87,7 @@ public class UserServiceTest {
 
     @Test
     public void test_create_happyWithAddressWithZeroId() throws DataViolationException {
-        Address address = Address.builder().addressLineOne("123 Main Street").city("City").state("CA").zipCode("32802").id(0L).build();
+        Address address = Address.builder().addressLineOne("123 Main Street").city("City").state("CA").zipCode("32802").build();
         User user = User.builder().username("username").password("password").address(address).build();
         User result = new User();
         BeanUtils.copyProperties(user, result);
@@ -119,14 +119,6 @@ public class UserServiceTest {
     @Test(expected = DataViolationException.class)
     public void test_create_handlesUserTransientException() throws DataViolationException {
         User user = User.builder().username("username").password("password").id(3L).build();
-
-        userService.create(user);
-    }
-
-    @Test(expected = DataViolationException.class)
-    public void test_create_handlesAddressTransientException() throws DataViolationException {
-        Address address = Address.builder().addressLineOne("123 Main Street").city("City").state("CA").zipCode("32802").id(1L).build();
-        User user = User.builder().username("username").password("password").address(address).build();
 
         userService.create(user);
     }
