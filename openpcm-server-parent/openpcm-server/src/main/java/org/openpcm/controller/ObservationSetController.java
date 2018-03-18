@@ -33,54 +33,58 @@ import io.swagger.annotations.ApiResponses;
 @RequestMapping("/api/v1/")
 public class ObservationSetController extends BaseController {
 
-    private final ObservationSetService service;
+	private final ObservationSetService service;
 
-    @Autowired
-    public ObservationSetController(ObservationSetService service) {
-        this.service = service;
-    }
+	@Autowired
+	public ObservationSetController(ObservationSetService service) {
+		this.service = service;
+	}
 
-    @ResponseStatus(HttpStatus.CREATED)
-    @ApiOperation(value = "createObservationSet", response = ObservationSet.class)
-    @PostMapping(value = "observationSet")
-    @ApiResponses({ @ApiResponse(code = 201, response = ParameterType.class, message = "created observationSet") })
-    public @ResponseBody ObservationSet createObservationSet(
-                    @ApiParam(value = "observationSet to create", name = "observationSet", required = true) @RequestBody ObservationSet observationSet)
-                    throws DataViolationException {
-        return service.create(observationSet);
-    }
+	@ResponseStatus(HttpStatus.CREATED)
+	@ApiOperation(value = "createObservationSet", response = ObservationSet.class)
+	@PostMapping(value = "observationSet")
+	@ApiResponses({ @ApiResponse(code = 201, response = ParameterType.class, message = "created observationSet") })
+	public @ResponseBody ObservationSet createObservationSet(
+			@ApiParam(value = "observationSet to create", name = "observationSet", required = true) @RequestBody ObservationSet observationSet)
+			throws DataViolationException {
+		return service.create(observationSet);
+	}
 
-    @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "readObservationSets", response = ObservationSet.class, responseContainer = "List")
-    @GetMapping(value = "observationSet")
-    @ApiResponses({ @ApiResponse(code = 200, response = ObservationSet.class, message = "read observationSets", responseContainer = "List") })
-    public @ResponseBody Page<ObservationSet> readObservationSets(@NotNull final Pageable pageable) {
-        return service.read(pageable);
-    }
+	@ResponseStatus(HttpStatus.OK)
+	@ApiOperation(value = "readObservationSets", response = ObservationSet.class, responseContainer = "List")
+	@GetMapping(value = "observationSet")
+	@ApiResponses({
+			@ApiResponse(code = 200, response = ObservationSet.class, message = "read observationSets", responseContainer = "List") })
+	public @ResponseBody Page<ObservationSet> readObservationSets(@NotNull final Pageable pageable) {
+		return service.read(pageable);
+	}
 
-    @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "readObsevationSet", response = ObservationSet.class)
-    @GetMapping(value = "observationSet/{id}")
-    @ApiResponses({ @ApiResponse(code = 200, response = ObservationSet.class, message = "read observationSet") })
-    public @ResponseBody ObservationSet readObservationSet(@ApiParam(value = "observationSet to read", name = "id", required = true) @PathVariable Long id)
-                    throws NotFoundException {
-        return service.read(id);
-    }
+	@ResponseStatus(HttpStatus.OK)
+	@ApiOperation(value = "readObsevationSet", response = ObservationSet.class)
+	@GetMapping(value = "observationSet/{id}")
+	@ApiResponses({ @ApiResponse(code = 200, response = ObservationSet.class, message = "read observationSet") })
+	public @ResponseBody ObservationSet readObservationSet(
+			@ApiParam(value = "observationSet to read", name = "id", required = true) @PathVariable Long id)
+			throws NotFoundException {
+		return service.read(id);
+	}
 
-    @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "updateObservationSet", response = ObservationSet.class)
-    @PutMapping(value = "observationSet/{id}")
-    @ApiResponses({ @ApiResponse(code = 200, response = ObservationSet.class, message = "updated observationSet") })
-    public @ResponseBody ObservationSet updateObservationSet(@ApiParam(value = "id of observationSet", name = "id", required = true) @PathVariable Long id,
-                    @ApiParam(value = "observationSet to update", name = "observationSet", required = true) @RequestBody ObservationSet observationSet)
-                    throws NotFoundException {
-        return service.update(id, observationSet);
-    }
+	@ResponseStatus(HttpStatus.OK)
+	@ApiOperation(value = "updateObservationSet", response = ObservationSet.class)
+	@PutMapping(value = "observationSet/{id}")
+	@ApiResponses({ @ApiResponse(code = 200, response = ObservationSet.class, message = "updated observationSet") })
+	public @ResponseBody ObservationSet updateObservationSet(
+			@ApiParam(value = "id of observationSet", name = "id", required = true) @PathVariable Long id,
+			@ApiParam(value = "observationSet to update", name = "observationSet", required = true) @RequestBody ObservationSet observationSet)
+			throws NotFoundException {
+		return service.update(id, observationSet);
+	}
 
-    @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "deleteObservationSet")
-    @DeleteMapping(value = "observationSet/{id}")
-    public void deleteObservationSet(@ApiParam(value = "observationSet to delete", name = "id", required = true) @PathVariable Long id) {
-        service.delete(id);
-    }
+	@ResponseStatus(HttpStatus.OK)
+	@ApiOperation(value = "deleteObservationSet")
+	@DeleteMapping(value = "observationSet/{id}")
+	public void deleteObservationSet(
+			@ApiParam(value = "observationSet to delete", name = "id", required = true) @PathVariable Long id) {
+		service.delete(id);
+	}
 }

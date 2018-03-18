@@ -39,60 +39,61 @@ import io.swagger.annotations.ApiResponses;
 @Api(value = "/authenticate")
 public class AuthenticationController extends BaseController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationController.class);
 
-    @Autowired
-    TokenHelper tokenHelper;
+	@Autowired
+	TokenHelper tokenHelper;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+	@Autowired
+	private AuthenticationManager authenticationManager;
 
-    @Autowired
-    private PCMUserDetailsService userDetailsService;
+	@Autowired
+	private PCMUserDetailsService userDetailsService;
 
-    @ApiOperation(value = "login", response = UserJWTTokenState.class)
-    @ResponseStatus(code = HttpStatus.OK)
-    @PostMapping(value = "/login")
-    @ApiResponses({ @ApiResponse(code = 200, response = UserJWTTokenState.class, message = "logged in") })
-    public @ResponseBody UserJWTTokenState login(
-                    @ApiParam(value = "login credentials", name = "jwtRequest", required = true) @RequestBody JWTRequest jwtRequest,
-                    HttpServletResponse response) throws AuthenticationException, IOException {
+	@ApiOperation(value = "login", response = UserJWTTokenState.class)
+	@ResponseStatus(code = HttpStatus.OK)
+	@PostMapping(value = "/login")
+	@ApiResponses({ @ApiResponse(code = 200, response = UserJWTTokenState.class, message = "logged in") })
+	public @ResponseBody UserJWTTokenState login(
+			@ApiParam(value = "login credentials", name = "jwtRequest", required = true) @RequestBody JWTRequest jwtRequest,
+			HttpServletResponse response) throws AuthenticationException, IOException {
 
-        // Perform the security
-        final Authentication authentication = authenticationManager
-                        .authenticate(new UsernamePasswordAuthenticationToken(jwtRequest.getUsername(), jwtRequest.getPassword()));
+		// Perform the security
+		final Authentication authentication = authenticationManager.authenticate(
+				new UsernamePasswordAuthenticationToken(jwtRequest.getUsername(), jwtRequest.getPassword()));
 
-        // Inject into security context
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+		// Inject into security context
+		SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        // token creation
-        User user = (User) authentication.getPrincipal();
-        String jwsToken = tokenHelper.generateToken(user.getUsername());
-        int expiresIn = tokenHelper.getExpiredIn();
-        // Return the token
-        return new UserJWTTokenState(jwsToken, expiresIn);
-    }
+		// token creation
+		User user = (User) authentication.getPrincipal();
+		String jwsToken = tokenHelper.generateToken(user.getUsername());
+		int expiresIn = tokenHelper.getExpiredIn();
+		// Return the token
+		return new UserJWTTokenState(jwsToken, expiresIn);
+	}
 
-    @ApiOperation(value = "refreshToken", response = UserJWTTokenState.class)
-    @PostMapping(value = "/refresh")
-    @ApiResponses({ @ApiResponse(code = 200, response = UserJWTTokenState.class, message = "refreshed token") })
-    public ResponseEntity<?> refreshAuthenticationToken(HttpServletRequest request, HttpServletResponse response, Principal principal) {
+	@ApiOperation(value = "refreshToken", response = UserJWTTokenState.class)
+	@PostMapping(value = "/refresh")
+	@ApiResponses({ @ApiResponse(code = 200, response = UserJWTTokenState.class, message = "refreshed token") })
+	public ResponseEntity<?> refreshAuthenticationToken(HttpServletRequest request, HttpServletResponse response,
+			Principal principal) {
 
-        String jwsToken = tokenHelper.getToken(request);
+		String jwsToken = tokenHelper.getToken(request);
 
-        LOGGER.trace("jwtToken == null --> {}, principal == null --> {}", jwsToken == null, principal == null);
+		LOGGER.trace("jwtToken == null --> {}, principal == null --> {}", jwsToken == null, principal == null);
 
-        if (jwsToken != null) {
-            String refreshedToken = tokenHelper.refreshToken(jwsToken);
-            int expiresIn = tokenHelper.getExpiredIn();
+		if (jwsToken != null) {
+			String refreshedToken = tokenHelper.refreshToken(jwsToken);
+			int expiresIn = tokenHelper.getExpiredIn();
 
-            // we return okay with new token if we actually refreshed
-            return ResponseEntity.ok(new UserJWTTokenState(refreshedToken, expiresIn));
-        } else {
-            UserJWTTokenState userTokenState = new UserJWTTokenState();
+			// we return okay with new token if we actually refreshed
+			return ResponseEntity.ok(new UserJWTTokenState(refreshedToken, expiresIn));
+		} else {
+			UserJWTTokenState userTokenState = new UserJWTTokenState();
 
-            // we return accepted with an empty JWT if nothing was provided.
-            return ResponseEntity.accepted().body(userTokenState);
-        }
-    }
+			// we return accepted with an empty JWT if nothing was provided.
+			return ResponseEntity.accepted().body(userTokenState);
+		}
+	}
 }

@@ -1,15 +1,12 @@
 package org.openpcm.model;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -23,8 +20,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.MapKeyColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -51,122 +46,122 @@ import lombok.NoArgsConstructor;
 @Table(name = "user")
 public class User implements UserDetails {
 
-    /**
-     * generated serial version uid
-     */
-    private static final long serialVersionUID = 3954448925407273375L;
+	/**
+	 * generated serial version uid
+	 */
+	private static final long serialVersionUID = 3954448925407273375L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "user_id")
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "user_id")
+	private Long id;
 
-    @NotNull
-    @Column(unique = true)
-    private String username;
+	@NotNull
+	@Column(unique = true)
+	private String username;
 
-    @NotNull
-    private String password;
-    
-    @Column(unique = true)
-    private String mrn;
+	@NotNull
+	private String password;
 
-    /** The first name. */
-    @Column(name = "first_name")
-    private String firstName;
+	@Column(unique = true)
+	private String mrn;
 
-    /** The last name. */
-    @Column(name = "last_name")
-    private String lastName;
+	/** The first name. */
+	@Column(name = "first_name")
+	private String firstName;
 
-    /** The middle name. */
-    @Column(name = "middle_name")
-    private String middleName;
+	/** The last name. */
+	@Column(name = "last_name")
+	private String lastName;
 
-    /** The maiden name. */
-    @Column(name = "maiden_name")
-    private String maidenName;
+	/** The middle name. */
+	@Column(name = "middle_name")
+	private String middleName;
 
-    /** The gender. */
-    private String gender;
+	/** The maiden name. */
+	@Column(name = "maiden_name")
+	private String maidenName;
 
-    /** The date of birth. */
-    @Column(name = "date_of_birth")
-    private Date dateOfBirth;
+	/** The gender. */
+	private String gender;
 
-    /** The email. */
-    @Email
-    private String email;
+	/** The date of birth. */
+	@Column(name = "date_of_birth")
+	private Date dateOfBirth;
 
-    /** The phone number. */
-    @Column(name = "phone_number")
-    private String phoneNumber;
+	/** The email. */
+	@Email
+	private String email;
 
-    /** the social security number */
-    @Column(unique = true)
-    private String ssn;
+	/** The phone number. */
+	@Column(name = "phone_number")
+	private String phoneNumber;
 
-    private boolean enabled;
+	/** the social security number */
+	@Column(unique = true)
+	private String ssn;
 
-    /** The address. */
-    @Embedded
-    private Address address;
+	private boolean enabled;
 
-    @ElementCollection()
-    @MapKeyColumn(name = "name")
-    @Column(name = "value")
-    @CollectionTable(name = "user_attributes", joinColumns = @JoinColumn(name = "user_id"))
-    private Map<String, String> attributes = new HashMap<String, String>();
+	/** The address. */
+	@Embedded
+	private Address address;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles;
+	@ElementCollection()
+	@MapKeyColumn(name = "name")
+	@Column(name = "value")
+	@CollectionTable(name = "user_attributes", joinColumns = @JoinColumn(name = "user_id"))
+	private Map<String, String> attributes = new HashMap<String, String>();
 
-    @JsonIgnore
-    public String getPassword() {
-        return password;
-    }
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+	private Set<Role> roles;
 
-    @JsonProperty
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	@JsonIgnore
+	public String getPassword() {
+		return password;
+	}
 
-    @Override
-    public String toString() {
-        return ObjectUtil.print(this);
-    }
+	@JsonProperty
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-    @JsonIgnore
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (roles == null) {
-            roles = new HashSet<Role>();
-        }
+	@Override
+	public String toString() {
+		return ObjectUtil.print(this);
+	}
 
-        return roles;
-    }
+	@JsonIgnore
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		if (roles == null) {
+			roles = new HashSet<Role>();
+		}
 
-    @JsonIgnore
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
+		return roles;
+	}
 
-    @JsonIgnore
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
+	@JsonIgnore
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
 
-    @JsonIgnore
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
+	@JsonIgnore
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
 
-    @Override
-    public boolean isEnabled() {
-        return enabled;
-    }
+	@JsonIgnore
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return enabled;
+	}
 }

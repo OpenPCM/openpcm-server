@@ -21,85 +21,86 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-@Deprecated(since="now", forRemoval=true)
+@Deprecated(since = "now", forRemoval = true)
 @Component
 public class InitLoaderService implements ApplicationListener<ApplicationReadyEvent> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(InitLoaderService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(InitLoaderService.class);
 
-    @Value("${openpcm.initSetup:true}")
-    private boolean initSetup;
+	@Value("${openpcm.initSetup:true}")
+	private boolean initSetup;
 
-    @Autowired
-    private UserRepository userRepository;
+	@Autowired
+	private UserRepository userRepository;
 
-    @Autowired
-    private RoleRepository roleRepository;
+	@Autowired
+	private RoleRepository roleRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
-    @Value("${openpcm.adminUser:admin}")
-    private String adminUsername;
+	@Value("${openpcm.adminUser:admin}")
+	private String adminUsername;
 
-    @Value("${openpcm.adminPassword:openpcm}")
-    private String adminPassword;
+	@Value("${openpcm.adminPassword:openpcm}")
+	private String adminPassword;
 
-    @Override
-    public void onApplicationEvent(ApplicationReadyEvent event) {
-    	initSetup = false;
-    	
-        if (!initSetup)
-            return;
+	@Override
+	public void onApplicationEvent(ApplicationReadyEvent event) {
+		initSetup = false;
 
-        String operationId = UUIDFactory.opId();
-        MDC.put(Constants.OPERATION_ID, "INIT" + operationId);
+		if (!initSetup)
+			return;
 
-        Role adminRole = createRoleIfNotFound("ROLE_ADMIN");
-        createRoleIfNotFound("ROLE_USER");
+		String operationId = UUIDFactory.opId();
+		MDC.put(Constants.OPERATION_ID, "INIT" + operationId);
 
-        User adminUser = createAdminUser(adminRole);
+		Role adminRole = createRoleIfNotFound("ROLE_ADMIN");
+		createRoleIfNotFound("ROLE_USER");
 
-        LOGGER.trace("adminUser: {}", adminUser);
+		User adminUser = createAdminUser(adminRole);
 
-    }
+		LOGGER.trace("adminUser: {}", adminUser);
 
-    @Transactional
-    private Role createRoleIfNotFound(String name) {
-        Role result = null;
+	}
 
-        Optional<Role> role = roleRepository.findByName(name);
-        if (!role.isPresent()) {
-            result = Role.builder().name(name).build();
-            roleRepository.save(result);
+	@Transactional
+	private Role createRoleIfNotFound(String name) {
+		Role result = null;
 
-            LOGGER.trace("Creating default role: {}", name);
-        } else {
-            result = role.get();
-        }
-        return result;
-    }
+		Optional<Role> role = roleRepository.findByName(name);
+		if (!role.isPresent()) {
+			result = Role.builder().name(name).build();
+			roleRepository.save(result);
 
-    @Transactional
-    private User createAdminUser(Role adminRole) {
-        User result = null;
+			LOGGER.trace("Creating default role: {}", name);
+		} else {
+			result = role.get();
+		}
+		return result;
+	}
 
-        Optional<User> role = userRepository.findByUsername(adminUsername);
+	@Transactional
+	private User createAdminUser(Role adminRole) {
+		User result = null;
 
-        if (role.isPresent()) {
-            result = role.get();
-        } else {
-            Set<Role> roles = new HashSet<Role>();
-            roles.add(adminRole);
-            User adminUser = User.builder().enabled(true).email(adminUsername + "@openpcm.com").firstName("Admin").lastName("User")
-                            .password(passwordEncoder.encode(adminPassword)).username(adminUsername).roles(roles).build();
+		Optional<User> role = userRepository.findByUsername(adminUsername);
 
-            result = userRepository.save(adminUser);
+		if (role.isPresent()) {
+			result = role.get();
+		} else {
+			Set<Role> roles = new HashSet<Role>();
+			roles.add(adminRole);
+			User adminUser = User.builder().enabled(true).email(adminUsername + "@openpcm.com").firstName("Admin")
+					.lastName("User").password(passwordEncoder.encode(adminPassword)).username(adminUsername)
+					.roles(roles).build();
 
-            LOGGER.trace("Creating admin user with username: {} and password: {}", adminUsername, adminPassword);
-        }
+			result = userRepository.save(adminUser);
 
-        return result;
-    }
+			LOGGER.trace("Creating admin user with username: {} and password: {}", adminUsername, adminPassword);
+		}
+
+		return result;
+	}
 
 }

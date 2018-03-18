@@ -1,7 +1,6 @@
 package org.openpcm.exceptions;
 
-public class FileEmptyException extends OpenPCMServiceException{
-
+public class FileEmptyException extends OpenPCMServiceException {
 
 	/**
 	 * 
@@ -11,7 +10,7 @@ public class FileEmptyException extends OpenPCMServiceException{
 	public FileEmptyException(String message, Throwable throwable) {
 		super(message, throwable);
 	}
-	
+
 	public FileEmptyException(String message) {
 		super(message);
 	}

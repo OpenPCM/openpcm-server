@@ -37,36 +37,36 @@ import lombok.NoArgsConstructor;
 @Table(name = "observation_set")
 public class ObservationSet {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "observation_set_id")
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "observation_set_id")
+	private Long id;
 
-    @NotNull
-    private String origin;
+	@NotNull
+	private String origin;
 
-    @NotNull
-    private String originType;
+	@NotNull
+	private String originType;
 
-    @NotNull
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date timestamp;
+	@NotNull
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date timestamp;
 
-    private String utcOffset;
+	private String utcOffset;
 
-    /** The alt ids. */
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "observation_set_parameter", joinColumns = @JoinColumn(name = "observation_set_id"), inverseJoinColumns = @JoinColumn(name = "parameter_id"))
-    private List<Parameter> parameters;
+	/** The alt ids. */
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinTable(name = "observation_set_parameter", joinColumns = @JoinColumn(name = "observation_set_id"), inverseJoinColumns = @JoinColumn(name = "parameter_id"))
+	private List<Parameter> parameters;
 
-    @ElementCollection
-    @MapKeyColumn(name = "name")
-    @Column(name = "value")
-    @CollectionTable(name = "observation_set_attributes", joinColumns = @JoinColumn(name = "observation_set_id"))
-    private Map<String, String> attributes;
+	@ElementCollection
+	@MapKeyColumn(name = "name")
+	@Column(name = "value")
+	@CollectionTable(name = "observation_set_attributes", joinColumns = @JoinColumn(name = "observation_set_id"))
+	private Map<String, String> attributes;
 
-    @Override
-    public String toString() {
-        return ObjectUtil.print(this);
-    }
+	@Override
+	public String toString() {
+		return ObjectUtil.print(this);
+	}
 }

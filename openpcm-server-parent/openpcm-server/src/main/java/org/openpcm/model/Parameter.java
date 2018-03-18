@@ -32,33 +32,33 @@ import lombok.NoArgsConstructor;
 @Table(name = "parameter")
 public class Parameter {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "parameter_id")
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "parameter_id")
+	private Long id;
 
-    @NotNull
-    private String name;
+	@NotNull
+	private String name;
 
-    private String description;
+	private String description;
 
-    private String uom;
+	private String uom;
 
-    private String value;
+	private String value;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date timestamp;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date timestamp;
 
-    private String utcOffset;
+	private String utcOffset;
 
-    @ElementCollection
-    @MapKeyColumn(name = "name")
-    @Column(name = "value")
-    @CollectionTable(name = "parameter_attributes", joinColumns = @JoinColumn(name = "parameter_id"))
-    private Map<String, String> attributes;
+	@ElementCollection
+	@MapKeyColumn(name = "name")
+	@Column(name = "value")
+	@CollectionTable(name = "parameter_attributes", joinColumns = @JoinColumn(name = "parameter_id"))
+	private Map<String, String> attributes;
 
-    @Override
-    public String toString() {
-        return ObjectUtil.print(this);
-    }
+	@Override
+	public String toString() {
+		return ObjectUtil.print(this);
+	}
 }

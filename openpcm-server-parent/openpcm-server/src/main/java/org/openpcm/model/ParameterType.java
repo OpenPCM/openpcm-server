@@ -23,20 +23,20 @@ import lombok.NoArgsConstructor;
 @Table(name = "parameter_type")
 public class ParameterType {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "parameter_type_id")
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "parameter_type_id")
+	private Long id;
 
-    @NotNull
-    private String name;
+	@NotNull
+	private String name;
 
-    private String description;
+	private String description;
 
-    private String uom;
+	private String uom;
 
-    @Override
-    public String toString() {
-        return ObjectUtil.print(this);
-    }
+	@Override
+	public String toString() {
+		return ObjectUtil.print(this);
+	}
 }
