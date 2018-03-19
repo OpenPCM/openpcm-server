@@ -5,9 +5,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.openpcm.utils.ObjectUtil;
 import org.springframework.security.core.GrantedAuthority;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,29 +22,31 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "role")
+@Entity
+@Table(name = "role")
 public class Role implements GrantedAuthority {
 
-    /**
-     * generated serial version uid
-     */
-    private static final long serialVersionUID = -6326013916799488746L;
+	/**
+	 * generated serial version uid
+	 */
+	private static final long serialVersionUID = -6326013916799488746L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "role_id")
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "role_id")
+	private Long id;
 
-    @Column(nullable = false)
-    private String name;
+	@NotNull
+	private String name;
 
-    @Override
-    public String getAuthority() {
-        return name;
-    }
+	@JsonIgnore
+	@Override
+	public String getAuthority() {
+		return name;
+	}
 
-    @Override
-    public String toString() {
-        return ObjectUtil.print(this);
-    }
+	@Override
+	public String toString() {
+		return ObjectUtil.print(this);
+	}
 }

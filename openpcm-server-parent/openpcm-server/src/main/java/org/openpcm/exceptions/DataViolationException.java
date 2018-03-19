@@ -1,6 +1,6 @@
 package org.openpcm.exceptions;
 
-public class DataViolationException extends OpenPCMServiceException{
+public class DataViolationException extends OpenPCMServiceException {
 
 	/**
 	 * 
@@ -10,7 +10,7 @@ public class DataViolationException extends OpenPCMServiceException{
 	public DataViolationException(String message, Throwable throwable) {
 		super(message, throwable);
 	}
-	
+
 	public DataViolationException(String message) {
 		super(message);
 	}

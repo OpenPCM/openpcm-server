@@ -1,0 +1,6 @@
+openpcm:
+  mdi:
+    uri: mina2:tcp://localhost:14607?sync=true&amp;codec=#hl7codec
+    ackRequired: true
+    sourceApp: OpenPCM
+    sourceFacility: GLOBAL

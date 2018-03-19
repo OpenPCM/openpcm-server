@@ -1,14 +1,16 @@
 package org.openpcm.model;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -17,8 +19,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.MapKeyColumn;
+import javax.persistence.Table;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 
 import org.openpcm.utils.ObjectUtil;
 import org.springframework.security.core.GrantedAuthority;
@@ -38,126 +42,126 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(exclude = "roles")
-@Entity(name = "user")
+@Entity
+@Table(name = "user")
 public class User implements UserDetails {
 
-    /**
-     * generated serial version uid
-     */
-    private static final long serialVersionUID = 3954448925407273375L;
+	/**
+	 * generated serial version uid
+	 */
+	private static final long serialVersionUID = 3954448925407273375L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "user_id")
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "user_id")
+	private Long id;
 
-    @Column(nullable = false, unique = true)
-    private String username;
+	@NotNull
+	@Column(unique = true)
+	private String username;
 
-    @Column(nullable = false)
-    private String password;
+	@NotNull
+	private String password;
 
-    /** The first name. */
-    @Column(name = "first_name")
-    private String firstName;
+	@Column(unique = true)
+	private String mrn;
 
-    /** The last name. */
-    @Column(name = "last_name")
-    private String lastName;
+	/** The first name. */
+	@Column(name = "first_name")
+	private String firstName;
 
-    /** The middle name. */
-    @Column(name = "middle_name")
-    private String middleName;
+	/** The last name. */
+	@Column(name = "last_name")
+	private String lastName;
 
-    /** The maiden name. */
-    @Column(name = "maiden_name")
-    private String maidenName;
+	/** The middle name. */
+	@Column(name = "middle_name")
+	private String middleName;
 
-    /** The gender. */
-    private String gender;
+	/** The maiden name. */
+	@Column(name = "maiden_name")
+	private String maidenName;
 
-    /** The date of birth. */
-    @Column(name = "date_of_birth")
-    private Date dateOfBirth;
+	/** The gender. */
+	private String gender;
 
-    /** The email. */
-    private String email;
+	/** The date of birth. */
+	@Column(name = "date_of_birth")
+	private Date dateOfBirth;
 
-    /** The phone number. */
-    @Column(name = "phone_number")
-    private String phoneNumber;
+	/** The email. */
+	@Email
+	private String email;
 
-    /** the social security number */
-    @Column(unique = true)
-    private String ssn;
+	/** The phone number. */
+	@Column(name = "phone_number")
+	private String phoneNumber;
 
-    private boolean enabled = true;
+	/** the social security number */
+	@Column(unique = true)
+	private String ssn;
 
-    /** The address. */
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Address address;
+	private boolean enabled;
 
-    /** The alt ids. */
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "user_altid", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "altid_id"))
-    private List<AltId> altIds;
+	/** The address. */
+	@Embedded
+	private Address address;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles;
+	@ElementCollection()
+	@MapKeyColumn(name = "name")
+	@Column(name = "value")
+	@CollectionTable(name = "user_attributes", joinColumns = @JoinColumn(name = "user_id"))
+	private Map<String, String> attributes = new HashMap<String, String>();
 
-    @JsonIgnore
-    public String getPassword() {
-        return password;
-    }
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+	private Set<Role> roles;
 
-    @JsonProperty
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	@JsonIgnore
+	public String getPassword() {
+		return password;
+	}
 
-    @Override
-    public String toString() {
-        return ObjectUtil.print(this);
-    }
+	@JsonProperty
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-    public List<AltId> getAltIds() {
-        if (altIds == null) {
-            altIds = new ArrayList<AltId>();
-        }
+	@Override
+	public String toString() {
+		return ObjectUtil.print(this);
+	}
 
-        return altIds;
-    }
+	@JsonIgnore
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		if (roles == null) {
+			roles = new HashSet<Role>();
+		}
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (roles == null) {
-            roles = new HashSet<Role>();
-        }
+		return roles;
+	}
 
-        return roles;
-    }
+	@JsonIgnore
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
 
-    @JsonIgnore
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
+	@JsonIgnore
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
 
-    @JsonIgnore
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
+	@JsonIgnore
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
 
-    @JsonIgnore
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return enabled;
-    }
+	@Override
+	public boolean isEnabled() {
+		return enabled;
+	}
 }

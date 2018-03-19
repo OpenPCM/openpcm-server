@@ -26,39 +26,43 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class SwaggerConfig {
 
-    @Bean
-    public Docket api() {
-        return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.any()).paths(PathSelectors.any()).build().apiInfo(apiInfo())
-                        .securityContexts(Lists.newArrayList(securityContext())).securitySchemes(Lists.newArrayList(apiKey()));
-    }
+	@Bean
+	public Docket api() {
+		return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.any())
+				.paths(PathSelectors.any()).build().apiInfo(apiInfo())
+				.securityContexts(Lists.newArrayList(securityContext())).securitySchemes(Lists.newArrayList(apiKey()));
+	}
 
-    private ApiInfo apiInfo() {
-        return new ApiInfo("OpenPCM SERVER REST API", "REST API for OpenPM Server", "0.0.1-SNAPSHOT", "Terms of service",
-                        new Contact("Raymond King", "https://github.com/OpenPCM/openpcm-server", "gsugambit@gmail.com"), "GNU",
-                        "https://raw.githubusercontent.com/OpenPCM/openpcm-server/master/LICENSE", Collections.EMPTY_LIST);
-    }
+	private ApiInfo apiInfo() {
+		return new ApiInfo("OpenPCM SERVER REST API", "REST API for OpenPM Server", "0.0.1-SNAPSHOT",
+				"Terms of service",
+				new Contact("Raymond King", "https://github.com/OpenPCM/openpcm-server", "gsugambit@gmail.com"), "GNU",
+				"https://raw.githubusercontent.com/OpenPCM/openpcm-server/master/LICENSE", Collections.emptyList());
+	}
 
-    private ApiKey apiKey() {
-        return new ApiKey("AUTHORIZATION", "api_key", "header");
-    }
+	private ApiKey apiKey() {
+		return new ApiKey("AUTHORIZATION", "api_key", "header");
+	}
 
-    @Bean
-    SecurityConfiguration security() {
-        return new SecurityConfiguration(null, null, "test-openpcm-server", // realm Needed for authenticate button to work
-                        "openpcm-server", // appName Needed for authenticate button to work
-                        "BEARER ", // apiKeyValue
-                        ApiKeyVehicle.HEADER, "AUTHORIZATION", // apiKeyName
-                        null);
-    }
+	@Bean
+	SecurityConfiguration security() {
+		return new SecurityConfiguration(null, null, "test-openpcm-server", // realm Needed for authenticate button to
+																			// work
+				"openpcm-server", // appName Needed for authenticate button to work
+				"BEARER ", // apiKeyValue
+				ApiKeyVehicle.HEADER, "AUTHORIZATION", // apiKeyName
+				null);
+	}
 
-    private SecurityContext securityContext() {
-        return SecurityContext.builder().securityReferences(defaultAuth()).forPaths(PathSelectors.regex("/anyPath.*")).build();
-    }
+	private SecurityContext securityContext() {
+		return SecurityContext.builder().securityReferences(defaultAuth()).forPaths(PathSelectors.regex("/anyPath.*"))
+				.build();
+	}
 
-    List<SecurityReference> defaultAuth() {
-        AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
-        AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
-        authorizationScopes[0] = authorizationScope;
-        return Lists.newArrayList(new SecurityReference("AUTHORIZATION", authorizationScopes));
-    }
+	List<SecurityReference> defaultAuth() {
+		AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
+		AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
+		authorizationScopes[0] = authorizationScope;
+		return Lists.newArrayList(new SecurityReference("AUTHORIZATION", authorizationScopes));
+	}
 }

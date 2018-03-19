@@ -20,51 +20,53 @@ import org.springframework.stereotype.Service;
 @Service
 public class PCMUserDetailsService implements UserDetailsService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(PCMUserDetailsService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(PCMUserDetailsService.class);
 
-    // private final UserRepository userRepository;
-    // private final AuthenticationManager authenticationManager;
-    // private final PasswordEncoder passwordEncoder;
-    //
-    // @Autowired
-    // public PCMUserDetailsService(UserRepository userRepository, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder) {
-    // this.userRepository = userRepository;
-    // this.authenticationManager = authenticationManager;
-    // this.passwordEncoder = passwordEncoder;
-    // }
+	// private final UserRepository userRepository;
+	// private final AuthenticationManager authenticationManager;
+	// private final PasswordEncoder passwordEncoder;
+	//
+	// @Autowired
+	// public PCMUserDetailsService(UserRepository userRepository,
+	// AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder)
+	// {
+	// this.userRepository = userRepository;
+	// this.authenticationManager = authenticationManager;
+	// this.passwordEncoder = passwordEncoder;
+	// }
 
-    @Autowired
-    private UserRepository userRepository;
+	@Autowired
+	private UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+	@Autowired
+	private AuthenticationManager authenticationManager;
 
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> optionalUser = userRepository.findByUsername(username);
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		Optional<User> optionalUser = userRepository.findByUsername(username);
 
-        LOGGER.trace("Checking login attempt for: {}", username);
+		LOGGER.trace("Checking login attempt for: {}", username);
 
-        optionalUser.orElseThrow(() -> new UsernameNotFoundException("Username not found: " + username));
+		optionalUser.orElseThrow(() -> new UsernameNotFoundException("Username not found: " + username));
 
-        LOGGER.trace("Found user: {}", optionalUser.get().getUsername());
+		LOGGER.trace("Found user: {}", optionalUser.get().getUsername());
 
-        return optionalUser.get();
-    }
+		return optionalUser.get();
+	}
 
-    public void changePassword(String oldPassword, String newPassword) {
+	public void changePassword(String oldPassword, String newPassword) {
 
-        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
-        String username = currentUser.getName();
-        LOGGER.debug("Password change request for: {}", username);
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, oldPassword));
+		Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+		String username = currentUser.getName();
+		LOGGER.debug("Password change request for: {}", username);
+		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, oldPassword));
 
-        User user = (User) loadUserByUsername(username);
-        user.setPassword(passwordEncoder.encode(newPassword));
-        userRepository.save(user);
-        LOGGER.debug("Successfully changed password for: {}", username);
+		User user = (User) loadUserByUsername(username);
+		user.setPassword(passwordEncoder.encode(newPassword));
+		userRepository.save(user);
+		LOGGER.debug("Successfully changed password for: {}", username);
 
-    }
+	}
 }

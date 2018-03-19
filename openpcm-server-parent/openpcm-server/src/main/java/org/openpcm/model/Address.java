@@ -1,10 +1,8 @@
 package org.openpcm.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.openpcm.utils.ObjectUtil;
 
@@ -20,31 +18,34 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "address")
+@Embeddable
 public class Address {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "address_id")
-    private Long id;
+	/** The address line one. */
+	@NotNull
+	@Size(max = 100)
+	private String addressLineOne;
 
-    /** The address line one. */
-    private String addressLineOne;
+	/** The address line two. */
+	@Size(max = 100)
+	private String addressLineTwo;
 
-    /** The address line two. */
-    private String addressLineTwo;
+	/** The city. */
+	@NotNull
+	@Size(max = 100)
+	private String city;
 
-    /** The city. */
-    private String city;
+	/** The state. */
+	@NotNull
+	@Size(max = 100)
+	private String state;
 
-    /** The state. */
-    private String state;
+	/** The zip code. */
+	@Size(max = 10)
+	private String zipCode;
 
-    /** The zip code. */
-    private String zipCode;
-
-    @Override
-    public String toString() {
-        return ObjectUtil.print(this);
-    }
+	@Override
+	public String toString() {
+		return ObjectUtil.print(this);
+	}
 }

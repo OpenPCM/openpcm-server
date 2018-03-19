@@ -7,5 +7,5 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 public interface RoleRepository extends PagingAndSortingRepository<Role, Long> {
 
-    Optional<Role> findByName(String name);
+	Optional<Role> findByName(String name);
 }
