@@ -7,6 +7,12 @@
 		<artifactId>openpcm-server-parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
+	
+	<properties>
+		<docker.registry.ip>prod-nexus</docker.registry.ip>
+		<docker.registry.port>8082</docker.registry.port>
+		<docker.tag>latest</docker.tag>
+	</properties>
 
 	<artifactId>openpcm-server</artifactId>
 	<name>OpenPCM Server</name>
@@ -240,7 +246,7 @@
 						<images>
 							<image>
 								<alias>${project.artifactId}</alias>
-								<name>${docker.registry.ip}:${docker.registry.port}/gsugambit/${project.artifactId}:${docker.tag}</name>
+								<name>${docker.registry.ip}:${docker.registry.port}/OpenPCM/${project.artifactId}:${docker.tag}</name>
 								<build>
 									<from>java:9-jdk</from>
 									<maintainer>${user.name}</maintainer>
