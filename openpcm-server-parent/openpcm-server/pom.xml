@@ -246,7 +246,7 @@
 						<images>
 							<image>
 								<alias>${project.artifactId}</alias>
-								<name>${docker.registry.ip}:${docker.registry.port}/OpenPCM/${project.artifactId}:${docker.tag}</name>
+								<name>${docker.registry.ip}:${docker.registry.port}/openpcm/${project.artifactId}:${docker.tag}</name>
 								<build>
 									<from>java:9-jdk</from>
 									<maintainer>${user.name}</maintainer>
