@@ -247,7 +247,7 @@
 								<alias>${project.artifactId}</alias>
 								<name>openpcm/openpcm-server:${docker.tag}</name>
 								<build>
-									<from>java:dekstroza/openjdk9-alpine</from>
+									<from>anapsix/alpine-java:9</from>
 									<maintainer>${user.name}</maintainer>
 									<assembly>
 										<basedir>/</basedir>
