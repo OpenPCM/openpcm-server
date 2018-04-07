@@ -10,7 +10,7 @@
 
 	<modules>
 		<module>openpcm-server</module>
-	</modules>
+	</modules> 
 
 	<properties>
 		<!-- build props -->
