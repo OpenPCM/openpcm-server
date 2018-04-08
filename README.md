@@ -27,7 +27,7 @@ The goal of OpenPCM is to provide a highly reactive, secure electronic medical r
 - Receive waveform data via FHIR and OpenPCM REST API
 
 ### Security
-- Backend services access secured by JWT
+- Backend services access secured by JWT 
 
 ## More Information
 
