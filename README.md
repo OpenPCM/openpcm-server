@@ -40,8 +40,6 @@ Master Build:
 Dev Build:
 [Dev Build Status]
 
-Dev Build:
-
 [GNU License included]: https://github.com/OpenPCM/openpcm-server/blob/master/LICENSE
 [Code of Conduct]: https://github.com/OpenPCM/openpcm-server/blob/master/CODE_OF_CONDUCT.md
 [Contributing Information]: https://github.com/OpenPCM/openpcm-server/blob/master/CONTRIBUTING.md
