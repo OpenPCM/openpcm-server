@@ -6,6 +6,7 @@ import java.security.Principal;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.openpcm.model.AuthSuccess;
 import org.openpcm.model.User;
 import org.openpcm.model.UserJWTTokenState;
 import org.openpcm.security.JWTRequest;
@@ -53,8 +54,8 @@ public class AuthenticationController extends BaseController {
 	@ApiOperation(value = "login", response = UserJWTTokenState.class)
 	@ResponseStatus(code = HttpStatus.OK)
 	@PostMapping(value = "/login")
-	@ApiResponses({ @ApiResponse(code = 200, response = UserJWTTokenState.class, message = "logged in") })
-	public @ResponseBody UserJWTTokenState login(
+	@ApiResponses({ @ApiResponse(code = 200, response = AuthSuccess.class, message = "logged in user and token") })
+	public @ResponseBody AuthSuccess login(
 			@ApiParam(value = "login credentials", name = "jwtRequest", required = true) @RequestBody JWTRequest jwtRequest,
 			HttpServletResponse response) throws AuthenticationException, IOException {
 
@@ -69,8 +70,11 @@ public class AuthenticationController extends BaseController {
 		User user = (User) authentication.getPrincipal();
 		String jwsToken = tokenHelper.generateToken(user.getUsername());
 		int expiresIn = tokenHelper.getExpiredIn();
+
 		// Return the token
-		return new UserJWTTokenState(jwsToken, expiresIn);
+		UserJWTTokenState token = new UserJWTTokenState(jwsToken, expiresIn);
+
+		return AuthSuccess.builder().token(token).user(user).build();
 	}
 
 	@ApiOperation(value = "refreshToken", response = UserJWTTokenState.class)
