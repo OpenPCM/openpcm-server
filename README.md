@@ -35,7 +35,7 @@ View the [OpenPCM Project Page] to learn about progress on features.
 View the [OpenPCM Wiki] to lean more technical information about the application
 
 Master Build:
-[![Build Status](https://jenkins.openpcm.org/job/OpenPCM_Server_Master/badge/icon)](https://jenkins.openpcm.org/job/OpenPCM_Server_Master/)
+[![Build Status](https://jenkins.openpcm.org/job/OpenPCM_Server_Master/badge/icon)](https://jenkins.openpcm.org/job/OpenPCM_Server_Master)
 
 Dev Build:
 [![Dev Build Status](https://jenkins.openpcm.org/buildStatus/icon?job=OpenPCM Server Dev)](https://jenkins.openpcm.org/job/OpenPCM Server Dev)
