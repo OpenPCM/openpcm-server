@@ -45,10 +45,6 @@ View the [OpenPCM Wiki] to lean more technical information about the application
 Master Build:
 [![Master Build Status](http://openpcm.org:9091/buildStatus/icon?job=OpenPCM_Server_Master)](http://openpcm.org:9091/job/OpenPCM_Server_Master)
 
-
-[![Build Status](https://jenkins.openpcm.org/job/OpenPCM_Server_Master/badge/icon)](https://jenkins.openpcm.org/job/OpenPCM_Server_Master/)
-
-
 Dev Build:
 [![Dev Build Status](http://openpcm.org:9091/buildStatus/icon?job=OpenPCM_Server_Dev)](http://openpcm.org:9091/job/OpenPCM_Server_Dev)
 
