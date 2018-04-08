@@ -195,7 +195,7 @@
 					<apiSources>
 						<apiSource>
 							<springmvc>true</springmvc>
-							<host>HOST:PORT</host>
+							<host>159.203.100.175:14606</host>
 							<basePath>/api/v1/</basePath>
 							<locations>
 								<location>org.openpcm</location>
@@ -239,7 +239,7 @@
 				<plugin>
 					<groupId>org.jolokia</groupId>
 					<artifactId>docker-maven-plugin</artifactId>
-					<version>0.13.7</version>
+					<version>0.13.9</version>
 					<configuration>
 					    
 						<images>
