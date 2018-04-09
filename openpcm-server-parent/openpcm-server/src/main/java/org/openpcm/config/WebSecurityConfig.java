@@ -55,7 +55,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().exceptionHandling()
 				.authenticationEntryPoint(authenticationEntryPoint).and().authorizeRequests()
-				.antMatchers("/api/v1/**", "/api/v1/*").permitAll().anyRequest().authenticated().and()
+				.antMatchers("/api/v1/**", "/api/v1/*").authenticated().anyRequest().permitAll().and()
 				.addFilterBefore(new JWTFilter(tokenHelper, userDetailsService), BasicAuthenticationFilter.class)
 				.addFilterBefore(new OperationIdInterceptor(), JWTFilter.class);
 
