@@ -1,2 +1,4 @@
 logging:
   path: "target/logs/"
+openpcm:
+  initSetup: true

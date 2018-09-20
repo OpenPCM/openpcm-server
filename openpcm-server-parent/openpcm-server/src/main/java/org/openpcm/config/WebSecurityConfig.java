@@ -22,59 +22,69 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
+import com.fasterxml.jackson.databind.Module;
+import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
+
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableWebSecurity
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final OpenPCMAuthenticationEntryPoint authenticationEntryPoint;
-    private final TokenHelper tokenHelper;
-    private final PasswordEncoder passwordEncoder;
-    private final boolean webDebug;
+	private final OpenPCMAuthenticationEntryPoint authenticationEntryPoint;
+	private final TokenHelper tokenHelper;
+	private final PasswordEncoder passwordEncoder;
+	private final boolean webDebug;
 
-    // Cant autowire avoiding circular dependency loop
-    @Autowired
-    private PCMUserDetailsService userDetailsService;
+	// Cant autowire avoiding circular dependency loop
+	@Autowired
+	private PCMUserDetailsService userDetailsService;
 
-    @Autowired
-    public WebSecurityConfig(OpenPCMAuthenticationEntryPoint authenticationEntryPoint, TokenHelper tokenHelper, PasswordEncoder passwordEncoder,
-                    @Value("${openpcm.web.debug:false}") boolean webDebug) {
-        this.authenticationEntryPoint = authenticationEntryPoint;
-        this.tokenHelper = tokenHelper;
-        this.passwordEncoder = passwordEncoder;
-        this.webDebug = webDebug;
-    }
+	@Autowired
+	public WebSecurityConfig(OpenPCMAuthenticationEntryPoint authenticationEntryPoint, TokenHelper tokenHelper,
+			PasswordEncoder passwordEncoder, @Value("${openpcm.web.debug:false}") boolean webDebug) {
+		this.authenticationEntryPoint = authenticationEntryPoint;
+		this.tokenHelper = tokenHelper;
+		this.passwordEncoder = passwordEncoder;
+		this.webDebug = webDebug;
+	}
 
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
-    }
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
+	}
 
-    protected void configure(HttpSecurity http) throws Exception {
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().exceptionHandling()
-                        .authenticationEntryPoint(authenticationEntryPoint).and().authorizeRequests().antMatchers("/api/v1/**", "/api/v1/*").permitAll()
-                        .anyRequest().authenticated().and().addFilterBefore(new JWTFilter(tokenHelper, userDetailsService), BasicAuthenticationFilter.class)
-                        .addFilterBefore(new OperationIdInterceptor(), JWTFilter.class);
+	protected void configure(HttpSecurity http) throws Exception {
+		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().exceptionHandling()
+				.authenticationEntryPoint(authenticationEntryPoint).and().authorizeRequests()
+				.antMatchers("/api/v1/**", "/api/v1/*").authenticated().anyRequest().permitAll().and()
+				.addFilterBefore(new JWTFilter(tokenHelper, userDetailsService), BasicAuthenticationFilter.class)
+				.addFilterBefore(new OperationIdInterceptor(), JWTFilter.class);
 
-        http.csrf().disable();
-    }
+		http.csrf().disable();
+	}
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
-    }
+	@Autowired
+	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
+	}
 
-    @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
+	@Bean(name = BeanIds.AUTHENTICATION_MANAGER)
+	@Override
+	public AuthenticationManager authenticationManagerBean() throws Exception {
+		return super.authenticationManagerBean();
+	}
 
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.debug(webDebug);
-        web.ignoring().antMatchers(HttpMethod.POST, "/authenticate/*").and().ignoring().antMatchers(AUTH_WHITELIST);
-    }
+	@Bean
+	public Module datatypeHibernateModule() {
+		return new Hibernate5Module();
+	}
 
-    private static final String[] AUTH_WHITELIST = { "/v2/**", "/swagger-resources", "/swagger-resources/**", "/swagger-ui.html", "/webjars/**",
-                    "/configuration/ui", "/configuration/security", "/actuator/*" };
+	@Override
+	public void configure(WebSecurity web) throws Exception {
+		web.debug(webDebug);
+		web.ignoring().antMatchers(HttpMethod.POST, "/authenticate/*").and().ignoring().antMatchers(AUTH_WHITELIST);
+	}
+
+	private static final String[] AUTH_WHITELIST = { "/v2/**", "/swagger-resources", "/swagger-resources/**",
+			"/swagger-ui.html", "/webjars/**", "/configuration/ui", "/configuration/security", "/actuator/*", "/h2",
+			"/h2/", "/h2/**" };
 }

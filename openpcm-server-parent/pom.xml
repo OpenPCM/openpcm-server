@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	
+
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.openpcm</groupId>
 	<artifactId>openpcm-server-parent</artifactId>
@@ -10,16 +10,18 @@
 
 	<modules>
 		<module>openpcm-server</module>
-	</modules>
+	</modules> 
 
 	<properties>
 		<!-- build props -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<jacoco-maven-plugin.version>0.7.4.201502262128</jacoco-maven-plugin.version>
+		<jacoco-maven-plugin.version>0.8.0</jacoco-maven-plugin.version>
 		<spring.boot.version>2.0.0.RELEASE</spring.boot.version>
-		<source.version>1.9</source.version>
-		<target.version>1.9</target.version>
-		<maven.compiler.version>3.3</maven.compiler.version>
+		<source.version>9</source.version>
+		<maven.compiler.source>9</maven.compiler.source>
+		<maven.compiler.target>9</maven.compiler.target>
+		<target.version>9</target.version>
+		<maven.compiler.version>3.7.0</maven.compiler.version>
 		<maven.build.timestamp.format>yyyy-MM-dd_HH-mm</maven.build.timestamp.format>
 
 		<!-- swagger props -->
@@ -28,8 +30,11 @@
 
 		<!-- Make sure this matches the spring mockito.version in the spring boot 
 			test -->
-		<mockito.version>1.10.19</mockito.version>
-		<powermock.version>1.6.4</powermock.version>
+		<mockito.version>2.0.2-beta</mockito.version>
+		<!-- make sure this is compatible with the above mockito.version -->
+		<powermock.version>2.0.0-beta.5</powermock.version>
+		
+		<camel.version>2.20.2</camel.version>
 	</properties>
 
 	<build>
@@ -38,6 +43,7 @@
 				<plugin>
 					<groupId>org.springframework.boot</groupId>
 					<artifactId>spring-boot-maven-plugin</artifactId>
+					<version>2.0.0.RELEASE</version>
 					<executions>
 						<execution>
 							<goals>
@@ -51,9 +57,15 @@
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>${maven.compiler.version}</version>
 					<configuration>
+						<fork>true</fork>
 						<source>${source.version}</source>
 						<target>${target.version}</target>
 					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>2.21.0</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>

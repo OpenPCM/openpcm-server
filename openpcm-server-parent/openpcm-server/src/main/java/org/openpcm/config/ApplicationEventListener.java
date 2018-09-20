@@ -9,12 +9,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class ApplicationEventListener implements ApplicationListener {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationEventListener.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationEventListener.class);
 
-    @Override
-    public void onApplicationEvent(ApplicationEvent event) {
-        LOGGER.debug("Event: {}", event.getClass().getSimpleName());
+	@Override
+	public void onApplicationEvent(ApplicationEvent event) {
+		LOGGER.debug("Event: {}", event.getClass().getSimpleName());
 
-    }
+	}
 
 }
