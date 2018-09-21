@@ -1,16 +1,17 @@
 package org.openpcm.util;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.openpcm.utils.ObjectUtil;
 
 public class ObjectUtilTest {
 
+    @DisplayName("Ensure ObjectWriter correctly serializes objects")
     @Test
     public void test_print_worksCorrectly() {
-        Tester tester = new Tester() {
+        final Tester tester = new Tester() {
 
             private String name = "test";
 
@@ -24,12 +25,13 @@ public class ObjectUtilTest {
 
         };
 
-        assertEquals("json is incorrect", "{\"name\":\"test\"}", ObjectUtil.print(tester));
+        assertEquals("{\"name\":\"test\"}", ObjectUtil.print(tester), "json is incorrect");
     }
 
+    @DisplayName("Ensure ObjectWriter pretty print correctly serializes objects")
     @Test
     public void test_prettyPrint_worksCorrectly() {
-        Tester tester = new Tester() {
+        final Tester tester = new Tester() {
 
             private String name = "test";
 
@@ -43,8 +45,7 @@ public class ObjectUtilTest {
 
         };
 
-        assertTrue("json is incorrect", ObjectUtil.prettyPrint(tester).contains("name"));
-        assertTrue("json is incorrect", ObjectUtil.prettyPrint(tester).contains("test"));
+        assertEquals("{\r\n  \"name\" : \"test\"\r\n}", ObjectUtil.prettyPrint(tester), "json is incorrect");
     }
 
 }

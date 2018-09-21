@@ -16,6 +16,8 @@
 	<properties>
 		<!-- build props -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		
 		<jacoco-maven-plugin.version>0.8.0</jacoco-maven-plugin.version>
 		<spring.boot.version>2.0.5.RELEASE</spring.boot.version>
 		<maven.compiler.version>3.7.0</maven.compiler.version>
@@ -34,6 +36,9 @@
 		<camel.version>2.20.2</camel.version>
 		<maven.compiler.source>9</maven.compiler.source>
 		<maven.compiler.target>9</maven.compiler.target>
+		
+		<maven-failsafe-plugin.version>2.22.0</maven-failsafe-plugin.version>
+		<maven-surefire-plugin.version>2.22.0</maven-surefire-plugin.version>
 	</properties>
 
 	<build>
