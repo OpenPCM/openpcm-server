@@ -20,75 +20,77 @@ import org.springframework.util.StringUtils;
 @Service
 public class UserService {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
-	private final UserRepository userRepository;
+    private final UserRepository userRepository;
 
-	private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-	@Autowired
-	public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-		this.userRepository = userRepository;
-		this.passwordEncoder = passwordEncoder;
-	}
+    @Autowired
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
-	public User create(User user) throws DataViolationException {
-		if (!(user.getId() == null || user.getId() == 0)) {
-			throw new DataViolationException("user id should be null on create");
-		}
+    public User create(User user) throws DataViolationException {
+        if (!((user.getId() == null) || (user.getId() == 0))) {
+            throw new DataViolationException("user id should be null on create");
+        }
 
-		if (!StringUtils.isEmpty(user.getPassword())) {
-			user.setPassword(passwordEncoder.encode(user.getPassword()));
-		}
+        if (!StringUtils.isEmpty(user.getPassword())) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
 
-		LOGGER.trace("Attempting to create user: {}", user);
+        LOGGER.trace("Attempting to create user: {}", user);
 
-		return userRepository.save(user);
-	}
+        return userRepository.save(user);
+    }
 
-	public User read(Long id) throws NotFoundException {
-		Optional<User> user = userRepository.findById(id);
+    public User read(Long id) throws NotFoundException {
+        final Optional<User> user = userRepository.findById(id);
 
-		if (user.isPresent()) {
-			LOGGER.trace("Returning user: {}.", id);
-			return user.get();
-		} else {
-			throw new NotFoundException(id + " not found");
-		}
-	}
+        if (user.isPresent()) {
+            LOGGER.trace("Returning user: {}.", id);
+            return user.get();
+        } else {
+            throw new NotFoundException(id + " not found");
+        }
+    }
 
-	public Page<User> read(Pageable pageable) {
-		LOGGER.trace("Returning page {} of {} user(s).", pageable.getPageNumber(), pageable.getPageSize());
-		return userRepository.findAll(pageable);
-	}
+    public Page<User> read(Pageable pageable) {
+        LOGGER.trace("Returning page {} of {} user(s).", pageable.getPageNumber(), pageable.getPageSize());
+        return userRepository.findAll(pageable);
+    }
 
-	public User update(Long id, User user) throws NotFoundException {
-		Optional<User> dbUser = userRepository.findById(id);
+    public User update(Long id, User user) throws NotFoundException {
+        final Optional<User> dbUser = userRepository.findById(id);
 
-		if (!dbUser.isPresent()) {
-			throw new NotFoundException(id + " not found");
-		}
+        if (!dbUser.isPresent()) {
+            throw new NotFoundException(id + " not found");
+        }
 
-		// detecting if password changed, if it did we encrypt it because it's raw
-		// password
-		if (!StringUtils.isEmpty(user.getPassword())) {
-			if (!user.getPassword().equals(dbUser.get().getPassword())) {
-				user.setPassword(passwordEncoder.encode(user.getPassword()));
-			}
-		}
+        // detecting if password changed, if it did we encrypt it because it's raw
+        // password
+        if (!StringUtils.isEmpty(user.getPassword())) {
+            if (!user.getPassword().equals(dbUser.get().getPassword())) {
+                user.setPassword(passwordEncoder.encode(user.getPassword()));
+            }
+        }
 
-		user.setId(dbUser.get().getId());
+        user.setId(dbUser.get().getId());
 
-		LOGGER.trace("Attempting to save updated user: {}", user);
+        LOGGER.trace("Attempting to save updated user: {}", user);
 
-		return userRepository.save(user);
-	}
+        return userRepository.save(user);
+    }
 
-	public void delete(Long id) {
-		LOGGER.trace("Deleting user: {}", id);
+    public void delete(Long id) throws NotFoundException {
+        LOGGER.trace("Deleting user: {}", id);
 
-		if (userRepository.existsById(id)) {
-			userRepository.deleteById(id);
-		}
-	}
+        if (userRepository.existsById(id)) {
+            userRepository.deleteById(id);
+        } else {
+            throw new NotFoundException(id + " not found");
+        }
+    }
 }

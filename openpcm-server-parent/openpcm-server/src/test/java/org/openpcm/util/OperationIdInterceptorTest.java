@@ -1,6 +1,6 @@
 package org.openpcm.util;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
@@ -15,9 +15,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.jboss.logging.MDC;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.openpcm.constants.Constants;
@@ -36,7 +37,7 @@ public class OperationIdInterceptorTest {
     @Mock
     private FilterChain mockFilterChain;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         interceptor = new OperationIdInterceptor();
@@ -44,6 +45,7 @@ public class OperationIdInterceptorTest {
         MDC.put(Constants.OPERATION_ID, "");
     }
 
+    @DisplayName("Ensure operation id from request is set on response")
     @Test
     public void test_doFilterInterval_AddsResponseHeaderWhenPresentOnRequest() throws IOException, ServletException {
 
@@ -52,7 +54,7 @@ public class OperationIdInterceptorTest {
 
         try {
             interceptor.doFilterInternal(mockRequest, mockResponse, mockFilterChain);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             fail(e.getMessage());
         }
 
@@ -60,6 +62,7 @@ public class OperationIdInterceptorTest {
         verify(mockResponse, times(1)).addHeader(eq(Constants.RECRUITMENT), eq(Constants.RECRUITMENT_MESSAGE));
     }
 
+    @DisplayName("Ensure operation id is generated when not present on request")
     @Test
     public void test_doFilterInterval_AddsResponseHeaderWhenNotPresentOnRequest() throws IOException, ServletException {
 
@@ -68,7 +71,7 @@ public class OperationIdInterceptorTest {
 
         try {
             interceptor.doFilterInternal(mockRequest, mockResponse, mockFilterChain);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             fail(e.getMessage());
         }
 
@@ -76,6 +79,7 @@ public class OperationIdInterceptorTest {
         verify(mockResponse, times(1)).addHeader(eq(Constants.RECRUITMENT), eq(Constants.RECRUITMENT_MESSAGE));
     }
 
+    @DisplayName("Ensure operation id on response is not overwritten")
     @Test
     public void test_doFilterInterval_KeepsResponseHeaderWhenNotPresentOnRequestOrMDC() throws IOException, ServletException {
 
@@ -85,7 +89,7 @@ public class OperationIdInterceptorTest {
 
         try {
             interceptor.doFilterInternal(mockRequest, mockResponse, mockFilterChain);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             fail(e.getMessage());
         }
 
@@ -93,6 +97,7 @@ public class OperationIdInterceptorTest {
         verify(mockResponse, times(1)).addHeader(eq(Constants.RECRUITMENT), eq(Constants.RECRUITMENT_MESSAGE));
     }
 
+    @DisplayName("Ensure operation id from thread is added to response")
     @Test
     public void test_doFilterInterval_PutsMDCOpIdOnResponseHeaderWhenNotPresentOnRequestButMDC() throws IOException, ServletException {
 
@@ -102,7 +107,7 @@ public class OperationIdInterceptorTest {
 
         try {
             interceptor.doFilterInternal(mockRequest, mockResponse, mockFilterChain);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             fail(e.getMessage());
         }
 
@@ -110,7 +115,7 @@ public class OperationIdInterceptorTest {
         verify(mockResponse, times(1)).addHeader(eq(Constants.RECRUITMENT), eq(Constants.RECRUITMENT_MESSAGE));
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         MDC.put(Constants.OPERATION_ID, "");
     }

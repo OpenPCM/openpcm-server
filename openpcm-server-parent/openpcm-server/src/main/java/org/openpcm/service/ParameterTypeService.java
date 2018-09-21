@@ -18,60 +18,62 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ParameterTypeService {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ParameterTypeService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ParameterTypeService.class);
 
-	private final ParameterTypeRepository repository;
+    private final ParameterTypeRepository repository;
 
-	@Autowired
-	public ParameterTypeService(ParameterTypeRepository repository) {
-		this.repository = repository;
-	}
+    @Autowired
+    public ParameterTypeService(ParameterTypeRepository repository) {
+        this.repository = repository;
+    }
 
-	public ParameterType create(ParameterType parameterType) throws DataViolationException {
-		if (!(parameterType.getId() == null || parameterType.getId() == 0)) {
-			throw new DataViolationException("parameterType id should be null on create");
-		}
+    public ParameterType create(ParameterType parameterType) throws DataViolationException {
+        if (!((parameterType.getId() == null) || (parameterType.getId() == 0))) {
+            throw new DataViolationException("parameterType id should be null on create");
+        }
 
-		LOGGER.trace("Attempting to create parameterType: {}", parameterType);
-		return repository.save(parameterType);
-	}
+        LOGGER.trace("Attempting to create parameterType: {}", parameterType);
+        return repository.save(parameterType);
+    }
 
-	public ParameterType read(Long id) throws NotFoundException {
-		Optional<ParameterType> parameterType = repository.findById(id);
+    public ParameterType read(Long id) throws NotFoundException {
+        final Optional<ParameterType> parameterType = repository.findById(id);
 
-		if (parameterType.isPresent()) {
-			LOGGER.trace("Returning parameterType: {}.", id);
-			return parameterType.get();
-		} else {
-			throw new NotFoundException(id + " not found");
-		}
-	}
+        if (parameterType.isPresent()) {
+            LOGGER.trace("Returning parameterType: {}.", id);
+            return parameterType.get();
+        } else {
+            throw new NotFoundException(id + " not found");
+        }
+    }
 
-	public Page<ParameterType> read(Pageable pageable) {
-		LOGGER.trace("Returning page {} of {} parameterType(s).", pageable.getPageNumber(), pageable.getPageSize());
-		return repository.findAll(pageable);
-	}
+    public Page<ParameterType> read(Pageable pageable) {
+        LOGGER.trace("Returning page {} of {} parameterType(s).", pageable.getPageNumber(), pageable.getPageSize());
+        return repository.findAll(pageable);
+    }
 
-	public ParameterType update(Long id, ParameterType parameterType) throws NotFoundException {
-		Optional<ParameterType> dbParameterType = repository.findById(id);
+    public ParameterType update(Long id, ParameterType parameterType) throws NotFoundException {
+        final Optional<ParameterType> dbParameterType = repository.findById(id);
 
-		if (!dbParameterType.isPresent()) {
-			throw new NotFoundException(id + " not found");
-		}
+        if (!dbParameterType.isPresent()) {
+            throw new NotFoundException(id + " not found");
+        }
 
-		parameterType.setId(dbParameterType.get().getId());
+        parameterType.setId(dbParameterType.get().getId());
 
-		LOGGER.trace("Attempting to save updated parameterType: {}", parameterType);
+        LOGGER.trace("Attempting to save updated parameterType: {}", parameterType);
 
-		return repository.save(parameterType);
-	}
+        return repository.save(parameterType);
+    }
 
-	public void delete(Long id) {
-		LOGGER.trace("Deleting parameterType: {}", id);
+    public void delete(Long id) throws NotFoundException {
+        LOGGER.trace("Deleting parameterType: {}", id);
 
-		if (repository.existsById(id)) {
-			repository.deleteById(id);
-		}
-	}
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
+        } else {
+            throw new NotFoundException(id + " not found");
+        }
+    }
 
 }
