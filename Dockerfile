@@ -1,13 +1,13 @@
-FROM openjdk:9
+FROM maven:3.5.4-jdk-9-slim
 
-ENV PORT = 14606
+ENV PORT = 8080
 
-EXPOSE 14606
+EXPOSE 8080
 
 COPY . /code-repo
 WORKDIR /code-repo
-RUN mvn install
-COPY /code-repo/target/*jar /openpcm.jar
+RUN mvn package spring-boot:repackage -DskipTests=true
+RUN mv /code-repo/target/*.jar /openpcm.jar
 RUN rm -rf /code-repo
-
-CMD["java", "-jar", "/openpcm.jar"]
+RUN cd /
+CMD ["java", "-jar", "/openpcm.jar"]
