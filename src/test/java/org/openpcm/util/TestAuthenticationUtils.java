@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 @Component
@@ -26,7 +27,7 @@ public final class TestAuthenticationUtils {
     }
 
     public HttpEntity convert(String body, AuthSuccess authSuccess) {
-        final HttpHeaders headers = new HttpHeaders();
+        final MultiValueMap headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + authSuccess.getToken().getAccess_token());
         headers.add(HttpHeaders.CONTENT_TYPE, "application/json");
         return new HttpEntity<>(body, headers);

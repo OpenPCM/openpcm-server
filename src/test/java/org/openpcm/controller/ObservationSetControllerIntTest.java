@@ -1,8 +1,11 @@
 package org.openpcm.controller;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.experimental.categories.Category;
 import org.junit.jupiter.api.AfterEach;
@@ -15,7 +18,6 @@ import org.openpcm.dao.ObservationSetRepository;
 import org.openpcm.model.AuthSuccess;
 import org.openpcm.model.ObservationSet;
 import org.openpcm.util.TestAuthenticationUtils;
-import org.openpcm.utils.ObjectUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +25,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -67,47 +72,34 @@ public class ObservationSetControllerIntTest {
     public void test_createSucceeds(@Autowired ObservationSet set) throws URISyntaxException {
         // final URI myUri = new URI();
         // LOGGER.warn("URI: {}", myUri.toString());
-        authHeaders = authentication.convert(ObjectUtil.print(set), authSuccess);
+
         final ResponseEntity<ObservationSet> result = restTemplate.exchange(base + "/api/v1/observationset", HttpMethod.POST, authHeaders,
                         ObservationSet.class);
         assertNotNull(result.getBody().getId(), "instance should not be null");
         assertNotNull(result.getBody().getParameters().get(0).getId(), "instance should not be null");
     }
 
-    // @Test
-    // public void test_create_happy() throws DataViolationException {
-    //
-    // final ObservationSet result = controller.createObservationSet(set);
-    //
-    // }
-    //
-    // @Test
-    // public void test_read_pagination_happy() {
-    // final Map<String, String> parameterAttributes = new HashMap<>();
-    // parameterAttributes.put("PATIENT_STATE", "SITTING");
-    // final List<Parameter> parameters = new ArrayList<>();
-    // parameters.add(Parameter.builder().name("SPO2").description("SpO2").uom("%").timestamp(new Date()).utcOffset("-500").value("100")
-    // .attributes(parameterAttributes).build());
-    // final Map<String, String> setAttributes = new HashMap<>();
-    // setAttributes.put("DOCUMENTATION_TYPE", "MDI");
-    // final ObservationSet set = ObservationSet.builder().origin("Device2").originType("MED-DEVICE").timestamp(new Date()).utcOffset("-0500")
-    // .parameters(parameters).attributes(setAttributes).build();
-    //
-    // repository.save(set);
-    //
-    // final Page<ObservationSet> page = controller.readObservationSets(PageRequest.of(0, 20));
-    //
-    // assertEquals(1, page.getNumberOfElements(), "incorrect number of elements");
-    // assertEquals(set.getId(), page.getContent().get(0).getId(), "incorrect property value");
-    // assertEquals(set.getParameters().get(0).getId(), page.getContent().get(0).getParameters().get(0).getId(), "incorrect property value");
-    // }
-    //
+    @Test
+    public void test_read_pagination_happy(@Autowired ObservationSet set) {
+
+        repository.save(set);
+        authHeaders = authentication.convert("", authSuccess);
+        // final ParameterizedTypeReference<RestResponsePage<ObservationSet>> responseType = new ParameterizedTypeReference<RestResponsePage<ObservationSet>>()
+        // {
+        // };
+        final ResponseEntity<String> result = restTemplate.exchange(base + "/api/v1/observationset", HttpMethod.GET, authHeaders, String.class);
+
+        assertEquals(HttpStatus.OK, result.getStatusCode(), "incorrect status code");
+    }
+
+    // TODO: Finish converting tests
     // @Test
     // public void test_read_byId_happy() throws NotFoundException {
     // final Map<String, String> parameterAttributes = new HashMap<>();
     // parameterAttributes.put("PATIENT_STATE", "UNCONSCIOUS");
     // final List<Parameter> parameters = new ArrayList<>();
-    // parameters.add(Parameter.builder().name("RESP_IMP").description("Respiration Impedance").uom("bpm").timestamp(new Date()).utcOffset("-500").value("12")
+    // parameters.add(Parameter.builder().name("RESP_IMP").description("Respiration Impedance").uom("bpm").timestamp(new
+    // Date()).utcOffset("-500").value("12")
     // .attributes(parameterAttributes).build());
     // final Map<String, String> setAttributes = new HashMap<>();
     // setAttributes.put("DOCUMENTATION_TYPE", "MACH_CALC");
@@ -168,6 +160,29 @@ public class ObservationSetControllerIntTest {
     @AfterEach
     public void tearDown() {
         repository.deleteAll();
+    }
+
+}
+
+class RestResponsePage<T> extends PageImpl<T> {
+
+    private static final long serialVersionUID = 3248189030448292002L;
+
+    public RestResponsePage(List<T> content, Pageable pageable, long total) {
+        super(content, pageable, total);
+        // TODO Auto-generated constructor stub
+    }
+
+    public RestResponsePage(List<T> content) {
+        super(content);
+        // TODO Auto-generated constructor stub
+    }
+
+    /*
+     * PageImpl does not have an empty constructor and this was causing an issue for RestTemplate to cast the Rest API response back to Page.
+     */
+    public RestResponsePage() {
+        super(new ArrayList<T>());
     }
 
 }
