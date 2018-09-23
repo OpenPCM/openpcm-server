@@ -2,13 +2,7 @@ package org.openpcm.controller;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.junit.experimental.categories.Category;
 import org.junit.jupiter.api.AfterEach;
@@ -20,7 +14,6 @@ import org.openpcm.annotation.IntegrationTest;
 import org.openpcm.dao.ObservationSetRepository;
 import org.openpcm.model.AuthSuccess;
 import org.openpcm.model.ObservationSet;
-import org.openpcm.model.Parameter;
 import org.openpcm.util.TestAuthenticationUtils;
 import org.openpcm.utils.ObjectUtil;
 import org.slf4j.Logger;
@@ -64,28 +57,19 @@ public class ObservationSetControllerIntTest {
     private ObservationSetRepository repository;
 
     @BeforeEach
-    public void beforeAll() {
+    public void beforeEach() {
         base = "http://localhost:" + port;
         authSuccess = authentication.retrieveCreds(base);
     }
 
     @Test
     @DisplayName("Ensure observation set can be created")
-    public void test_createSucceeds() throws URISyntaxException {
-        final Map<String, String> parameterAttributes = new HashMap<>();
-        parameterAttributes.put("PATIENT_STATE", "STANDING");
-        final List<Parameter> parameters = new ArrayList<>();
-        parameters.add(Parameter.builder().name("HR").description("Heart Rate").uom("bpm").timestamp(new Date()).utcOffset("-500").value("100")
-                        .attributes(parameterAttributes).build());
-        final Map<String, String> setAttributes = new HashMap<>();
-        setAttributes.put("DOCUMENTATION_TYPE", "MANUAL");
-        final ObservationSet set = ObservationSet.builder().origin("Device1").originType("CLINICIAN").timestamp(new Date()).utcOffset("-0500")
-                        .parameters(parameters).attributes(setAttributes).build();
-
-        final URI myUri = new URI(base + "/api/v1/observationset");
-        LOGGER.warn("URI: {}", myUri.toString());
+    public void test_createSucceeds(@Autowired ObservationSet set) throws URISyntaxException {
+        // final URI myUri = new URI();
+        // LOGGER.warn("URI: {}", myUri.toString());
         authHeaders = authentication.convert(ObjectUtil.print(set), authSuccess);
-        final ResponseEntity<ObservationSet> result = restTemplate.exchange(myUri, HttpMethod.POST, authHeaders, ObservationSet.class);
+        final ResponseEntity<ObservationSet> result = restTemplate.exchange(base + "/api/v1/observationset", HttpMethod.POST, authHeaders,
+                        ObservationSet.class);
         assertNotNull(result.getBody().getId(), "instance should not be null");
         assertNotNull(result.getBody().getParameters().get(0).getId(), "instance should not be null");
     }
