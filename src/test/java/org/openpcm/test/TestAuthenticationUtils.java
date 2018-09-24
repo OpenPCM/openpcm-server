@@ -1,4 +1,4 @@
-package org.openpcm.util;
+package org.openpcm.test;
 
 import org.openpcm.model.AuthSuccess;
 import org.openpcm.security.JWTRequest;

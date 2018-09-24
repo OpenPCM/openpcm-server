@@ -5,7 +5,6 @@ import javax.validation.constraints.NotNull;
 import org.openpcm.exceptions.DataViolationException;
 import org.openpcm.exceptions.NotFoundException;
 import org.openpcm.model.ObservationSet;
-import org.openpcm.model.ParameterType;
 import org.openpcm.service.ObservationSetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -43,7 +42,7 @@ public class ObservationSetController extends BaseController {
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "createObservationSet", response = ObservationSet.class)
     @PostMapping(value = "observationset")
-    @ApiResponses({ @ApiResponse(code = 201, response = ParameterType.class, message = "created observationSet") })
+    @ApiResponses({ @ApiResponse(code = 201, response = ObservationSet.class, message = "created observationSet") })
     public @ResponseBody ObservationSet createObservationSet(
                     @ApiParam(value = "observationSet to create", name = "observationSet", required = true) @RequestBody ObservationSet observationSet)
                     throws DataViolationException {
@@ -60,7 +59,7 @@ public class ObservationSetController extends BaseController {
 
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "readObsevationSet", response = ObservationSet.class)
-    @GetMapping(value = "observationSet/{id}")
+    @GetMapping(value = "observationset/{id}")
     @ApiResponses({ @ApiResponse(code = 200, response = ObservationSet.class, message = "read observationSet") })
     public @ResponseBody ObservationSet readObservationSet(@ApiParam(value = "observationSet to read", name = "id", required = true) @PathVariable Long id)
                     throws NotFoundException {

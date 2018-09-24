@@ -28,7 +28,7 @@ public class ObservationSetService {
 
     public ObservationSet create(ObservationSet observationSet) throws DataViolationException {
         if (!((observationSet.getId() == null) || (observationSet.getId() == 0))) {
-            throw new DataViolationException("parameterType id should be null on create");
+            throw new DataViolationException("observationSet id should be null on create");
         }
 
         LOGGER.trace("Attempting to create observationSet: {}", observationSet);
