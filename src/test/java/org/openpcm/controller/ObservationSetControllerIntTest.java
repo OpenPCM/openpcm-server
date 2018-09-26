@@ -5,9 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.junit.experimental.categories.Category;
 import org.junit.jupiter.api.AfterEach;
@@ -20,6 +19,7 @@ import org.openpcm.dao.ObservationSetRepository;
 import org.openpcm.exceptions.NotFoundException;
 import org.openpcm.model.AuthSuccess;
 import org.openpcm.model.ObservationSet;
+import org.openpcm.test.RestResponsePage;
 import org.openpcm.test.TestAuthenticationUtils;
 import org.openpcm.utils.ObjectUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +27,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 
 @Category(IntegrationTest.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -65,7 +67,7 @@ public class ObservationSetControllerIntTest {
     @Test
     @DisplayName("Ensure observation set can be created")
     public void test_createSucceeds(@Autowired ObservationSet set) throws URISyntaxException {
-        final HttpEntity authHeaders = authentication.convert(ObjectUtil.print(set), authSuccess);
+        final HttpEntity<String> authHeaders = authentication.convert(ObjectUtil.print(set), authSuccess);
         final ResponseEntity<ObservationSet> result = restTemplate.exchange(base + "/api/v1/observationset", HttpMethod.POST, authHeaders,
                         ObservationSet.class);
 
@@ -75,21 +77,23 @@ public class ObservationSetControllerIntTest {
     }
 
     @Test
-    public void test_read_pagination_happy(@Autowired ObservationSet set) {
+    public void test_read_pagination_happy(@Autowired ObservationSet set) throws JsonParseException, JsonMappingException, IOException {
         repository.save(set);
-        final HttpEntity authHeaders = authentication.convert("", authSuccess);
-        // final ParameterizedTypeReference<RestResponsePage<ObservationSet>> responseType = new ParameterizedTypeReference<RestResponsePage<ObservationSet>>()
-        // {
-        // };
-        final ResponseEntity<String> result = restTemplate.exchange(base + "/api/v1/observationset", HttpMethod.GET, authHeaders, String.class);
+        final HttpEntity<String> authHeaders = authentication.convert("", authSuccess);
+        final ParameterizedTypeReference<RestResponsePage<ObservationSet>> responseType = new ParameterizedTypeReference<RestResponsePage<ObservationSet>>() {
+        };
+        final ResponseEntity<RestResponsePage<ObservationSet>> result = restTemplate.exchange(base + "/api/v1/observationset", HttpMethod.GET, authHeaders,
+                        responseType);
 
         assertSame(HttpStatus.OK, result.getStatusCode(), "incorrect status code");
+        assertSame(1, result.getBody().getContent().size(), "incorrect number of elements");
+
     }
 
     @Test
     public void test_read_byId_happy(@Autowired ObservationSet set) throws NotFoundException {
         repository.save(set);
-        final HttpEntity authHeaders = authentication.convert("", authSuccess);
+        final HttpEntity<String> authHeaders = authentication.convert("", authSuccess);
         final ResponseEntity<ObservationSet> result = restTemplate.exchange(base + "/api/v1/observationset/" + set.getId(), HttpMethod.GET, authHeaders,
                         ObservationSet.class);
 
@@ -102,7 +106,7 @@ public class ObservationSetControllerIntTest {
     public void test_update_happy(@Autowired ObservationSet set) throws NotFoundException {
         repository.save(set);
         set.setOrigin("Device5");
-        final HttpEntity authHeaders = authentication.convert(ObjectUtil.print(set), authSuccess);
+        final HttpEntity<String> authHeaders = authentication.convert(ObjectUtil.print(set), authSuccess);
         final ResponseEntity<ObservationSet> result = restTemplate.exchange(base + "/api/v1/observationset/" + set.getId(), HttpMethod.PUT, authHeaders,
                         ObservationSet.class);
 
@@ -114,7 +118,7 @@ public class ObservationSetControllerIntTest {
     @Test
     public void test_delete_happy(@Autowired ObservationSet set) throws NotFoundException {
         repository.save(set);
-        final HttpEntity authHeaders = authentication.convert("", authSuccess);
+        final HttpEntity<String> authHeaders = authentication.convert("", authSuccess);
         final ResponseEntity<String> result = restTemplate.exchange(base + "/api/v1/observationset/" + set.getId(), HttpMethod.DELETE, authHeaders,
                         String.class);
 
@@ -125,29 +129,6 @@ public class ObservationSetControllerIntTest {
     @AfterEach
     public void tearDown() {
         repository.deleteAll();
-    }
-
-}
-
-class RestResponsePage<T> extends PageImpl<T> {
-
-    private static final long serialVersionUID = 3248189030448292002L;
-
-    public RestResponsePage(List<T> content, Pageable pageable, long total) {
-        super(content, pageable, total);
-        // TODO Auto-generated constructor stub
-    }
-
-    public RestResponsePage(List<T> content) {
-        super(content);
-        // TODO Auto-generated constructor stub
-    }
-
-    /*
-     * PageImpl does not have an empty constructor and this was causing an issue for RestTemplate to cast the Rest API response back to Page.
-     */
-    public RestResponsePage() {
-        super(new ArrayList<T>());
     }
 
 }

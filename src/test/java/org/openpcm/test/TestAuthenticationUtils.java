@@ -26,10 +26,10 @@ public final class TestAuthenticationUtils {
         return success;
     }
 
-    public HttpEntity convert(String body, AuthSuccess authSuccess) {
-        final MultiValueMap headers = new HttpHeaders();
+    public HttpEntity<String> convert(String body, AuthSuccess authSuccess) {
+        final MultiValueMap<String, String> headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + authSuccess.getToken().getAccess_token());
         headers.add(HttpHeaders.CONTENT_TYPE, "application/json");
-        return new HttpEntity<>(body, headers);
+        return new HttpEntity<String>(body, headers);
     }
 }
