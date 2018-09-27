@@ -37,13 +37,9 @@ public class ObservationSetService {
 
     public ObservationSet read(Long id) throws NotFoundException {
         final Optional<ObservationSet> observationSet = repository.findById(id);
-
-        if (observationSet.isPresent()) {
-            LOGGER.trace("Returning observationSet: {}.", id);
-            return observationSet.get();
-        } else {
-            throw new NotFoundException(id + " not found");
-        }
+        observationSet.orElseThrow(() -> new NotFoundException(id + " not found"));
+        LOGGER.trace("Returning observationSet: {}.", observationSet);
+        return observationSet.get();
     }
 
     public Page<ObservationSet> read(Pageable pageable) {

@@ -13,4 +13,8 @@ public interface CollectorRepository extends PagingAndSortingRepository<Collecto
 
     @EntityGraph(value = "Collector.attributes", type = EntityGraph.EntityGraphType.LOAD)
     List<Collector> findByAttributesKeyAndAttributesValue(String key, String value);
+
+    @Override
+    @EntityGraph(value = "Collector.attributes", type = EntityGraph.EntityGraphType.LOAD)
+    Optional<Collector> findById(Long id);
 }

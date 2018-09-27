@@ -48,13 +48,9 @@ public class UserService {
 
     public User read(Long id) throws NotFoundException {
         final Optional<User> user = userRepository.findById(id);
-
-        if (user.isPresent()) {
-            LOGGER.trace("Returning user: {}.", id);
-            return user.get();
-        } else {
-            throw new NotFoundException(id + " not found");
-        }
+        user.orElseThrow(() -> new NotFoundException(id + " not found"));
+        LOGGER.trace("Returning user: {}.", user);
+        return user.get();
     }
 
     public Page<User> read(Pageable pageable) {
@@ -64,10 +60,7 @@ public class UserService {
 
     public User update(Long id, User user) throws NotFoundException {
         final Optional<User> dbUser = userRepository.findById(id);
-
-        if (!dbUser.isPresent()) {
-            throw new NotFoundException(id + " not found");
-        }
+        dbUser.orElseThrow(() -> new NotFoundException(id + " not found"));
 
         // detecting if password changed, if it did we encrypt it because it's raw
         // password

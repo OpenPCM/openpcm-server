@@ -42,11 +42,9 @@ public class CollectorService {
 
         LOGGER.trace("Returning collector: {}.", id);
 
-        if (role.isPresent()) {
-            return role.get();
-        } else {
-            throw new NotFoundException(id + " not found");
-        }
+        role.orElseThrow(() -> new NotFoundException(id + " not found"));
+
+        return role.get();
     }
 
     public Page<Collector> read(Pageable pageable) {
@@ -56,11 +54,7 @@ public class CollectorService {
 
     public Collector update(Long id, Collector collector) throws NotFoundException {
         final Optional<Collector> dbCollector = repository.findById(id);
-
-        if (!dbCollector.isPresent()) {
-            throw new NotFoundException(id + " not found");
-        }
-
+        dbCollector.orElseThrow(() -> new NotFoundException(id + " not found"));
         collector.setId(dbCollector.get().getId());
         LOGGER.trace("Attempting to save collector: {}", collector);
         return repository.save(collector);
