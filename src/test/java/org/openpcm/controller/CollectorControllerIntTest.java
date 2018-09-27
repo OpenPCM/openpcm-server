@@ -99,7 +99,7 @@ public class CollectorControllerIntTest {
 
         assertSame(HttpStatus.OK, result.getStatusCode(), "incorrect status code");
         assertEquals(collector.getId(), result.getBody().getId(), "incorrect property value");
-        assertEquals(collector.getAttributes().get(0), result.getBody().getAttributes().get(0), "incorrect property value");
+        assertEquals(collector.getAttributes().get(0).getKey(), "incorrect property value");
     }
 
     @Test

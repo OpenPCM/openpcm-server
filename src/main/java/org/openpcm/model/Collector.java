@@ -1,5 +1,6 @@
 package org.openpcm.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -42,7 +43,7 @@ public class Collector {
 
     @ElementCollection
     @CollectionTable(name = "collector_attributes", joinColumns = @JoinColumn(name = "collector_id"))
-    private List<Attribute> attributes;
+    private List<Attribute> attributes = new ArrayList<>();
 
     @Override
     public String toString() {
