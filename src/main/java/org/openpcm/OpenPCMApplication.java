@@ -13,9 +13,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableJpaRepositories("org.openpcm.dao")
 public class OpenPCMApplication {
 
-	public static void main(String[] args) throws Exception {
-		ConfigurableApplicationContext context = SpringApplication.run(OpenPCMApplication.class, args);
-		context.publishEvent(new OpenPCMEvent(OpenPCMApplication.class, EventType.APP_STARTED));
-
-	}
+    public static void main(String[] args) throws Exception {
+        final ConfigurableApplicationContext context = SpringApplication.run(OpenPCMApplication.class, args);
+        context.publishEvent(new OpenPCMEvent(OpenPCMApplication.class, EventType.APP_STARTED));
+    }
 }

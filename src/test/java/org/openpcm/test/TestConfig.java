@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.openpcm.model.Attribute;
+import org.openpcm.model.Collector;
 import org.openpcm.model.ObservationSet;
 import org.openpcm.model.Parameter;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -30,5 +32,14 @@ public class TestConfig {
         setAttributes.put("DOCUMENTATION_TYPE", "MANUAL");
         return ObservationSet.builder().origin("Device1").originType("CLINICIAN").timestamp(new Date()).utcOffset("-0500").parameters(parameters)
                         .attributes(setAttributes).build();
+    }
+
+    @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    @Bean
+    @Primary
+    Collector collector() {
+        final List<Attribute> attributes = new ArrayList<Attribute>();
+        attributes.add(new Attribute("GE Dinamap", "Critikon 9710"));
+        return Collector.builder().name("GE Dinamap").attributes(attributes).build();
     }
 }

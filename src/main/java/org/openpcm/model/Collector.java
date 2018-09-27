@@ -1,5 +1,6 @@
 package org.openpcm.model;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.persistence.CollectionTable;
@@ -10,7 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.MapKeyColumn;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -21,6 +23,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@NamedEntityGraph(name = "Collector.attributes", attributeNodes = @NamedAttributeNode("attributes"))
 @Builder
 @Data
 @NoArgsConstructor
@@ -29,22 +32,20 @@ import lombok.NoArgsConstructor;
 @Table(name = "collector")
 public class Collector {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "collector_id")
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "collector_id")
+    private Long id;
 
-	@NotNull
-	private String name;
+    @NotNull
+    private String name;
 
-	@ElementCollection
-	@MapKeyColumn(name = "name")
-	@Column(name = "value")
-	@CollectionTable(name = "collector_attributes", joinColumns = @JoinColumn(name = "collector_id"))
-	private Map<String, String> attributes;
+    @ElementCollection
+    @CollectionTable(name = "collector_attributes", joinColumns = @JoinColumn(name = "collector_id"))
+    private List<Attribute> attributes;
 
-	@Override
-	public String toString() {
-		return ObjectUtil.print(this);
-	}
+    @Override
+    public String toString() {
+        return ObjectUtil.print(this);
+    }
 }
