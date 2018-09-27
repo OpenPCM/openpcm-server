@@ -45,7 +45,7 @@ public class AuthenticationControllerIntTest {
     private String base;
 
     @Test
-    @DisplayName("login is possible")
+    @DisplayName("login and refresh is possible")
     public void test_login_refreshToken_worksWithGoodCredentials() {
         base = "http://localhost:" + port;
         final ResponseEntity<AuthSuccess> result = restTemplate.postForEntity(base + "/authenticate/login",

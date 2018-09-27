@@ -41,7 +41,7 @@ public class ParameterTypeController extends BaseController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "createParameterType", response = ParameterType.class)
-    @PostMapping(value = "parameterType")
+    @PostMapping(value = "parametertype")
     @ApiResponses({ @ApiResponse(code = 201, response = ParameterType.class, message = "created parameterType") })
     public @ResponseBody ParameterType createParameterType(
                     @ApiParam(value = "parameterType to create", name = "parameterType", required = true) @RequestBody ParameterType parameterType)
@@ -51,7 +51,7 @@ public class ParameterTypeController extends BaseController {
 
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "readParameterTypes", response = ParameterType.class, responseContainer = "List")
-    @GetMapping(value = "parameterType")
+    @GetMapping(value = "parametertype")
     @ApiResponses({ @ApiResponse(code = 200, response = ParameterType.class, message = "read parameterTypes", responseContainer = "List") })
     public @ResponseBody Page<ParameterType> readParameterTypes(@NotNull final Pageable pageable) {
         return service.read(pageable);
@@ -59,7 +59,7 @@ public class ParameterTypeController extends BaseController {
 
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "readParameterType", response = ParameterType.class)
-    @GetMapping(value = "parameterType/{id}")
+    @GetMapping(value = "parametertype/{id}")
     @ApiResponses({ @ApiResponse(code = 200, response = ParameterType.class, message = "read parameterType") })
     public @ResponseBody ParameterType readParameterType(@ApiParam(value = "parameterType to read", name = "id", required = true) @PathVariable Long id)
                     throws NotFoundException {
@@ -68,7 +68,7 @@ public class ParameterTypeController extends BaseController {
 
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "updateParameterType", response = ParameterType.class)
-    @PutMapping(value = "parameterType/{id}")
+    @PutMapping(value = "parametertype/{id}")
     @ApiResponses({ @ApiResponse(code = 200, response = ParameterType.class, message = "updated parameterType") })
     public @ResponseBody ParameterType updateParameterType(@ApiParam(value = "id of parameterType", name = "id", required = true) @PathVariable Long id,
                     @ApiParam(value = "parameterType to update", name = "parameterType", required = true) @RequestBody ParameterType parameterType)
@@ -78,7 +78,7 @@ public class ParameterTypeController extends BaseController {
 
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "deleteParameterType")
-    @DeleteMapping(value = "parameterType/{id}")
+    @DeleteMapping(value = "parametertype/{id}")
     public void deleteRole(@ApiParam(value = "parameterType to delete", name = "id", required = true) @PathVariable Long id) throws NotFoundException {
         service.delete(id);
     }

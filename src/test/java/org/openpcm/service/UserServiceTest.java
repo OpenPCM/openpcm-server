@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -183,41 +184,20 @@ public class UserServiceTest {
 
     @DisplayName("Test user can have password changed")
     @Test
-    public void test_update_happyWithPasswordChange() throws NotFoundException {
+    public void test_update_happyWithPasswordChange() throws NotFoundException, DataViolationException {
         final Long id = 3L;
         final User user = User.builder().username("username").password("password").id(id).build();
-        final User dbUser = new User();
-        BeanUtils.copyProperties(user, dbUser);
-        final Optional<User> dbOptional = Optional.of(dbUser);
-        user.setPassword("password2");
-
+        final Optional<User> dbOptional = Optional.of(user);
         when(mockRepo.findById(id)).thenReturn(dbOptional);
-        when(mockRepo.save(user)).thenReturn(user);
+        when(mockEncoder.encode("password2")).thenReturn("password22");
 
-        final User resultingType = userService.update(id, user);
+        doAnswer(invocation -> (User) invocation.getArguments()[0]).when(mockRepo).save(any(User.class));
+
+        final User resultingType = userService.updatePassword(id, "password2");
+
         assertEquals(id, resultingType.getId(), "property is incorrect");
         assertEquals("username", resultingType.getUsername(), "property is incorrect");
-        assertEquals("password2", resultingType.getPassword(), "property is incorrect");
-    }
-
-    @DisplayName("Test user password can be reset to empty")
-    @Test
-    public void test_update_happyWithPasswordChangeToEmpty() throws NotFoundException {
-        // need to figure something out with password reset for this
-        final Long id = 3L;
-        final User user = User.builder().username("username").password("password").id(id).build();
-        final User dbUser = new User();
-        BeanUtils.copyProperties(user, dbUser);
-        final Optional<User> dbOptional = Optional.of(dbUser);
-        user.setPassword("");
-
-        when(mockRepo.findById(id)).thenReturn(dbOptional);
-        when(mockRepo.save(user)).thenReturn(user);
-
-        final User resultingType = userService.update(id, user);
-        assertEquals(id, resultingType.getId(), "property is incorrect");
-        assertEquals("username", resultingType.getUsername(), "property is incorrect");
-        assertEquals("", resultingType.getPassword(), "property is incorrect");
+        assertEquals("password22", resultingType.getPassword(), "property is incorrect");
     }
 
     @DisplayName("Test user update handles exception")

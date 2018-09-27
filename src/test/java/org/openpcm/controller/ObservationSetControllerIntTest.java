@@ -77,6 +77,7 @@ public class ObservationSetControllerIntTest {
     }
 
     @Test
+    @DisplayName("Ensure observation set can be read")
     public void test_read_pagination_happy(@Autowired ObservationSet set) throws JsonParseException, JsonMappingException, IOException {
         repository.save(set);
         final HttpEntity<String> authHeaders = authentication.convert("", authSuccess);
@@ -92,6 +93,7 @@ public class ObservationSetControllerIntTest {
     }
 
     @Test
+    @DisplayName("Ensure observation set can be read by id")
     public void test_read_byId_happy(@Autowired ObservationSet set) throws NotFoundException {
         repository.save(set);
         final HttpEntity<String> authHeaders = authentication.convert("", authSuccess);
@@ -104,6 +106,7 @@ public class ObservationSetControllerIntTest {
     }
 
     @Test
+    @DisplayName("Ensure observation set can be updated")
     public void test_update_happy(@Autowired ObservationSet set) throws NotFoundException {
         repository.save(set);
         set.setOrigin("Device5");
@@ -117,6 +120,7 @@ public class ObservationSetControllerIntTest {
     }
 
     @Test
+    @DisplayName("Ensure observation set can be deleted")
     public void test_delete_happy(@Autowired ObservationSet set) throws NotFoundException {
         repository.save(set);
         final HttpEntity<String> authHeaders = authentication.convert("", authSuccess);

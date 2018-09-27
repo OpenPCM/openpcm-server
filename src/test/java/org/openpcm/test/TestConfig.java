@@ -11,6 +11,9 @@ import org.openpcm.model.Collector;
 import org.openpcm.model.EncounterType;
 import org.openpcm.model.ObservationSet;
 import org.openpcm.model.Parameter;
+import org.openpcm.model.ParameterType;
+import org.openpcm.model.Role;
+import org.openpcm.model.User;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -49,6 +52,29 @@ public class TestConfig {
     @Primary
     EncounterType encounterType() {
         return EncounterType.builder().name("DOCTOR-VISIT").build();
+    }
+
+    @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    @Bean
+    @Primary
+    ParameterType parameterType() {
+        return ParameterType.builder().name("HR").description("Heart Rate").uom("bpm").build();
+    }
+
+    @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    @Bean
+    @Primary
+    Role role() {
+        return Role.builder().name("TESTER").build();
+    }
+
+    @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    @Bean
+    @Primary
+    User user() {
+        final List<Attribute> attributes = new ArrayList<Attribute>();
+        attributes.add(Attribute.builder().key("rich").value("yes").build());
+        return User.builder().username("demo").password("demo").email("demo@demo.com").mrn("123456789").ssn("123-45-6789").attributes(attributes).build();
     }
 
 }

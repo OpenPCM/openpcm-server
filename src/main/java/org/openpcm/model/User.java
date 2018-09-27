@@ -1,9 +1,11 @@
 package org.openpcm.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -20,6 +22,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.MapKeyColumn;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -37,6 +41,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+@NamedEntityGraph(name = "User.attributes", attributeNodes = @NamedAttributeNode("attributes"))
 @Builder
 @Data
 @NoArgsConstructor
@@ -107,17 +112,15 @@ public class User implements UserDetails {
 	@Embedded
 	private Address address;
 
-	@ElementCollection()
-	@MapKeyColumn(name = "name")
-	@Column(name = "value")
-	@CollectionTable(name = "user_attributes", joinColumns = @JoinColumn(name = "user_id"))
-	private Map<String, String> attributes = new HashMap<String, String>();
+	@ElementCollection
+    @CollectionTable(name = "user_attributes", joinColumns = @JoinColumn(name = "user_id"))
+    private List<Attribute> attributes = new ArrayList<>();
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles;
 
-	@JsonIgnore
+	/*@JsonIgnore*/
 	public String getPassword() {
 		return password;
 	}

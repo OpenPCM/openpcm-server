@@ -65,7 +65,7 @@ public class EncounterTypeControllerIntTest {
     }
 
     @Test
-    @DisplayName("Ensure observation set can be created")
+    @DisplayName("Ensure encounter type can be created")
     public void test_createSucceeds(@Autowired EncounterType encounterType) throws URISyntaxException {
         final HttpEntity<String> authHeaders = authentication.convert(ObjectUtil.print(encounterType), authSuccess);
         final ResponseEntity<EncounterType> result = restTemplate.exchange(base + "/api/v1/encountertype", HttpMethod.POST, authHeaders, EncounterType.class);
@@ -76,6 +76,7 @@ public class EncounterTypeControllerIntTest {
     }
 
     @Test
+    @DisplayName("Ensure encounter type can be read")
     public void test_read_pagination_happy(@Autowired EncounterType encounterType) throws JsonParseException, JsonMappingException, IOException {
         repository.save(encounterType);
         final HttpEntity<String> authHeaders = authentication.convert("", authSuccess);
@@ -91,6 +92,7 @@ public class EncounterTypeControllerIntTest {
     }
 
     @Test
+    @DisplayName("Ensure encounter type can be read by id")
     public void test_read_byId_happy(@Autowired EncounterType encounterType) throws NotFoundException {
         repository.save(encounterType);
         final HttpEntity<String> authHeaders = authentication.convert("", authSuccess);
@@ -103,6 +105,7 @@ public class EncounterTypeControllerIntTest {
     }
 
     @Test
+    @DisplayName("Ensure encounter type can be updated")
     public void test_update_happy(@Autowired EncounterType encounterType) throws NotFoundException {
         repository.save(encounterType);
         encounterType.setName("NURSE-CALL");
@@ -116,6 +119,7 @@ public class EncounterTypeControllerIntTest {
     }
 
     @Test
+    @DisplayName("Ensure encounter type can be deleted")
     public void test_delete_happy(@Autowired EncounterType encounterType) throws NotFoundException {
         repository.save(encounterType);
         final HttpEntity<String> authHeaders = authentication.convert("", authSuccess);
