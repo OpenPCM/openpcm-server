@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.openpcm.model.Attribute;
 import org.openpcm.model.Collector;
+import org.openpcm.model.EncounterType;
 import org.openpcm.model.ObservationSet;
 import org.openpcm.model.Parameter;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -39,7 +40,15 @@ public class TestConfig {
     @Primary
     Collector collector() {
         final List<Attribute> attributes = new ArrayList<Attribute>();
-        attributes.add(new Attribute("nickName", "Critikon 9710"));
+        attributes.add(Attribute.builder().key("alias").value("Critikon 9710").build());
         return Collector.builder().name("GE Dinamap").attributes(attributes).build();
     }
+
+    @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    @Bean
+    @Primary
+    EncounterType encounterType() {
+        return EncounterType.builder().name("DOCTOR-VISIT").build();
+    }
+
 }

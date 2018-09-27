@@ -3,14 +3,15 @@ package org.openpcm.model;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import org.openpcm.utils.ObjectUtil;
 
-//@Builder
-@Getter
-@Setter
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Builder
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Embeddable
@@ -20,4 +21,9 @@ public class Attribute {
 
     @Column(name = "attribute_value")
     private String value;
+    
+    @Override
+    public String toString() {
+        return ObjectUtil.print(this);
+    }
 }

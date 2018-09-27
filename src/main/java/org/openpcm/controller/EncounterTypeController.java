@@ -30,58 +30,54 @@ import io.swagger.annotations.ApiResponses;
 @RequestMapping("/api/v1/")
 public class EncounterTypeController extends BaseController {
 
-	private final EncounterTypeService service;
+    private final EncounterTypeService service;
 
-	@Autowired
-	public EncounterTypeController(EncounterTypeService service) {
-		this.service = service;
-	}
+    @Autowired
+    public EncounterTypeController(EncounterTypeService service) {
+        this.service = service;
+    }
 
-	@ResponseStatus(HttpStatus.CREATED)
-	@ApiOperation(value = "createEncounterType", response = EncounterType.class)
-	@PostMapping(value = "encounterType")
-	@ApiResponses({ @ApiResponse(code = 201, response = EncounterType.class, message = "created encounterType") })
-	public @ResponseBody EncounterType createEncounterType(
-			@ApiParam(value = "encounterType to create", name = "encounterType", required = true) @RequestBody EncounterType encounterType)
-			throws DataViolationException {
-		return service.create(encounterType);
-	}
+    @ResponseStatus(HttpStatus.CREATED)
+    @ApiOperation(value = "createEncounterType", response = EncounterType.class)
+    @PostMapping(value = "encountertype")
+    @ApiResponses({ @ApiResponse(code = 201, response = EncounterType.class, message = "created encounterType") })
+    public @ResponseBody EncounterType createEncounterType(
+                    @ApiParam(value = "encounterType to create", name = "encounterType", required = true) @RequestBody EncounterType encounterType)
+                    throws DataViolationException {
+        return service.create(encounterType);
+    }
 
-	@ResponseStatus(HttpStatus.OK)
-	@ApiOperation(value = "readEncounterTypes", response = EncounterType.class, responseContainer = "List")
-	@GetMapping(value = "encounterType")
-	@ApiResponses({
-			@ApiResponse(code = 200, response = EncounterType.class, message = "read encounterTypes", responseContainer = "List") })
-	public @ResponseBody Page<EncounterType> readEncounterTypes(Pageable pageable) {
-		return service.read(pageable);
-	}
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "readEncounterTypes", response = EncounterType.class, responseContainer = "List")
+    @GetMapping(value = "encountertype")
+    @ApiResponses({ @ApiResponse(code = 200, response = EncounterType.class, message = "read encounterTypes", responseContainer = "List") })
+    public @ResponseBody Page<EncounterType> readEncounterTypes(Pageable pageable) {
+        return service.read(pageable);
+    }
 
-	@ResponseStatus(HttpStatus.OK)
-	@ApiOperation(value = "updateEncounterType", response = EncounterType.class)
-	@PutMapping(value = "encounterType/{id}")
-	@ApiResponses({ @ApiResponse(code = 200, response = EncounterType.class, message = "updated encounterType") })
-	public @ResponseBody EncounterType readEncounterType(
-			@ApiParam(value = "id of encounterType", name = "id", required = true) @PathVariable Long id,
-			@ApiParam(value = "encounterType to update", name = "encounterType", required = true) @RequestBody EncounterType encounterType)
-			throws NotFoundException {
-		return service.update(id, encounterType);
-	}
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "updateEncounterType", response = EncounterType.class)
+    @PutMapping(value = "encountertype/{id}")
+    @ApiResponses({ @ApiResponse(code = 200, response = EncounterType.class, message = "updated encounterType") })
+    public @ResponseBody EncounterType readEncounterType(@ApiParam(value = "id of encounterType", name = "id", required = true) @PathVariable Long id,
+                    @ApiParam(value = "encounterType to update", name = "encounterType", required = true) @RequestBody EncounterType encounterType)
+                    throws NotFoundException {
+        return service.update(id, encounterType);
+    }
 
-	@ResponseStatus(HttpStatus.OK)
-	@ApiOperation(value = "readEncounterType", response = EncounterType.class)
-	@GetMapping(value = "encounterType/{id}")
-	@ApiResponses({ @ApiResponse(code = 200, response = EncounterType.class, message = "read encounterType") })
-	public @ResponseBody EncounterType readEncounterType(
-			@ApiParam(value = "encounterType to read", name = "id", required = true) @PathVariable Long id)
-			throws NotFoundException {
-		return service.read(id);
-	}
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "readEncounterType", response = EncounterType.class)
+    @GetMapping(value = "encountertype/{id}")
+    @ApiResponses({ @ApiResponse(code = 200, response = EncounterType.class, message = "read encounterType") })
+    public @ResponseBody EncounterType readEncounterType(@ApiParam(value = "encounterType to read", name = "id", required = true) @PathVariable Long id)
+                    throws NotFoundException {
+        return service.read(id);
+    }
 
-	@ResponseStatus(HttpStatus.OK)
-	@ApiOperation(value = "deleteEncounterType")
-	@DeleteMapping(value = "encounterType/{id}")
-	public void deleteEncounterType(
-			@ApiParam(value = "encounterType to delete", name = "id", required = true) @PathVariable Long id) {
-		service.delete(id);
-	}
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "deleteEncounterType")
+    @DeleteMapping(value = "encountertype/{id}")
+    public void deleteEncounterType(@ApiParam(value = "encounterType to delete", name = "id", required = true) @PathVariable Long id) {
+        service.delete(id);
+    }
 }

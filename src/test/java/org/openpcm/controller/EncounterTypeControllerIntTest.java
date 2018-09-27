@@ -15,10 +15,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openpcm.annotation.IntegrationTest;
-import org.openpcm.dao.ObservationSetRepository;
+import org.openpcm.dao.EncounterTypeRepository;
 import org.openpcm.exceptions.NotFoundException;
 import org.openpcm.model.AuthSuccess;
-import org.openpcm.model.ObservationSet;
+import org.openpcm.model.EncounterType;
 import org.openpcm.test.RestResponsePage;
 import org.openpcm.test.TestAuthenticationUtils;
 import org.openpcm.utils.ObjectUtil;
@@ -40,7 +40,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 @Category(IntegrationTest.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @ExtendWith(SpringExtension.class)
-public class ObservationSetControllerIntTest {
+public class EncounterTypeControllerIntTest {
 
     @LocalServerPort
     private int port;
@@ -52,7 +52,7 @@ public class ObservationSetControllerIntTest {
     private TestAuthenticationUtils authentication;
 
     @Autowired
-    private ObservationSetRepository repository;
+    private EncounterTypeRepository repository;
 
     private AuthSuccess authSuccess;
 
@@ -66,65 +66,64 @@ public class ObservationSetControllerIntTest {
 
     @Test
     @DisplayName("Ensure observation set can be created")
-    public void test_createSucceeds(@Autowired ObservationSet set) throws URISyntaxException {
-        final HttpEntity<String> authHeaders = authentication.convert(ObjectUtil.print(set), authSuccess);
-        final ResponseEntity<ObservationSet> result = restTemplate.exchange(base + "/api/v1/observationset", HttpMethod.POST, authHeaders,
-                        ObservationSet.class);
+    public void test_createSucceeds(@Autowired EncounterType encounterType) throws URISyntaxException {
+        final HttpEntity<String> authHeaders = authentication.convert(ObjectUtil.print(encounterType), authSuccess);
+        final ResponseEntity<EncounterType> result = restTemplate.exchange(base + "/api/v1/encountertype", HttpMethod.POST, authHeaders, EncounterType.class);
 
         assertSame(HttpStatus.CREATED, result.getStatusCode(), "incorrect status code");
         assertNotNull(result.getBody().getId(), "instance should not be null");
-        assertNotNull(result.getBody().getParameters().get(0).getId(), "instance should not be null");
+        assertEquals("DOCTOR-VISIT", result.getBody().getName(), "property value is incorrect");
     }
 
     @Test
-    public void test_read_pagination_happy(@Autowired ObservationSet set) throws JsonParseException, JsonMappingException, IOException {
-        repository.save(set);
+    public void test_read_pagination_happy(@Autowired EncounterType encounterType) throws JsonParseException, JsonMappingException, IOException {
+        repository.save(encounterType);
         final HttpEntity<String> authHeaders = authentication.convert("", authSuccess);
-        final ParameterizedTypeReference<RestResponsePage<ObservationSet>> responseType = new ParameterizedTypeReference<RestResponsePage<ObservationSet>>() {
+        final ParameterizedTypeReference<RestResponsePage<EncounterType>> responseType = new ParameterizedTypeReference<RestResponsePage<EncounterType>>() {
         };
-        final ResponseEntity<RestResponsePage<ObservationSet>> result = restTemplate.exchange(base + "/api/v1/observationset", HttpMethod.GET, authHeaders,
+        final ResponseEntity<RestResponsePage<EncounterType>> result = restTemplate.exchange(base + "/api/v1/encountertype", HttpMethod.GET, authHeaders,
                         responseType);
 
         assertSame(HttpStatus.OK, result.getStatusCode(), "incorrect status code");
         assertSame(1, result.getBody().getContent().size(), "incorrect number of elements");
-        assertSame(1, result.getBody().getContent().size(), "incorrect number of elements");
+        assertEquals("DOCTOR-VISIT", result.getBody().getContent().get(0).getName(), "property value is incorrect");
 
     }
 
     @Test
-    public void test_read_byId_happy(@Autowired ObservationSet set) throws NotFoundException {
-        repository.save(set);
+    public void test_read_byId_happy(@Autowired EncounterType encounterType) throws NotFoundException {
+        repository.save(encounterType);
         final HttpEntity<String> authHeaders = authentication.convert("", authSuccess);
-        final ResponseEntity<ObservationSet> result = restTemplate.exchange(base + "/api/v1/observationset/" + set.getId(), HttpMethod.GET, authHeaders,
-                        ObservationSet.class);
+        final ResponseEntity<EncounterType> result = restTemplate.exchange(base + "/api/v1/encountertype/" + encounterType.getId(), HttpMethod.GET, authHeaders,
+                        EncounterType.class);
 
         assertSame(HttpStatus.OK, result.getStatusCode(), "incorrect status code");
-        assertEquals(set.getId(), result.getBody().getId(), "incorrect property value");
-        assertEquals(set.getParameters().get(0).getId(), result.getBody().getParameters().get(0).getId(), "incorrect property value");
+        assertEquals(encounterType.getId(), result.getBody().getId(), "incorrect property value");
+        assertEquals(encounterType.getName(), result.getBody().getName(), "incorrect property value");
     }
 
     @Test
-    public void test_update_happy(@Autowired ObservationSet set) throws NotFoundException {
-        repository.save(set);
-        set.setOrigin("Device5");
-        final HttpEntity<String> authHeaders = authentication.convert(ObjectUtil.print(set), authSuccess);
-        final ResponseEntity<ObservationSet> result = restTemplate.exchange(base + "/api/v1/observationset/" + set.getId(), HttpMethod.PUT, authHeaders,
-                        ObservationSet.class);
+    public void test_update_happy(@Autowired EncounterType encounterType) throws NotFoundException {
+        repository.save(encounterType);
+        encounterType.setName("NURSE-CALL");
+        final HttpEntity<String> authHeaders = authentication.convert(ObjectUtil.print(encounterType), authSuccess);
+        final ResponseEntity<EncounterType> result = restTemplate.exchange(base + "/api/v1/encountertype/" + encounterType.getId(), HttpMethod.PUT, authHeaders,
+                        EncounterType.class);
 
         assertSame(HttpStatus.OK, result.getStatusCode(), "incorrect status code");
-        assertEquals(set.getId(), result.getBody().getId(), "incorrect property value");
-        assertEquals("Device5", result.getBody().getOrigin(), "incorrect property value");
+        assertEquals(encounterType.getId(), result.getBody().getId(), "incorrect property value");
+        assertEquals("NURSE-CALL", result.getBody().getName(), "incorrect property value");
     }
 
     @Test
-    public void test_delete_happy(@Autowired ObservationSet set) throws NotFoundException {
-        repository.save(set);
+    public void test_delete_happy(@Autowired EncounterType encounterType) throws NotFoundException {
+        repository.save(encounterType);
         final HttpEntity<String> authHeaders = authentication.convert("", authSuccess);
-        final ResponseEntity<String> result = restTemplate.exchange(base + "/api/v1/observationset/" + set.getId(), HttpMethod.DELETE, authHeaders,
+        final ResponseEntity<String> result = restTemplate.exchange(base + "/api/v1/encountertype/" + encounterType.getId(), HttpMethod.DELETE, authHeaders,
                         String.class);
 
         assertSame(HttpStatus.OK, result.getStatusCode(), "incorrect status code");
-        assertFalse(repository.existsById(set.getId()), "id should not exist");
+        assertFalse(repository.existsById(encounterType.getId()), "id should not exist");
     }
 
     @AfterEach

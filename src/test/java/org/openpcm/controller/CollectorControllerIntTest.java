@@ -72,7 +72,7 @@ public class CollectorControllerIntTest {
 
         assertSame(HttpStatus.CREATED, result.getStatusCode(), "incorrect status code");
         assertNotNull(result.getBody().getId(), "instance should not be null");
-        assertEquals("nickName", result.getBody().getAttributes().get(0).getKey(), "incorrect property value");
+        assertEquals("alias", result.getBody().getAttributes().get(0).getKey(), "incorrect property value");
         assertEquals("Critikon 9710", result.getBody().getAttributes().get(0).getValue(), "incorrect property value");
     }
 
@@ -100,7 +100,7 @@ public class CollectorControllerIntTest {
 
         assertSame(HttpStatus.OK, result.getStatusCode(), "incorrect status code");
         assertEquals(collector.getId(), result.getBody().getId(), "incorrect property value");
-        assertEquals("nickName", result.getBody().getAttributes().get(0).getKey(), "incorrect property value");
+        assertEquals("alias", result.getBody().getAttributes().get(0).getKey(), "incorrect property value");
         assertEquals("Critikon 9710", result.getBody().getAttributes().get(0).getValue(), "incorrect property value");
     }
 
@@ -116,7 +116,7 @@ public class CollectorControllerIntTest {
         assertSame(HttpStatus.OK, result.getStatusCode(), "incorrect status code");
         assertEquals(collector.getId(), result.getBody().getId(), "incorrect property value");
         assertEquals("New Name", result.getBody().getName(), "incorrect property value");
-        assertEquals("nickName", result.getBody().getAttributes().get(0).getKey(), "incorrect property value");
+        assertEquals("alias", result.getBody().getAttributes().get(0).getKey(), "incorrect property value");
         assertEquals("Critikon 9710", result.getBody().getAttributes().get(0).getValue(), "incorrect property value");
     }
 
