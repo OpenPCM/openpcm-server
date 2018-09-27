@@ -39,7 +39,7 @@ public class TestConfig {
     @Primary
     Collector collector() {
         final List<Attribute> attributes = new ArrayList<Attribute>();
-        attributes.add(new Attribute("type", "Critikon 9710"));
-        return Collector.builder().name("Device 10365").attributes(attributes).build();
+        attributes.add(new Attribute("animal", "dog"));
+        return Collector.builder().name("collector1").attributes(attributes).build();
     }
 }
