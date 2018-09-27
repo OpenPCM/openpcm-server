@@ -87,6 +87,7 @@ public class ObservationSetControllerIntTest {
 
         assertSame(HttpStatus.OK, result.getStatusCode(), "incorrect status code");
         assertSame(1, result.getBody().getContent().size(), "incorrect number of elements");
+        assertSame(1, result.getBody().getContent().size(), "incorrect number of elements");
 
     }
 

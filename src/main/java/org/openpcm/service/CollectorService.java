@@ -1,6 +1,5 @@
 package org.openpcm.service;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.openpcm.dao.CollectorRepository;
@@ -58,10 +57,6 @@ public class CollectorService {
         collector.setId(dbCollector.get().getId());
         LOGGER.trace("Attempting to save collector: {}", collector);
         return repository.save(collector);
-    }
-
-    public List<Collector> readByKeyandValue(String key, String value) {
-        return repository.findByAttributesKeyAndAttributesValue(key, value);
     }
 
     public void delete(Long id) {

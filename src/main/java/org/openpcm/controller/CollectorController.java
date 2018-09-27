@@ -1,7 +1,5 @@
 package org.openpcm.controller;
 
-import java.util.List;
-
 import org.openpcm.exceptions.DataViolationException;
 import org.openpcm.exceptions.NotFoundException;
 import org.openpcm.model.Collector;
@@ -73,16 +71,6 @@ public class CollectorController extends BaseController {
     public @ResponseBody Collector readCollector(@ApiParam(value = "collector to read", name = "id", required = true) @PathVariable Long id)
                     throws NotFoundException {
         return service.read(id);
-    }
-
-    @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "readCollectorByKeyAndValue", response = Collector.class)
-    @GetMapping(value = "collector/{key}/{value}")
-    @ApiResponses({ @ApiResponse(code = 200, response = Collector.class, responseContainer = "list", message = "read collector by key and value") })
-    public @ResponseBody List<Collector> readCollectorByKeyAndValue(
-                    @ApiParam(value = "key of attribute of collector", name = "key", required = true) @PathVariable String key,
-                    @ApiParam(value = "value ofattribute of collector", name = "value", required = true) @PathVariable String value) throws NotFoundException {
-        return service.readByKeyandValue(key, value);
     }
 
     @ResponseStatus(HttpStatus.OK)

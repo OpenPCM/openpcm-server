@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.List;
 
 import org.junit.experimental.categories.Category;
 import org.junit.jupiter.api.AfterEach;
@@ -73,7 +72,8 @@ public class CollectorControllerIntTest {
 
         assertSame(HttpStatus.CREATED, result.getStatusCode(), "incorrect status code");
         assertNotNull(result.getBody().getId(), "instance should not be null");
-        assertNotNull(result.getBody().getAttributes().get(0), "instance should not be null");
+        assertEquals("nickName", result.getBody().getAttributes().get(0).getKey(), "incorrect property value");
+        assertEquals("Critikon 9710", result.getBody().getAttributes().get(0).getValue(), "incorrect property value");
     }
 
     @Test
@@ -100,21 +100,8 @@ public class CollectorControllerIntTest {
 
         assertSame(HttpStatus.OK, result.getStatusCode(), "incorrect status code");
         assertEquals(collector.getId(), result.getBody().getId(), "incorrect property value");
-        assertEquals("animal", result.getBody().getAttributes().get(0).getKey(), "incorrect property value");
-    }
-
-    @Test
-    @DisplayName("Ensure collector can be read by attribute values")
-    public void test_read_byAttributes_happy(@Autowired Collector collector) throws NotFoundException {
-        repository.save(collector);
-        final HttpEntity<String> authHeaders = authentication.convert("", authSuccess);
-        final ParameterizedTypeReference<List<Collector>> responseType = new ParameterizedTypeReference<List<Collector>>() {
-        };
-        final ResponseEntity<List<Collector>> result = restTemplate.exchange(base + "/api/v1/collector/animal/dog", HttpMethod.GET, authHeaders, responseType);
-
-        assertSame(HttpStatus.OK, result.getStatusCode(), "incorrect status code");
-        assertEquals(collector.getId(), result.getBody().get(0).getId(), "incorrect property value");
-        assertEquals("animal", result.getBody().get(0).getAttributes().get(0).getKey(), "incorrect property value");
+        assertEquals("nickName", result.getBody().getAttributes().get(0).getKey(), "incorrect property value");
+        assertEquals("Critikon 9710", result.getBody().getAttributes().get(0).getValue(), "incorrect property value");
     }
 
     @Test
@@ -129,6 +116,8 @@ public class CollectorControllerIntTest {
         assertSame(HttpStatus.OK, result.getStatusCode(), "incorrect status code");
         assertEquals(collector.getId(), result.getBody().getId(), "incorrect property value");
         assertEquals("New Name", result.getBody().getName(), "incorrect property value");
+        assertEquals("nickName", result.getBody().getAttributes().get(0).getKey(), "incorrect property value");
+        assertEquals("Critikon 9710", result.getBody().getAttributes().get(0).getValue(), "incorrect property value");
     }
 
     @Test
