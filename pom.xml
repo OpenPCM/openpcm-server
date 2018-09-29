@@ -173,6 +173,18 @@
 			<version>2.3.0</version>
 		</dependency>
 
+		<!-- GraphQL -->
+		<dependency>
+			<groupId>com.graphql-java</groupId>
+			<artifactId>graphql-spring-boot-starter</artifactId>
+			<version>3.6.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.graphql-java</groupId>
+			<artifactId>graphql-java-tools</artifactId>
+			<version>3.2.0</version>
+		</dependency>
+
 		<!-- Testing Dependencies -->
 		<dependency>
 			<groupId>org.mockito</groupId>

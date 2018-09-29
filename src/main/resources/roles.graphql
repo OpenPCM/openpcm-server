@@ -1,0 +1,13 @@
+
+schema {
+ query: Query
+}
+
+type Query {
+ allRoles: [Role]
+}
+
+type Role {
+  id: Long
+  name: String
+}

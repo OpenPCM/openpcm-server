@@ -3,11 +3,13 @@ package org.openpcm.controller;
 import org.openpcm.exceptions.DataViolationException;
 import org.openpcm.exceptions.NotFoundException;
 import org.openpcm.model.Role;
+import org.openpcm.service.GraphQLService;
 import org.openpcm.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import graphql.ExecutionResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -30,57 +33,63 @@ import io.swagger.annotations.ApiResponses;
 @RequestMapping("/api/v1/")
 public class RoleController extends BaseController {
 
-	private final RoleService roleService;
+    private final RoleService roleService;
 
-	@Autowired
-	public RoleController(RoleService roleService) {
-		this.roleService = roleService;
-	}
+    private final GraphQLService graphQlService;
 
-	@ResponseStatus(HttpStatus.CREATED)
-	@ApiOperation(value = "createRole", response = Role.class)
-	@PostMapping(value = "role")
-	@ApiResponses({ @ApiResponse(code = 201, response = Role.class, message = "created role") })
-	public @ResponseBody Role createRole(
-			@ApiParam(value = "role to create", name = "role", required = true) @RequestBody Role role)
-			throws DataViolationException {
-		return roleService.create(role);
-	}
+    @Autowired
+    public RoleController(RoleService roleService, GraphQLService graphQlService) {
+        this.roleService = roleService;
+        this.graphQlService = graphQlService;
+    }
 
-	@ResponseStatus(HttpStatus.OK)
-	@ApiOperation(value = "readRoles", response = Role.class, responseContainer = "List")
-	@GetMapping(value = "role")
-	@ApiResponses({
-			@ApiResponse(code = 200, response = Role.class, message = "read roles", responseContainer = "List") })
-	public @ResponseBody Page<Role> readRoles(Pageable pageable) {
-		return roleService.read(pageable);
-	}
+    @ResponseStatus(HttpStatus.CREATED)
+    @ApiOperation(value = "createRole", response = Role.class)
+    @PostMapping(value = "role")
+    @ApiResponses({ @ApiResponse(code = 201, response = Role.class, message = "created role") })
+    public @ResponseBody Role createRole(@ApiParam(value = "role to create", name = "role", required = true) @RequestBody Role role)
+                    throws DataViolationException {
+        return roleService.create(role);
+    }
 
-	@ResponseStatus(HttpStatus.OK)
-	@ApiOperation(value = "updateRole", response = Role.class)
-	@PutMapping(value = "role/{id}")
-	@ApiResponses({ @ApiResponse(code = 200, response = Role.class, message = "updated role") })
-	public @ResponseBody Role readRole(
-			@ApiParam(value = "id of role", name = "id", required = true) @PathVariable Long id,
-			@ApiParam(value = "role to update", name = "role", required = true) @RequestBody Role role)
-			throws NotFoundException {
-		return roleService.update(id, role);
-	}
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "readRoles", response = Role.class, responseContainer = "List")
+    @GetMapping(value = "role")
+    @ApiResponses({ @ApiResponse(code = 200, response = Role.class, message = "read roles", responseContainer = "List") })
+    public @ResponseBody Page<Role> readRoles(Pageable pageable) {
+        return roleService.read(pageable);
+    }
 
-	@ResponseStatus(HttpStatus.OK)
-	@ApiOperation(value = "readRole", response = Role.class)
-	@GetMapping(value = "role/{id}")
-	@ApiResponses({ @ApiResponse(code = 200, response = Role.class, message = "read role") })
-	public @ResponseBody Role readRole(
-			@ApiParam(value = "role to read", name = "id", required = true) @PathVariable Long id)
-			throws NotFoundException {
-		return roleService.read(id);
-	}
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "updateRole", response = Role.class)
+    @PutMapping(value = "role/{id}")
+    @ApiResponses({ @ApiResponse(code = 200, response = Role.class, message = "updated role") })
+    public @ResponseBody Role readRole(@ApiParam(value = "id of role", name = "id", required = true) @PathVariable Long id,
+                    @ApiParam(value = "role to update", name = "role", required = true) @RequestBody Role role) throws NotFoundException {
+        return roleService.update(id, role);
+    }
 
-	@ResponseStatus(HttpStatus.OK)
-	@ApiOperation(value = "deleteRole")
-	@DeleteMapping(value = "role/{id}")
-	public void deleteRole(@ApiParam(value = "role to delete", name = "id", required = true) @PathVariable Long id) {
-		roleService.delete(id);
-	}
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "readRole", response = Role.class)
+    @GetMapping(value = "role/{id}")
+    @ApiResponses({ @ApiResponse(code = 200, response = Role.class, message = "read role") })
+    public @ResponseBody Role readRole(@ApiParam(value = "role to read", name = "id", required = true) @PathVariable Long id) throws NotFoundException {
+        return roleService.read(id);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "deleteRole")
+    @DeleteMapping(value = "role/{id}")
+    public void deleteRole(@ApiParam(value = "role to delete", name = "id", required = true) @PathVariable Long id) {
+        roleService.delete(id);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "graphql roles")
+    @PostMapping(value = "rest/role")
+    public ResponseEntity<Object> graphqlRoles(@ApiParam(value = "qraphql query", name = "query", required = true) @RequestBody String query) {
+        final ExecutionResult execute = graphQlService.getGraphQL().execute(query);
+
+        return new ResponseEntity<>(execute, HttpStatus.OK);
+    }
 }
