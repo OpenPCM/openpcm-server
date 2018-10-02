@@ -7,8 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.List;
 
 import org.junit.experimental.categories.Category;
 import org.junit.jupiter.api.AfterEach;
@@ -21,6 +19,7 @@ import org.openpcm.dao.UserRepository;
 import org.openpcm.exceptions.NotFoundException;
 import org.openpcm.model.AuthSuccess;
 import org.openpcm.model.User;
+import org.openpcm.test.CleanUpUtils;
 import org.openpcm.test.RestResponsePage;
 import org.openpcm.test.TestAuthenticationUtils;
 import org.openpcm.utils.ObjectUtil;
@@ -133,12 +132,6 @@ public class UserControllerIntTest {
 
     @AfterEach
     public void tearDown() {
-        final List<String> defaultUsers = Arrays.asList("admin");
-        repository.findAll().forEach(user -> {
-            if (!defaultUsers.contains(user.getUsername())) {
-                LOGGER.warn("Deleting user: {}", user.getUsername());
-                repository.deleteById(user.getId());
-            }
-        });
+        CleanUpUtils.clean(repository);
     }
 }

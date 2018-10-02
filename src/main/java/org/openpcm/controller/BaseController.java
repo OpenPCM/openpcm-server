@@ -5,9 +5,11 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
 
 import org.openpcm.exceptions.DataViolationException;
+import org.openpcm.exceptions.DomainInvalidException;
 import org.openpcm.exceptions.FileEmptyException;
 import org.openpcm.exceptions.NotFoundException;
 import org.openpcm.exceptions.OpenPCMServiceException;
+import org.openpcm.exceptions.OpenPCMUsageException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -35,7 +37,19 @@ public class BaseController {
     @ExceptionHandler(OpenPCMServiceException.class)
     public void openPCMServiceException(OpenPCMServiceException e, HttpServletResponse response) throws IOException {
         fillResponse(response, e);
-        response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
+        response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Unexpected error has occured. Contact IT admin.");
+    }
+
+    @ExceptionHandler(OpenPCMUsageException.class)
+    public void openPCMUsageException(OpenPCMUsageException e, HttpServletResponse response) throws IOException {
+        fillResponse(response, e);
+        response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Unexpected error has occured. Contact IT admin.");
+    }
+
+    @ExceptionHandler(DomainInvalidException.class)
+    public void domainInvalidException(DomainInvalidException e, HttpServletResponse response) throws IOException {
+        fillResponse(response, e);
+        response.sendError(HttpStatus.BAD_REQUEST.value(), e.getMessage());
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
@@ -64,7 +78,7 @@ public class BaseController {
 
     protected void fillResponse(HttpServletResponse response, Exception e) {
         LOGGER.warn(e.getMessage(), e);
-        response.setHeader("ERROR_MESSAGE", e.getMessage());
+        // response.setHeader("ERROR_MESSAGE", e.getMessage());
         response.setHeader("ERROR_MESSAGE_CLASS", e.getClass().getName());
     }
 }

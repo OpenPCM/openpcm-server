@@ -7,8 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.List;
 
 import org.junit.experimental.categories.Category;
 import org.junit.jupiter.api.AfterEach;
@@ -21,6 +19,7 @@ import org.openpcm.dao.RoleRepository;
 import org.openpcm.exceptions.NotFoundException;
 import org.openpcm.model.AuthSuccess;
 import org.openpcm.model.Role;
+import org.openpcm.test.CleanUpUtils;
 import org.openpcm.test.RestResponsePage;
 import org.openpcm.test.TestAuthenticationUtils;
 import org.openpcm.utils.ObjectUtil;
@@ -133,13 +132,7 @@ public class RoleControllerIntTest {
 
     @AfterEach
     public void tearDown() {
-        final List<String> defaultRoles = Arrays.asList("ROLE_ADMIN", "ROLE_USER", "ROLE_DOCTOR", "ROLE_NURSE", "ROLE_PATIENT");
-        repository.findAll().forEach(role -> {
-            if (!defaultRoles.contains(role.getName())) {
-                LOGGER.warn("Deleting role: {}", role.getName());
-                repository.deleteById(role.getId());
-            }
-        });
+        CleanUpUtils.clean(repository);
     }
 
 }

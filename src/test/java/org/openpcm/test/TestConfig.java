@@ -1,5 +1,6 @@
 package org.openpcm.test;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -8,6 +9,7 @@ import java.util.Map;
 
 import org.openpcm.model.Attribute;
 import org.openpcm.model.Collector;
+import org.openpcm.model.Encounter;
 import org.openpcm.model.EncounterType;
 import org.openpcm.model.ObservationSet;
 import org.openpcm.model.Parameter;
@@ -52,6 +54,16 @@ public class TestConfig {
     @Primary
     EncounterType encounterType() {
         return EncounterType.builder().name("DOCTOR-VISIT").build();
+    }
+
+    @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    @Bean
+    @Primary
+    Encounter encounter() {
+        final List<Attribute> attributes = new ArrayList<Attribute>();
+        attributes.add(Attribute.builder().key("late").value("yes").build());
+        return Encounter.builder().title("First Checkup").description("Checkup on patient")
+                        .timestamp(new Date(Instant.parse("2018-12-12T12:00:00Z").getEpochSecond())).attributes(attributes).build();
     }
 
     @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)

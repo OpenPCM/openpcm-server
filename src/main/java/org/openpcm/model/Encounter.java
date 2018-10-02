@@ -1,8 +1,8 @@
 package org.openpcm.model;
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CollectionTable;
@@ -17,7 +17,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapKeyColumn;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -30,6 +31,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@NamedEntityGraph(name = "Encounter.attributes", attributeNodes = @NamedAttributeNode("attributes"))
 @Builder
 @Data
 @NoArgsConstructor
@@ -38,40 +40,41 @@ import lombok.NoArgsConstructor;
 @Table(name = "encounter")
 public class Encounter {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "encounter_id")
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "encounter_id")
+    private Long id;
 
-	@Column(unique = true)
-	private String title;
+    @Column(unique = true)
+    private String title;
 
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "encounter_encounter_type", joinColumns = @JoinColumn(name = "encounter_id"), inverseJoinColumns = @JoinColumn(name = "encounter_type_id"))
-	private Set<EncounterType> types;
+    @Column(length = 480, nullable = true)
+    private String description;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date timestamp;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "encounter_encounter_type", joinColumns = @JoinColumn(name = "encounter_id"), inverseJoinColumns = @JoinColumn(name = "encounter_type_id"))
+    private Set<EncounterType> types;
 
-	private String utcOffset;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date timestamp;
 
-	@OneToMany
-	@JoinTable(name = "encounter_observationsets", joinColumns = @JoinColumn(name = "encounter_id"), inverseJoinColumns = @JoinColumn(name = "observation_set_id"))
-	private Set<ObservationSet> observationSets;
+    private String utcOffset;
 
-	@ManyToOne
-	@JoinColumn(name = "user_id")
-	private User patient;
+    @OneToMany
+    @JoinTable(name = "encounter_observationsets", joinColumns = @JoinColumn(name = "encounter_id"), inverseJoinColumns = @JoinColumn(name = "observation_set_id"))
+    private Set<ObservationSet> observationSets;
 
-	@ElementCollection
-	@MapKeyColumn(name = "name")
-	@Column(name = "value")
-	@CollectionTable(name = "encounter_attributes", joinColumns = @JoinColumn(name = "encounter_id"))
-	private Map<String, String> attributes = new HashMap<String, String>();
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User patient;
 
-	@Override
-	public String toString() {
-		return ObjectUtil.print(this);
-	}
+    @ElementCollection
+    @CollectionTable(name = "encounter_attributes", joinColumns = @JoinColumn(name = "encounter_id"))
+    private List<Attribute> attributes = new ArrayList<>();
+
+    @Override
+    public String toString() {
+        return ObjectUtil.print(this);
+    }
 
 }
