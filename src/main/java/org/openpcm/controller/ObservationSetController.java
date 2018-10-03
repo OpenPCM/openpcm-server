@@ -5,7 +5,6 @@ import javax.validation.constraints.NotNull;
 import org.openpcm.exceptions.DataViolationException;
 import org.openpcm.exceptions.NotFoundException;
 import org.openpcm.model.ObservationSet;
-import org.openpcm.model.ParameterType;
 import org.openpcm.service.ObservationSetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -42,8 +41,8 @@ public class ObservationSetController extends BaseController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "createObservationSet", response = ObservationSet.class)
-    @PostMapping(value = "observationSet")
-    @ApiResponses({ @ApiResponse(code = 201, response = ParameterType.class, message = "created observationSet") })
+    @PostMapping(value = "observationset")
+    @ApiResponses({ @ApiResponse(code = 201, response = ObservationSet.class, message = "created observationSet") })
     public @ResponseBody ObservationSet createObservationSet(
                     @ApiParam(value = "observationSet to create", name = "observationSet", required = true) @RequestBody ObservationSet observationSet)
                     throws DataViolationException {
@@ -52,7 +51,7 @@ public class ObservationSetController extends BaseController {
 
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "readObservationSets", response = ObservationSet.class, responseContainer = "List")
-    @GetMapping(value = "observationSet")
+    @GetMapping(value = "observationset")
     @ApiResponses({ @ApiResponse(code = 200, response = ObservationSet.class, message = "read observationSets", responseContainer = "List") })
     public @ResponseBody Page<ObservationSet> readObservationSets(@NotNull final Pageable pageable) {
         return service.read(pageable);
@@ -60,7 +59,7 @@ public class ObservationSetController extends BaseController {
 
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "readObsevationSet", response = ObservationSet.class)
-    @GetMapping(value = "observationSet/{id}")
+    @GetMapping(value = "observationset/{id}")
     @ApiResponses({ @ApiResponse(code = 200, response = ObservationSet.class, message = "read observationSet") })
     public @ResponseBody ObservationSet readObservationSet(@ApiParam(value = "observationSet to read", name = "id", required = true) @PathVariable Long id)
                     throws NotFoundException {
@@ -69,7 +68,7 @@ public class ObservationSetController extends BaseController {
 
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "updateObservationSet", response = ObservationSet.class)
-    @PutMapping(value = "observationSet/{id}")
+    @PutMapping(value = "observationset/{id}")
     @ApiResponses({ @ApiResponse(code = 200, response = ObservationSet.class, message = "updated observationSet") })
     public @ResponseBody ObservationSet updateObservationSet(@ApiParam(value = "id of observationSet", name = "id", required = true) @PathVariable Long id,
                     @ApiParam(value = "observationSet to update", name = "observationSet", required = true) @RequestBody ObservationSet observationSet)
@@ -79,7 +78,7 @@ public class ObservationSetController extends BaseController {
 
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "deleteObservationSet")
-    @DeleteMapping(value = "observationSet/{id}")
+    @DeleteMapping(value = "observationset/{id}")
     public void deleteObservationSet(@ApiParam(value = "observationSet to delete", name = "id", required = true) @PathVariable Long id)
                     throws NotFoundException {
         service.delete(id);
