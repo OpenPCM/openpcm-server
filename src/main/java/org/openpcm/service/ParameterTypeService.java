@@ -39,12 +39,9 @@ public class ParameterTypeService {
     public ParameterType read(Long id) throws NotFoundException {
         final Optional<ParameterType> parameterType = repository.findById(id);
 
-        if (parameterType.isPresent()) {
-            LOGGER.trace("Returning parameterType: {}.", id);
-            return parameterType.get();
-        } else {
-            throw new NotFoundException(id + " not found");
-        }
+        parameterType.orElseThrow(() -> new NotFoundException(id + " not found"));
+
+        return parameterType.get();
     }
 
     public Page<ParameterType> read(Pageable pageable) {
@@ -55,14 +52,9 @@ public class ParameterTypeService {
     public ParameterType update(Long id, ParameterType parameterType) throws NotFoundException {
         final Optional<ParameterType> dbParameterType = repository.findById(id);
 
-        if (!dbParameterType.isPresent()) {
-            throw new NotFoundException(id + " not found");
-        }
-
+        dbParameterType.orElseThrow(() -> new NotFoundException(id + " not found"));
         parameterType.setId(dbParameterType.get().getId());
-
         LOGGER.trace("Attempting to save updated parameterType: {}", parameterType);
-
         return repository.save(parameterType);
     }
 

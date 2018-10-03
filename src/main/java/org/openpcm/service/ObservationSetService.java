@@ -28,7 +28,7 @@ public class ObservationSetService {
 
     public ObservationSet create(ObservationSet observationSet) throws DataViolationException {
         if (!((observationSet.getId() == null) || (observationSet.getId() == 0))) {
-            throw new DataViolationException("parameterType id should be null on create");
+            throw new DataViolationException("observationSet id should be null on create");
         }
 
         LOGGER.trace("Attempting to create observationSet: {}", observationSet);
@@ -37,13 +37,9 @@ public class ObservationSetService {
 
     public ObservationSet read(Long id) throws NotFoundException {
         final Optional<ObservationSet> observationSet = repository.findById(id);
-
-        if (observationSet.isPresent()) {
-            LOGGER.trace("Returning observationSet: {}.", id);
-            return observationSet.get();
-        } else {
-            throw new NotFoundException(id + " not found");
-        }
+        observationSet.orElseThrow(() -> new NotFoundException(id + " not found"));
+        LOGGER.trace("Returning observationSet: {}.", observationSet);
+        return observationSet.get();
     }
 
     public Page<ObservationSet> read(Pageable pageable) {
