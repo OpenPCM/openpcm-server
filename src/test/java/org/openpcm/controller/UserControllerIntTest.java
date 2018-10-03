@@ -2,6 +2,7 @@ package org.openpcm.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
@@ -77,7 +78,14 @@ public class UserControllerIntTest {
 
         assertSame(HttpStatus.CREATED, result.getStatusCode(), "incorrect status code");
         assertNotNull(result.getBody().getId(), "instance should not be null");
-        assertEquals("demo", result.getBody().getUsername(), "property value is incorrect");
+
+        final User resultUser = result.getBody();
+        assertEquals("test-demo", resultUser.getUsername(), "property value is incorrect");
+        assertNotNull(resultUser.getPassword(), "property value should not be null");
+        assertNotEquals("test-demo", resultUser.getPassword(), "password should have been encrypted");
+        assertEquals("test-demo@demo.com", resultUser.getEmail(), "property value is incorrect");
+        assertEquals("12-3079304-567", resultUser.getMrn(), "property value is incorrect");
+        assertEquals("111-22-3333", resultUser.getSsn(), "property value is incorrect");
     }
 
     @Test
@@ -91,7 +99,15 @@ public class UserControllerIntTest {
 
         assertSame(HttpStatus.OK, result.getStatusCode(), "incorrect status code");
         assertSame(2, result.getBody().getContent().size(), "incorrect number of elements");
-        assertEquals("demo", result.getBody().getContent().get(0).getUsername(), "property value is incorrect");
+
+        final User resultUser = result.getBody().getContent().get(0);
+        assertEquals("test-demo", resultUser.getUsername(), "property value is incorrect");
+
+        // bypasses service so password is the same here
+        assertEquals("test-demo", resultUser.getPassword(), "property value is incorrect");
+        assertEquals("test-demo@demo.com", resultUser.getEmail(), "property value is incorrect");
+        assertEquals("12-3079304-567", resultUser.getMrn(), "property value is incorrect");
+        assertEquals("111-22-3333", resultUser.getSsn(), "property value is incorrect");
     }
 
     @Test
@@ -116,7 +132,13 @@ public class UserControllerIntTest {
 
         assertSame(HttpStatus.OK, result.getStatusCode(), "incorrect status code");
         assertEquals(user.getId(), result.getBody().getId(), "incorrect property value");
-        assertEquals("DEMOUSER", result.getBody().getUsername(), "incorrect property value");
+
+        final User resultUser = result.getBody();
+        assertEquals("DEMOUSER", resultUser.getUsername(), "property value is incorrect");
+        assertEquals("test-demo", resultUser.getPassword(), "property value is incorrect");
+        assertEquals("test-demo@demo.com", resultUser.getEmail(), "property value is incorrect");
+        assertEquals("12-3079304-567", resultUser.getMrn(), "property value is incorrect");
+        assertEquals("111-22-3333", resultUser.getSsn(), "property value is incorrect");
     }
 
     @Test

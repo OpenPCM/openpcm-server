@@ -72,8 +72,10 @@ public class CollectorControllerIntTest {
 
         assertSame(HttpStatus.CREATED, result.getStatusCode(), "incorrect status code");
         assertNotNull(result.getBody().getId(), "instance should not be null");
-        assertEquals("alias", result.getBody().getAttributes().get(0).getKey(), "incorrect property value");
-        assertEquals("Critikon 9710", result.getBody().getAttributes().get(0).getValue(), "incorrect property value");
+        final Collector returnCollector = result.getBody();
+        assertEquals("alias", returnCollector.getAttributes().iterator().next().getKey(), "incorrect property value");
+        assertEquals("Critikon 9710", returnCollector.getAttributes().iterator().next().getValue(), "incorrect property value");
+        assertEquals("GE Dinamap", returnCollector.getName(), "incorrect property value");
     }
 
     @Test
@@ -87,7 +89,10 @@ public class CollectorControllerIntTest {
 
         assertSame(HttpStatus.OK, result.getStatusCode(), "incorrect status code");
         assertSame(1, result.getBody().getContent().size(), "incorrect number of elements");
-
+        final Collector returnCollector = result.getBody().getContent().get(0);
+        assertEquals("alias", returnCollector.getAttributes().iterator().next().getKey(), "incorrect property value");
+        assertEquals("Critikon 9710", returnCollector.getAttributes().iterator().next().getValue(), "incorrect property value");
+        assertEquals("GE Dinamap", returnCollector.getName(), "incorrect property value");
     }
 
     @Test
@@ -100,8 +105,11 @@ public class CollectorControllerIntTest {
 
         assertSame(HttpStatus.OK, result.getStatusCode(), "incorrect status code");
         assertEquals(collector.getId(), result.getBody().getId(), "incorrect property value");
-        assertEquals("alias", result.getBody().getAttributes().get(0).getKey(), "incorrect property value");
-        assertEquals("Critikon 9710", result.getBody().getAttributes().get(0).getValue(), "incorrect property value");
+
+        final Collector returnCollector = result.getBody();
+        assertEquals("alias", returnCollector.getAttributes().iterator().next().getKey(), "incorrect property value");
+        assertEquals("Critikon 9710", returnCollector.getAttributes().iterator().next().getValue(), "incorrect property value");
+        assertEquals("GE Dinamap", returnCollector.getName(), "incorrect property value");
     }
 
     @Test
@@ -115,9 +123,11 @@ public class CollectorControllerIntTest {
 
         assertSame(HttpStatus.OK, result.getStatusCode(), "incorrect status code");
         assertEquals(collector.getId(), result.getBody().getId(), "incorrect property value");
-        assertEquals("New Name", result.getBody().getName(), "incorrect property value");
-        assertEquals("alias", result.getBody().getAttributes().get(0).getKey(), "incorrect property value");
-        assertEquals("Critikon 9710", result.getBody().getAttributes().get(0).getValue(), "incorrect property value");
+
+        final Collector returnCollector = result.getBody();
+        assertEquals("New Name", returnCollector.getName(), "incorrect property value");
+        assertEquals("alias", returnCollector.getAttributes().iterator().next().getKey(), "incorrect property value");
+        assertEquals("Critikon 9710", returnCollector.getAttributes().iterator().next().getValue(), "incorrect property value");
     }
 
     @Test

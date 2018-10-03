@@ -6,7 +6,6 @@ import java.util.Optional;
 import org.openpcm.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 public interface UserRepository extends PagingAndSortingRepository<User, Long> {
@@ -22,9 +21,5 @@ public interface UserRepository extends PagingAndSortingRepository<User, Long> {
     List<User> findByFirstNameContainingAndLastNameContaining(String firstName, String lastName);
 
     List<User> findByFirstNameAndLastName(String firstName, String lastName);
-
-    @Override
-    @EntityGraph(value = "User.attributes", type = EntityGraph.EntityGraphType.LOAD)
-    Optional<User> findById(Long id);
 
 }

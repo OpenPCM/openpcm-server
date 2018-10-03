@@ -1,8 +1,7 @@
 package org.openpcm.model;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CollectionTable;
@@ -70,7 +69,7 @@ public class Encounter {
 
     @ElementCollection
     @CollectionTable(name = "encounter_attributes", joinColumns = @JoinColumn(name = "encounter_id"))
-    private List<Attribute> attributes = new ArrayList<>();
+    private Set<Attribute> attributes = new HashSet<>();
 
     @Override
     public String toString() {

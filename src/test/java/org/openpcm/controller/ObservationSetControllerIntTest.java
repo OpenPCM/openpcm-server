@@ -19,6 +19,7 @@ import org.openpcm.dao.ObservationSetRepository;
 import org.openpcm.exceptions.NotFoundException;
 import org.openpcm.model.AuthSuccess;
 import org.openpcm.model.ObservationSet;
+import org.openpcm.model.Parameter;
 import org.openpcm.test.RestResponsePage;
 import org.openpcm.test.TestAuthenticationUtils;
 import org.openpcm.utils.ObjectUtil;
@@ -73,7 +74,23 @@ public class ObservationSetControllerIntTest {
 
         assertSame(HttpStatus.CREATED, result.getStatusCode(), "incorrect status code");
         assertNotNull(result.getBody().getId(), "instance should not be null");
-        assertNotNull(result.getBody().getParameters().get(0).getId(), "instance should not be null");
+        assertEquals(1, result.getBody().getParameters().size(), "incorrect number of parameters");
+
+        final ObservationSet resultObservationSet = result.getBody();
+        final Parameter parameter = resultObservationSet.getParameters().iterator().next();
+        assertNotNull(parameter.getId(), "instance should not be null");
+        assertEquals("HR", parameter.getName(), "incorrect property value");
+        assertEquals("Heart Rate", parameter.getDescription(), "incorrect property value");
+        assertEquals("bpm", parameter.getUom(), "incorrect property value");
+        assertNotNull(parameter.getTimestamp(), "property should not be null");
+        assertEquals("100", parameter.getValue(), "incorrect property value");
+        assertEquals("PATIENT_STATE", parameter.getAttributes().iterator().next().getKey(), "incorrect property value");
+        assertEquals("STANDING", parameter.getAttributes().iterator().next().getValue(), "incorrect property value");
+        assertEquals("DOCUMENTATION_TYPE", resultObservationSet.getAttributes().iterator().next().getKey(), "incorrect property value");
+        assertEquals("MANUAL", resultObservationSet.getAttributes().iterator().next().getValue(), "incorrect property value");
+        assertEquals("Device1", resultObservationSet.getOrigin(), "incorrect property value");
+        assertEquals("CLINICIAN", resultObservationSet.getOriginType(), "incorrect property value");
+        assertNotNull(resultObservationSet.getTimestamp(), "property should not be null");
     }
 
     @Test
@@ -88,8 +105,22 @@ public class ObservationSetControllerIntTest {
 
         assertSame(HttpStatus.OK, result.getStatusCode(), "incorrect status code");
         assertSame(1, result.getBody().getContent().size(), "incorrect number of elements");
-        assertSame(1, result.getBody().getContent().size(), "incorrect number of elements");
 
+        final ObservationSet resultObservationSet = result.getBody().getContent().get(0);
+        final Parameter parameter = resultObservationSet.getParameters().iterator().next();
+        assertNotNull(parameter.getId(), "instance should not be null");
+        assertEquals("HR", parameter.getName(), "incorrect property value");
+        assertEquals("Heart Rate", parameter.getDescription(), "incorrect property value");
+        assertEquals("bpm", parameter.getUom(), "incorrect property value");
+        assertNotNull(parameter.getTimestamp(), "property should not be null");
+        assertEquals("100", parameter.getValue(), "incorrect property value");
+        assertEquals("PATIENT_STATE", parameter.getAttributes().iterator().next().getKey(), "incorrect property value");
+        assertEquals("STANDING", parameter.getAttributes().iterator().next().getValue(), "incorrect property value");
+        assertEquals("DOCUMENTATION_TYPE", resultObservationSet.getAttributes().iterator().next().getKey(), "incorrect property value");
+        assertEquals("MANUAL", resultObservationSet.getAttributes().iterator().next().getValue(), "incorrect property value");
+        assertEquals("Device1", resultObservationSet.getOrigin(), "incorrect property value");
+        assertEquals("CLINICIAN", resultObservationSet.getOriginType(), "incorrect property value");
+        assertNotNull(resultObservationSet.getTimestamp(), "property should not be null");
     }
 
     @Test
@@ -102,7 +133,22 @@ public class ObservationSetControllerIntTest {
 
         assertSame(HttpStatus.OK, result.getStatusCode(), "incorrect status code");
         assertEquals(set.getId(), result.getBody().getId(), "incorrect property value");
-        assertEquals(set.getParameters().get(0).getId(), result.getBody().getParameters().get(0).getId(), "incorrect property value");
+
+        final ObservationSet resultObservationSet = result.getBody();
+        final Parameter parameter = resultObservationSet.getParameters().iterator().next();
+        assertNotNull(parameter.getId(), "instance should not be null");
+        assertEquals("HR", parameter.getName(), "incorrect property value");
+        assertEquals("Heart Rate", parameter.getDescription(), "incorrect property value");
+        assertEquals("bpm", parameter.getUom(), "incorrect property value");
+        assertNotNull(parameter.getTimestamp(), "property should not be null");
+        assertEquals("100", parameter.getValue(), "incorrect property value");
+        assertEquals("PATIENT_STATE", parameter.getAttributes().iterator().next().getKey(), "incorrect property value");
+        assertEquals("STANDING", parameter.getAttributes().iterator().next().getValue(), "incorrect property value");
+        assertEquals("DOCUMENTATION_TYPE", resultObservationSet.getAttributes().iterator().next().getKey(), "incorrect property value");
+        assertEquals("MANUAL", resultObservationSet.getAttributes().iterator().next().getValue(), "incorrect property value");
+        assertEquals("Device1", resultObservationSet.getOrigin(), "incorrect property value");
+        assertEquals("CLINICIAN", resultObservationSet.getOriginType(), "incorrect property value");
+        assertNotNull(resultObservationSet.getTimestamp(), "property should not be null");
     }
 
     @Test

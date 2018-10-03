@@ -1,7 +1,8 @@
 package org.openpcm.model;
 
 import java.util.Date;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -11,7 +12,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.MapKeyColumn;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -26,6 +28,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@NamedEntityGraph(name = "Parameter.attributes", attributeNodes = @NamedAttributeNode("attributes"))
 @Builder
 @Data
 @NoArgsConstructor
@@ -35,33 +38,31 @@ import lombok.NoArgsConstructor;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Parameter {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "parameter_id")
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "parameter_id")
+    private Long id;
 
-	@NotNull
-	private String name;
+    @NotNull
+    private String name;
 
-	private String description;
+    private String description;
 
-	private String uom;
+    private String uom;
 
-	private String value;
+    private String value;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date timestamp;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date timestamp;
 
-	private String utcOffset;
+    private String utcOffset;
 
-	@ElementCollection
-	@MapKeyColumn(name = "name")
-	@Column(name = "value")
-	@CollectionTable(name = "parameter_attributes", joinColumns = @JoinColumn(name = "parameter_id"))
-	private Map<String, String> attributes;
+    @ElementCollection
+    @CollectionTable(name = "parameter_attributes", joinColumns = @JoinColumn(name = "parameter_id"))
+    private Set<Attribute> attributes = new HashSet<>();
 
-	@Override
-	public String toString() {
-		return ObjectUtil.print(this);
-	}
+    @Override
+    public String toString() {
+        return ObjectUtil.print(this);
+    }
 }

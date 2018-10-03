@@ -1,8 +1,7 @@
 package org.openpcm.model;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -43,7 +42,7 @@ public class Collector {
 
     @ElementCollection
     @CollectionTable(name = "collector_attributes", joinColumns = @JoinColumn(name = "collector_id"))
-    private List<Attribute> attributes = new ArrayList<>();
+    private Set<Attribute> attributes = new HashSet<>();
 
     @Override
     public String toString() {
