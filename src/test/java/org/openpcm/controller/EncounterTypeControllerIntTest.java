@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Iterator;
 
 import org.junit.experimental.categories.Category;
 import org.junit.jupiter.api.AfterEach;
@@ -135,6 +136,14 @@ public class EncounterTypeControllerIntTest {
 
     @AfterEach
     public void tearDown() {
-        repository.deleteAll();
+        final Iterator<EncounterType> it = repository.findAll().iterator();
+
+        while (it.hasNext()) {
+            final EncounterType type = it.next();
+
+            if (type.getId() < 1000) {
+                repository.deleteById(type.getId());
+            }
+        }
     }
 }
