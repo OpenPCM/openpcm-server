@@ -1,5 +1,6 @@
 package org.openpcm.util;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.DisplayName;
@@ -25,7 +26,7 @@ public class ObjectUtilTest {
 
         };
 
-        assertEquals("{\"name\":\"test\"}", ObjectUtil.print(tester), "json is incorrect");
+        assertArrayEquals("{\"name\":\"test\"}".getBytes(), ObjectUtil.print(tester).getBytes(), "json is incorrect");
     }
 
     @DisplayName("Ensure ObjectWriter pretty print correctly serializes objects")
