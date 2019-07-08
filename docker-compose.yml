@@ -5,7 +5,7 @@ services:
     hostname: server
     restart: always
     ports:
-      - 14606:14606
+      - 14606:8080
     environment:
       SPRING_PROFILES_ACTIVE: "dev"
       JAVA_OPTS: "-Xms64m -Xmx128m -XX:PermSize=32m -XX:MaxPermSize=64m -XX:+UseG1GC"
