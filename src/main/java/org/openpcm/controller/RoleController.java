@@ -3,13 +3,11 @@ package org.openpcm.controller;
 import org.openpcm.exceptions.DataViolationException;
 import org.openpcm.exceptions.NotFoundException;
 import org.openpcm.model.Role;
-import org.openpcm.service.GraphQLService;
 import org.openpcm.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import graphql.ExecutionResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -35,12 +32,9 @@ public class RoleController extends BaseController {
 
     private final RoleService roleService;
 
-    private final GraphQLService graphQlService;
-
     @Autowired
-    public RoleController(RoleService roleService, GraphQLService graphQlService) {
+    public RoleController(RoleService roleService) {
         this.roleService = roleService;
-        this.graphQlService = graphQlService;
     }
 
     @ResponseStatus(HttpStatus.CREATED)
@@ -82,14 +76,5 @@ public class RoleController extends BaseController {
     @DeleteMapping(value = "role/{id}")
     public void deleteRole(@ApiParam(value = "role to delete", name = "id", required = true) @PathVariable Long id) {
         roleService.delete(id);
-    }
-
-    @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "graphql roles")
-    @PostMapping(value = "rest/role")
-    public ResponseEntity<Object> graphqlRoles(@ApiParam(value = "qraphql query", name = "query", required = true) @RequestBody String query) {
-        final ExecutionResult execute = graphQlService.getGraphQL().execute(query);
-
-        return new ResponseEntity<>(execute, HttpStatus.OK);
     }
 }

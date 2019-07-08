@@ -1,9 +1,9 @@
 package org.openpcm.exceptions;
 
-public abstract class OpenPCMServiceException extends Exception {
+public abstract class OpenPCMServiceException extends RuntimeException {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 5749579434134022672L;
 
