@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Iterator;
 
 import org.junit.experimental.categories.Category;
 import org.junit.jupiter.api.AfterEach;
@@ -21,7 +22,6 @@ import org.openpcm.dao.RoleRepository;
 import org.openpcm.exceptions.NotFoundException;
 import org.openpcm.model.AuthSuccess;
 import org.openpcm.model.Role;
-import org.openpcm.test.CleanUpUtils;
 import org.openpcm.test.RestResponsePage;
 import org.openpcm.test.TestAuthenticationUtils;
 import org.openpcm.utils.ObjectUtil;
@@ -135,7 +135,15 @@ public class RoleControllerIntTest {
 
     @AfterEach
     public void tearDown() {
-        CleanUpUtils.clean(repository);
+        final Iterator<Role> it = repository.findAll().iterator();
+
+        while (it.hasNext()) {
+            final Role type = it.next();
+
+            if (type.getId() < 1000) {
+                repository.deleteById(type.getId());
+            }
+        }
     }
 
 }

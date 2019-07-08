@@ -1,13 +1,16 @@
 package org.openpcm.util;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.openpcm.utils.ObjectUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ObjectUtilTest {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ObjectUtilTest.class);
 
     @DisplayName("Ensure ObjectWriter correctly serializes objects")
     @Test
@@ -26,6 +29,8 @@ public class ObjectUtilTest {
 
         };
 
+        final byte[] expected = "{\"name\":\"test\"}".getBytes();
+        LOGGER.info("expected: {}. actual: {}", expected, ObjectUtil.print(tester).getBytes());
         assertArrayEquals("{\"name\":\"test\"}".getBytes(), ObjectUtil.print(tester).getBytes(), "json is incorrect");
     }
 
@@ -46,7 +51,9 @@ public class ObjectUtilTest {
 
         };
 
-        assertEquals("{\r\n  \"name\" : \"test\"\r\n}", ObjectUtil.prettyPrint(tester), "json is incorrect");
+        final byte[] expected = "{\"name\":\"test\"}".getBytes();
+        LOGGER.info("expected: {}. actual: {}", expected, ObjectUtil.prettyPrint(tester).getBytes());
+        assertArrayEquals(expected, ObjectUtil.prettyPrint(tester).getBytes(), "json is incorrect");
     }
 
 }

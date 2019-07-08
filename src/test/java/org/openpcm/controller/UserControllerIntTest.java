@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Iterator;
 
 import org.junit.experimental.categories.Category;
 import org.junit.jupiter.api.AfterEach;
@@ -22,7 +23,6 @@ import org.openpcm.dao.UserRepository;
 import org.openpcm.exceptions.NotFoundException;
 import org.openpcm.model.AuthSuccess;
 import org.openpcm.model.User;
-import org.openpcm.test.CleanUpUtils;
 import org.openpcm.test.RestResponsePage;
 import org.openpcm.test.TestAuthenticationUtils;
 import org.openpcm.utils.ObjectUtil;
@@ -157,6 +157,14 @@ public class UserControllerIntTest {
 
     @AfterEach
     public void tearDown() {
-        CleanUpUtils.clean(repository);
+        final Iterator<User> it = repository.findAll().iterator();
+
+        while (it.hasNext()) {
+            final User type = it.next();
+
+            if (type.getId() < 1000) {
+                repository.deleteById(type.getId());
+            }
+        }
     }
 }
