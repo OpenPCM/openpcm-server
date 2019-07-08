@@ -28,6 +28,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 @NamedEntityGraph(name = "Parameter.attributes", attributeNodes = @NamedAttributeNode("attributes"))
 @Builder
 @Data
@@ -35,7 +36,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "parameter")
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class Parameter {
 
     @Id

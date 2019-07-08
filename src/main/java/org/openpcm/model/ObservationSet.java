@@ -33,6 +33,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 @NamedEntityGraph(name = "ObservationSet.attributes", attributeNodes = @NamedAttributeNode("attributes"))
 @Builder
 @Data
@@ -40,7 +41,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "observation_set")
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class ObservationSet {
 
     @Id
