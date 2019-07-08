@@ -166,15 +166,10 @@ public class RoleServiceTest {
     @DisplayName("Test unknown role delete throws error")
     @Test
     public void test_delete_handlesNotFound() {
-        final Long id = 3L;
-        when(mockRepo.existsById(anyLong())).thenReturn(false);
-
-        try {
+        Assertions.assertThrows(NotFoundException.class, () -> {
+            final Long id = 3L;
+            when(mockRepo.existsById(anyLong())).thenReturn(false);
             service.delete(id);
-        } catch (final Exception e) {
-            fail(e.getMessage());
-        }
-
-        verify(mockRepo, times(0)).deleteById(anyLong());
+        });
     }
 }

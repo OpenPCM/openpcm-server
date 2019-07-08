@@ -1,0 +1,30 @@
+## To Retrieve All Roles in GraphiQL
+`{
+ findAllRoles{
+   id
+  name
+ }
+}`
+
+## To retrieve a role by id
+`{
+  getRole(id: 14506) {
+    id
+    name
+  }
+}`
+
+## To create a new role in GraphiQL
+`mutation($role:NewRole) {
+  createRole(role:$role) {
+    id
+    name
+  }
+}`
+
+Query Variables
+`{
+  "role": {
+    "name": "Willy Wonka"
+  }
+}`

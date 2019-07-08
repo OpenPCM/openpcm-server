@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: openpcm-service-test
+logging:
+  path: target/logs/
+  level:
+    #org.fasterxml: "DEBUG"
+    org.springframework: "INFO"
+    org.hibernate: "INFO"
+    org.apache.camel.component.rabbitmq: "INFO"
+    org.openpcm: "TRACE"
+    #org.springframework.web: "TRACE"
+    org.springframework.web.servlet.DispatcherServlet: "DEBUG"
+    org.springframework.web.filter.CommonsRequestLoggingFilter: "DEBUG"
+  file: openpcm-service-test.log

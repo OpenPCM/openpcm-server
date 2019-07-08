@@ -10,11 +10,14 @@ import javax.validation.constraints.NotNull;
 
 import org.openpcm.utils.ObjectUtil;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Builder
 @Data
 @NoArgsConstructor
@@ -23,16 +26,16 @@ import lombok.NoArgsConstructor;
 @Table(name = "encounter_type")
 public class EncounterType {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "encounter_type_id")
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "encounter_type_id")
+    private Long id;
 
-	@NotNull
-	private String name;
+    @NotNull
+    private String name;
 
-	@Override
-	public String toString() {
-		return ObjectUtil.print(this);
-	}
+    @Override
+    public String toString() {
+        return ObjectUtil.print(this);
+    }
 }

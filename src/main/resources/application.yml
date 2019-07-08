@@ -1,6 +1,6 @@
 spring:
   application:
-    name: "${project.artifactId}"
+    name: openpcm-server
   main:
     banner-mode: log
   h2:
@@ -44,6 +44,5 @@ logging:
     #org.springframework.web: "TRACE"
     org.springframework.web.servlet.DispatcherServlet: "DEBUG"
     org.springframework.web.filter.CommonsRequestLoggingFilter: "DEBUG"
-  file: ${project.artifactId}.log
-  
-      
+  file: openpcm-server.log
+ 

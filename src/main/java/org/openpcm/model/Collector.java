@@ -18,11 +18,14 @@ import javax.validation.constraints.NotNull;
 
 import org.openpcm.utils.ObjectUtil;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 @NamedEntityGraph(name = "Collector.attributes", attributeNodes = @NamedAttributeNode("attributes"))
 @Builder
 @Data

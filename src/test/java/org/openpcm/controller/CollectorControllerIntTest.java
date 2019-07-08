@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Iterator;
 
 import org.junit.experimental.categories.Category;
 import org.junit.jupiter.api.AfterEach;
@@ -14,6 +15,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.openpcm.annotation.IntegrationTest;
 import org.openpcm.dao.CollectorRepository;
 import org.openpcm.exceptions.NotFoundException;
@@ -40,6 +43,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 @Category(IntegrationTest.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @ExtendWith(SpringExtension.class)
+@Execution(ExecutionMode.SAME_THREAD)
 public class CollectorControllerIntTest {
 
     @LocalServerPort
@@ -144,6 +148,14 @@ public class CollectorControllerIntTest {
 
     @AfterEach
     public void tearDown() {
-        repository.deleteAll();
+        final Iterator<Collector> it = repository.findAll().iterator();
+
+        while (it.hasNext()) {
+            final Collector type = it.next();
+
+            if (type.getId() < 1000) {
+                repository.deleteById(type.getId());
+            }
+        }
     }
 }

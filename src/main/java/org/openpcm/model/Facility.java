@@ -17,12 +17,15 @@ import javax.validation.constraints.NotNull;
 
 import org.openpcm.utils.ObjectUtil;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Builder
 @Data
 @NoArgsConstructor
@@ -32,26 +35,26 @@ import lombok.NoArgsConstructor;
 @Table(name = "facility")
 public class Facility {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "facility_id")
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "facility_id")
+    private Long id;
 
-	@NotNull
-	@Column(unique = true)
-	private String name;
+    @NotNull
+    @Column(unique = true)
+    private String name;
 
-	/** The address. */
-	@Embedded
-	private Address address;
+    /** The address. */
+    @Embedded
+    private Address address;
 
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "facility_room", joinColumns = @JoinColumn(name = "facility_id"), inverseJoinColumns = @JoinColumn(name = "room_id"))
-	private Set<Room> rooms;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "facility_room", joinColumns = @JoinColumn(name = "facility_id"), inverseJoinColumns = @JoinColumn(name = "room_id"))
+    private Set<Room> rooms;
 
-	@Override
-	public String toString() {
-		return ObjectUtil.print(this);
-	}
+    @Override
+    public String toString() {
+        return ObjectUtil.print(this);
+    }
 
 }

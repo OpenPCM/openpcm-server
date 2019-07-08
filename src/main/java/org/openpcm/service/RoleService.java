@@ -1,5 +1,6 @@
 package org.openpcm.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.openpcm.dao.RoleRepository;
@@ -13,6 +14,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.google.common.collect.Lists;
 
 @Transactional
 @Service
@@ -28,7 +31,7 @@ public class RoleService {
     }
 
     public Role create(Role role) throws DataViolationException {
-        if (!((role.getId() == null) || (role.getId() == 0))) {
+        if (!(role.getId() == null || role.getId() == 0)) {
             throw new DataViolationException("role id should be null on create");
         }
 
@@ -39,7 +42,7 @@ public class RoleService {
     public Role read(Long id) throws NotFoundException {
         final Optional<Role> role = roleRepository.findById(id);
 
-        role.orElseThrow(() -> new NotFoundException(id + " not found"));
+        role.orElseThrow(() -> new NotFoundException("could not be found by id: " + id));
         LOGGER.trace("Returning role: {}.", role);
         return role.get();
     }
@@ -47,6 +50,11 @@ public class RoleService {
     public Page<Role> read(Pageable pageable) {
         LOGGER.trace("Returning page {} for {} roles.", pageable.getPageNumber(), pageable.getPageSize());
         return roleRepository.findAll(pageable);
+    }
+
+    public List<Role> readAll() {
+        LOGGER.trace("Returning all roles.");
+        return Lists.newArrayList(roleRepository.findAll());
     }
 
     public Role update(Long id, Role role) throws NotFoundException {
@@ -62,6 +70,8 @@ public class RoleService {
 
         if (roleRepository.existsById(id)) {
             roleRepository.deleteById(id);
+        } else {
+            throw new NotFoundException("could not be found by id: " + id);
         }
     }
 }
