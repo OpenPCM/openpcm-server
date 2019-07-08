@@ -101,7 +101,7 @@ public class UserControllerIntTest {
         final ResponseEntity<RestResponsePage<User>> result = restTemplate.exchange(base + "/api/v1/user", HttpMethod.GET, authHeaders, responseType);
 
         assertSame(HttpStatus.OK, result.getStatusCode(), "incorrect status code");
-        assertSame(2, result.getBody().getContent().size(), "incorrect number of elements");
+        assertSame(3, result.getBody().getContent().size(), "incorrect number of elements");
 
         final User resultUser = result.getBody().getContent().get(0);
         assertEquals("test-demo", resultUser.getUsername(), "property value is incorrect");

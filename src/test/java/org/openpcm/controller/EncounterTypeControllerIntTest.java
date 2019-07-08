@@ -90,7 +90,7 @@ public class EncounterTypeControllerIntTest {
                         responseType);
 
         assertSame(HttpStatus.OK, result.getStatusCode(), "incorrect status code");
-        assertSame(1, result.getBody().getContent().size(), "incorrect number of elements");
+        assertSame(2, result.getBody().getContent().size(), "incorrect number of elements");
         assertEquals("DOCTOR-VISIT", result.getBody().getContent().get(0).getName(), "property value is incorrect");
 
     }
