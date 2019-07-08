@@ -8,6 +8,8 @@ import org.junit.experimental.categories.Category;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.openpcm.annotation.IntegrationTest;
 import org.openpcm.model.AuthSuccess;
 import org.openpcm.model.UserJWTTokenState;
@@ -28,6 +30,7 @@ import org.springframework.util.MultiValueMap;
 @Category(IntegrationTest.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @ExtendWith(SpringExtension.class)
+@Execution(ExecutionMode.SAME_THREAD)
 public class AuthenticationControllerIntTest {
 
     @LocalServerPort

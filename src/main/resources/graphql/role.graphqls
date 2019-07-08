@@ -1,0 +1,32 @@
+
+schema {
+ query: Query
+ mutation: Mutation
+}
+
+type Query {
+ findAllRoles: [Role]
+ getRole(id: Long): Role
+  
+# allParameterTypes: [ParameterType]
+}
+
+type Role {
+  id: Long
+  name: String
+}
+
+input NewRole {
+  name: String
+}
+
+
+type Mutation {
+  createRole(role: NewRole): Role
+#  createParameterType(id: Long!): ParameterType
+}
+
+
+#type ParameterType {
+#  id: Long
+#}

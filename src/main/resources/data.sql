@@ -25,5 +25,8 @@ VALUES (NULL,NULL,NULL,NULL,NULL,NULL,'demo@gmail.com',true,'Demo',NULL,'User',N
 INSERT INTO user_role (user_id,role_id)
 VALUES (14510,14505);
 
+INSERT INTO user_role (user_id,role_id)
+VALUES (14511,14506);
+
 INSERT INTO encounter_type (name, encounter_type_id)
 VALUES('CHECKUP', 14512);

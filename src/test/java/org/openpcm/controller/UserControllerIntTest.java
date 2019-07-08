@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Iterator;
 
 import org.junit.experimental.categories.Category;
 import org.junit.jupiter.api.AfterEach;
@@ -15,12 +16,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.openpcm.annotation.IntegrationTest;
 import org.openpcm.dao.UserRepository;
 import org.openpcm.exceptions.NotFoundException;
 import org.openpcm.model.AuthSuccess;
 import org.openpcm.model.User;
-import org.openpcm.test.CleanUpUtils;
 import org.openpcm.test.RestResponsePage;
 import org.openpcm.test.TestAuthenticationUtils;
 import org.openpcm.utils.ObjectUtil;
@@ -44,6 +46,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 @Category(IntegrationTest.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @ExtendWith(SpringExtension.class)
+@Execution(ExecutionMode.SAME_THREAD)
 public class UserControllerIntTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserControllerIntTest.class);
@@ -98,7 +101,7 @@ public class UserControllerIntTest {
         final ResponseEntity<RestResponsePage<User>> result = restTemplate.exchange(base + "/api/v1/user", HttpMethod.GET, authHeaders, responseType);
 
         assertSame(HttpStatus.OK, result.getStatusCode(), "incorrect status code");
-        assertSame(2, result.getBody().getContent().size(), "incorrect number of elements");
+        assertSame(3, result.getBody().getContent().size(), "incorrect number of elements");
 
         final User resultUser = result.getBody().getContent().get(0);
         assertEquals("test-demo", resultUser.getUsername(), "property value is incorrect");
@@ -154,6 +157,14 @@ public class UserControllerIntTest {
 
     @AfterEach
     public void tearDown() {
-        CleanUpUtils.clean(repository);
+        final Iterator<User> it = repository.findAll().iterator();
+
+        while (it.hasNext()) {
+            final User type = it.next();
+
+            if (type.getId() < 1000) {
+                repository.deleteById(type.getId());
+            }
+        }
     }
 }

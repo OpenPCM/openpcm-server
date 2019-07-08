@@ -13,6 +13,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.openpcm.annotation.IntegrationTest;
 import org.openpcm.dao.EncounterRepository;
 import org.openpcm.exceptions.NotFoundException;
@@ -39,6 +41,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 @Category(IntegrationTest.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @ExtendWith(SpringExtension.class)
+@Execution(ExecutionMode.SAME_THREAD)
 public class EncounterControllerIntTest {
 
     @LocalServerPort
